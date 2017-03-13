@@ -59,7 +59,7 @@ public interface IAlert {
      * @param radius The radius of the alert's location.
      * @return Confirmation message with feedback about the update.
      */
-    @RequestMapping(value = "/api/alert", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/alert", method = RequestMethod.PUT)
     ConfirmationMessage alert (@RequestParam(value = "token") String token,
                                @RequestParam(value = "id") int id,
                                @RequestParam(value = "name") String name,
