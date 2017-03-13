@@ -37,7 +37,8 @@ public interface ICalamity {
      * @param lat The latitude of the calamity's location.
      * @param lon The longtitude of the calamity's location.
      * @param radius The radius of the calamity's location.
-     * @return Confirmation message with feedback about the addition.
+     * @return Confirmation message with feedback about the addition
+     * also containing the new calamity.
      */
     @RequestMapping(value = "/api/calamity", method = RequestMethod.POST)
     ConfirmationMessage calamity (@RequestParam(value = "token") String token,

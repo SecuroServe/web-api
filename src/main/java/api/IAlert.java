@@ -38,7 +38,8 @@ public interface IAlert {
      * @param lat The latitude of the alert's location.
      * @param lon The lontitude of the alert's location.
      * @param radius The radius of the alert's location.
-     * @return Confirmation message with feedback about the addition.
+     * @return Confirmation message with feedback about the addition
+     * also containing the new alert.
      */
     @RequestMapping(value = "/api/alert", method = RequestMethod.POST)
     ConfirmationMessage alert (@RequestParam(value = "token") String token,
