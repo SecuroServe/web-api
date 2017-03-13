@@ -1,4 +1,4 @@
-package hello;
+package controllers;
 
 public class Greeting {
 
