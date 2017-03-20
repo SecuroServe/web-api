@@ -1,17 +1,10 @@
 package controllers;
 
 import api.ILogin;
-import dataRepo.Database;
-import dataRepo.UserRepo;
 import logic.UserLogic;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import java.security.NoSuchAlgorithmException;
-import java.sql.SQLException;
-import java.text.ParseException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Manages user login

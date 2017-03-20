@@ -2,20 +2,13 @@ package controllers;
 
 import api.ConfirmationMessage;
 import api.IUser;
-import dataRepo.Database;
-import dataRepo.UserRepo;
-import enums.StatusType;
 import library.User;
 import logic.UserLogic;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.security.NoSuchAlgorithmException;
-import java.sql.SQLException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Created by Jandie on 20-3-2017.
