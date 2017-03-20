@@ -34,8 +34,8 @@ public class UserRepo {
     /**
      * Creates new instance of database.
      */
-    public UserRepo() {
-        database = new Database();
+    public UserRepo(Database database) {
+        this.database = database;
     }
 
     /**

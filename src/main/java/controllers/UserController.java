@@ -2,11 +2,11 @@ package controllers;
 
 import api.ConfirmationMessage;
 import api.IUser;
+import dataRepo.Database;
 import dataRepo.UserRepo;
 import enums.StatusType;
 import library.User;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -69,7 +69,7 @@ public class UserController implements IUser{
                                     @RequestParam(value = "token") String token){
 
         try {
-            User user = new UserRepo().register(userTypeId,
+            User user = new UserRepo(new Database()).register(userTypeId,
                     calamityAssigneeId, buildingId, username, password, email, city);
 
             return new ConfirmationMessage(StatusType.SUCCES, "User added!", user);
@@ -116,7 +116,7 @@ public class UserController implements IUser{
     @RequestMapping("/deleteuser")
     public ConfirmationMessage deleteUser(@RequestParam(value = "token") String token, @RequestParam(value = "id") int id) {
         try {
-            new UserRepo().deleteUser(id);
+            new UserRepo(new Database()).deleteUser(id);
 
             return new ConfirmationMessage(StatusType.SUCCES, "User deleted!", null);
         } catch (SQLException e) {

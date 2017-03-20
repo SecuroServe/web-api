@@ -1,7 +1,9 @@
 package controllers;
 
 import api.ILogin;
+import dataRepo.Database;
 import dataRepo.UserRepo;
+import logic.UserLogic;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,6 +20,11 @@ import java.util.logging.Logger;
  */
 @RestController
 public class LoginController implements ILogin{
+    private UserLogic userLogic;
+
+    public LoginController(){
+        this.userLogic = new UserLogic();
+    }
 
     /**
      * Creates and returns a new token for a user if username and password
@@ -29,13 +36,6 @@ public class LoginController implements ILogin{
     @RequestMapping("/login")
     public String login(@RequestParam(value = "username", defaultValue="") String username,
                         @RequestParam(value = "password", defaultValue="") String password) {
-        try {
-            return new UserRepo().login(username, password);
-        } catch (SQLException | ParseException | NoSuchAlgorithmException e) {
-            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE,
-                    "Login failed!", e);
-
-            return null;
-        }
+        return userLogic.login(username, password);
     }
 }
