@@ -2,8 +2,11 @@ package logic;
 
 import api.ConfirmationMessage;
 import controllers.LoginController;
+import controllers.UserController;
 import dataRepo.Database;
 import dataRepo.UserRepo;
+import enums.StatusType;
+import library.User;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.NoSuchAlgorithmException;
@@ -31,5 +34,37 @@ public class UserLogic {
 
             return null;
         }
+    }
+
+    public ConfirmationMessage addUser(int userTypeId, int calamityAssigneeId, int buildingId,
+                                       String username, String password, String email, String city, String token){
+
+        try {
+            User user = new UserRepo(database).register(userTypeId,
+                    calamityAssigneeId, buildingId, username, password, email, city);
+
+            return new ConfirmationMessage(StatusType.SUCCES, "User added!", user);
+
+        } catch (NoSuchAlgorithmException | SQLException e) {
+            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE,
+                    "User addition failed!", e);
+        }
+
+        return new ConfirmationMessage(StatusType.ERROR,
+                "User addition failed!", null);
+    }
+
+    public ConfirmationMessage deleteUser(String token, int id) {
+        try {
+            new UserRepo(database).deleteUser(id);
+
+            return new ConfirmationMessage(StatusType.SUCCES, "User deleted!", null);
+        } catch (SQLException e) {
+            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE,
+                    "User deletion failed!", e);
+        }
+
+        return new ConfirmationMessage(StatusType.ERROR,
+                "User deletion failed!", null);
     }
 }

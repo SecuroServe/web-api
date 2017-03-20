@@ -6,6 +6,7 @@ import dataRepo.Database;
 import dataRepo.UserRepo;
 import enums.StatusType;
 import library.User;
+import logic.UserLogic;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,6 +22,13 @@ import java.util.logging.Logger;
  */
 @RestController
 public class UserController implements IUser{
+
+    private UserLogic userLogic;
+
+    public UserController() {
+        this.userLogic = new UserLogic();
+    }
+
     /**
      * Gets a list of exsisting users.
      *
@@ -68,19 +76,7 @@ public class UserController implements IUser{
                                     @RequestParam(value = "city") String city,
                                     @RequestParam(value = "token") String token){
 
-        try {
-            User user = new UserRepo(new Database()).register(userTypeId,
-                    calamityAssigneeId, buildingId, username, password, email, city);
-
-            return new ConfirmationMessage(StatusType.SUCCES, "User added!", user);
-
-        } catch (NoSuchAlgorithmException | SQLException e) {
-            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE,
-                    "User addition failed!", e);
-        }
-
-        return new ConfirmationMessage(StatusType.ERROR,
-                "User addition failed!", null);
+        return userLogic.addUser(userTypeId, calamityAssigneeId, buildingId, username, password, email, city, token);
     }
 
     /**
@@ -115,16 +111,6 @@ public class UserController implements IUser{
     @Override
     @RequestMapping("/deleteuser")
     public ConfirmationMessage deleteUser(@RequestParam(value = "token") String token, @RequestParam(value = "id") int id) {
-        try {
-            new UserRepo(new Database()).deleteUser(id);
-
-            return new ConfirmationMessage(StatusType.SUCCES, "User deleted!", null);
-        } catch (SQLException e) {
-            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE,
-                    "User deletion failed!", e);
-        }
-
-        return new ConfirmationMessage(StatusType.ERROR,
-                "User deletion failed!", null);
+        return userLogic.deleteUser(token, id);
     }
 }
