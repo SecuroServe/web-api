@@ -7,8 +7,6 @@ import dataRepo.Database;
 import dataRepo.UserRepo;
 import enums.StatusType;
 import library.User;
-import org.springframework.web.bind.annotation.RequestParam;
-
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -37,7 +35,7 @@ public class UserLogic {
     }
 
     public ConfirmationMessage addUser(int userTypeId, int calamityAssigneeId, int buildingId,
-                                       String username, String password, String email, String city, String token){
+                                       String username, String password, String email, String city, String token) {
 
         try {
             User user = new UserRepo(database).register(userTypeId,

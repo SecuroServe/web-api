@@ -14,17 +14,17 @@ public class HashUtil {
     /**
      * Creates a new instance of HashUtil. This should not be used.
      */
-    public HashUtil(){
+    public HashUtil() {
         throw new IllegalAccessError("Utility class");
     }
 
     /**
      * Hashes a password based on a password string and salt.
      *
-     * @param password The password to be hashed.
-     * @param salt     The salt used for hashing the password.
+     * @param password  The password to be hashed.
+     * @param salt      The salt used for hashing the password.
      * @param algorithm The algorithm used to create the hash.
-     * @param encoding The type of encoding of the password.
+     * @param encoding  The type of encoding of the password.
      * @return A hashed password with salt.
      */
     public static String hashPassword(String password, String salt,

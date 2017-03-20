@@ -55,7 +55,7 @@ public final class Database implements AutoCloseable {
      * instance of the Database. This constructor is only to be used in
      * unittests.
      *
-     * @param url The url of the databace for jdbc.
+     * @param url  The url of the databace for jdbc.
      * @param user The database user.
      * @param pass The database password.
      */
@@ -80,7 +80,7 @@ public final class Database implements AutoCloseable {
     /**
      * Initialises the Database
      *
-     * @param url The url of the databace for jdbc.
+     * @param url  The url of the databace for jdbc.
      * @param user The database user.
      * @param pass The database password.
      */
@@ -104,10 +104,10 @@ public final class Database implements AutoCloseable {
     /**
      * Executes a query to the database.
      *
-     * @param query The content of the query which is sent to the database.
+     * @param query      The content of the query which is sent to the database.
      * @param parameters list of objects which are the parameters for the
-     * prepared statement.
-     * @param queryType The type of query which has to be executed.
+     *                   prepared statement.
+     * @param queryType  The type of query which has to be executed.
      * @return The result set sent by the Database.
      * @throws SQLException if the query isn't worked out by the database.
      */

@@ -16,7 +16,7 @@ import java.util.List;
 
 /**
  * Manager user in the database.
- *
+ * <p>
  * Created by Jandie on 20-3-2017.
  */
 public class UserRepo {
@@ -40,6 +40,7 @@ public class UserRepo {
 
     /**
      * Checks username and password then return a valid token.
+     *
      * @param username The username of the user.
      * @param password The password of the user.
      * @return The valid token.
@@ -58,7 +59,7 @@ public class UserRepo {
 
         String query = "SELECT `id`, `token`, `tokenExpiration` FROM `user` WHERE `username` = ? AND `passwordhash` = ?";
 
-        List<Object> parameters =  new ArrayList<>();
+        List<Object> parameters = new ArrayList<>();
         parameters.add(username);
         parameters.add(password);
 
@@ -77,8 +78,9 @@ public class UserRepo {
     /**
      * Decides whether the token needs to be renewed or not and handles
      * accordingly.
-     * @param userId The id of the user.
-     * @param token The token of the user.
+     *
+     * @param userId          The id of the user.
+     * @param token           The token of the user.
      * @param tokenExpiration The expiration date of the user token.
      * @return The valid token.
      * @throws SQLException
@@ -97,6 +99,7 @@ public class UserRepo {
 
     /**
      * Updates and generates a new token in the database and renews the expiration date.
+     *
      * @param userId The user id
      * @return The new valid token.
      * @throws NoSuchAlgorithmException
@@ -119,6 +122,7 @@ public class UserRepo {
 
     /**
      * Fetches the user salt from the database.
+     *
      * @param username The username of the user.
      * @return The salt of the user.
      * @throws SQLException
@@ -142,13 +146,14 @@ public class UserRepo {
 
     /**
      * Inserts a new user to the database.
-     * @param userTypeId The id of the usertype.
+     *
+     * @param userTypeId         The id of the usertype.
      * @param calamityAssigneeId The calamityAssigneeId.
-     * @param buildingId The id of the building.
-     * @param username The username of the user.
-     * @param password The password of the user.
-     * @param email The email of the user.
-     * @param city The city of the user.
+     * @param buildingId         The id of the building.
+     * @param username           The username of the user.
+     * @param password           The password of the user.
+     * @param email              The email of the user.
+     * @param city               The city of the user.
      * @return The newly created user.
      * @throws NoSuchAlgorithmException
      * @throws SQLException
@@ -185,6 +190,7 @@ public class UserRepo {
 
     /**
      * Deletes a user from the database by id.
+     *
      * @param userId The id of the user to delete.
      */
     public void deleteUser(int userId) throws SQLException {

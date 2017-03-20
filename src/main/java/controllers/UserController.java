@@ -14,7 +14,7 @@ import java.util.List;
  * Created by Jandie on 20-3-2017.
  */
 @RestController
-public class UserController implements IUser{
+public class UserController implements IUser {
 
     private UserLogic userLogic;
 
@@ -48,14 +48,15 @@ public class UserController implements IUser{
 
     /**
      * Inserts a new user to the database.
-     * @param userTypeId The id of the usertype.
+     *
+     * @param userTypeId         The id of the usertype.
      * @param calamityAssigneeId the calamityAssigneeId.
-     * @param buildingId The building id.
-     * @param username The username of the user.
-     * @param password The password of the user.
-     * @param email The email of the user.
-     * @param city The city of the user.
-     * @param token The token used to check permission of this action.
+     * @param buildingId         The building id.
+     * @param username           The username of the user.
+     * @param password           The password of the user.
+     * @param email              The email of the user.
+     * @param city               The city of the user.
+     * @param token              The token used to check permission of this action.
      * @return Feedback about the newly created user.
      */
     @Override
@@ -67,7 +68,7 @@ public class UserController implements IUser{
                                     @RequestParam(value = "password") String password,
                                     @RequestParam(value = "email") String email,
                                     @RequestParam(value = "city") String city,
-                                    @RequestParam(value = "token") String token){
+                                    @RequestParam(value = "token") String token) {
 
         return userLogic.addUser(userTypeId, calamityAssigneeId, buildingId, username, password, email, city, token);
     }
