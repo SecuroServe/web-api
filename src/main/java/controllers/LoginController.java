@@ -1,5 +1,6 @@
 package controllers;
 
+import api.ILogin;
 import dataRepo.UserRepo;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,7 +15,7 @@ import java.util.logging.Logger;
  * Created by Jandie on 13-3-2017.
  */
 @RestController
-public class LoginController{
+public class LoginController implements ILogin{
 
     @RequestMapping("/login")
     public String login(@RequestParam(value = "username", defaultValue="") String username,
