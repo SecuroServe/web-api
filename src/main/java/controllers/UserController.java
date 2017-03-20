@@ -27,22 +27,20 @@ public class UserController implements IUser{
      * @return A list of exsisting users.
      */
     @Override
-    @RequestMapping("/login")
-    public List<User> user(@RequestParam(value = "token") String token) {
+    @RequestMapping("/allusers")
+    public List<User> allusers(@RequestParam(value = "token") String token) {
         return null;
     }
 
     /**
-     * Gets a single user by id.
+     * Gets a user by token.
      *
-     * @param token The authentication token.
-     * @param id    The id of the user.
-     * @return A single user.
+     * @param userToken The token of the user.
+     * @return The user.
      */
     @Override
-    @RequestMapping("/login")
-    public User user(@RequestParam(value = "token") String token,
-                     @RequestParam(value = "id") int id) {
+    @RequestMapping("/user")
+    public User user(@RequestParam(value = "usertoken") String userToken) {
         return null;
     }
 
@@ -59,7 +57,7 @@ public class UserController implements IUser{
      * @return Feedback about the newly created user.
      */
     @Override
-    @RequestMapping("/login")
+    @RequestMapping("/user")
     public ConfirmationMessage user(@RequestParam(value = "userTypeId") int userTypeId,
                                     @RequestParam(value = "calamityAssigneeId") int calamityAssigneeId,
                                     @RequestParam(value = "buildingId") int buildingId,
@@ -96,7 +94,7 @@ public class UserController implements IUser{
      * @return Confirmation message with feedback about the update.
      */
     @Override
-    @RequestMapping("/login")
+    @RequestMapping("/user")
     public ConfirmationMessage user(@RequestParam(value = "token") String token,
                                     @RequestParam(value = "id") int id,
                                     @RequestParam(value = "username") String username,
