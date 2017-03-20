@@ -52,8 +52,8 @@ public class UserRepo {
 
         String salt = getUserSalt(username);
         password = HashUtil.hashPassword(password, salt, "SHA-256", "UTF-8");
-        int userId = -1;
-        String tokenExpiration = null;
+        int userId;
+        String tokenExpiration;
         String token = null;
 
         String query = "SELECT `id`, `token`, `tokenExpiration` FROM `user` WHERE `username` = ? AND `passwordhash` = ?";

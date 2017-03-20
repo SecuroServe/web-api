@@ -5,6 +5,7 @@ import api.IUser;
 import dataRepo.UserRepo;
 import library.User;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -103,5 +104,28 @@ public class UserController implements IUser{
                                     @RequestParam(value = "email") String email,
                                     @RequestParam(value = "city") String city) {
         return null;
+    }
+
+    /**
+     * Deletes a user.
+     *
+     * @param token The authentication token.
+     * @param id    The id of the user to delete.
+     * @return Confirmation message with feedback about the deletion.
+     */
+    @Override
+    @RequestMapping("/deleteuser")
+    public ConfirmationMessage deleteUser(@RequestParam(value = "token") String token, @RequestParam(value = "id") int id) {
+        try {
+            new UserRepo().deleteUser(id);
+
+            return new ConfirmationMessage("Succes", "User deleted!", null);
+        } catch (SQLException e) {
+            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE,
+                    "User deletion failed!", e);
+        }
+
+        return new ConfirmationMessage("Error",
+                "User deletion failed!", null);
     }
 }

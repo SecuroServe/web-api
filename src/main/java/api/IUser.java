@@ -17,7 +17,7 @@ public interface IUser {
      * @param token The authentication token.
      * @return A list of exsisting users.
      */
-    @RequestMapping(value = "/api/user", method = RequestMethod.GET)
+    @RequestMapping(value = "/user", method = RequestMethod.GET)
     List<User> user (@RequestParam(value = "token") String token);
 
     /**
@@ -26,7 +26,7 @@ public interface IUser {
      * @param id The id of the user.
      * @return A single user.
      */
-    @RequestMapping(value = "/api/user", method = RequestMethod.GET)
+    @RequestMapping(value = "/user", method = RequestMethod.GET)
     User user (@RequestParam(value = "token") String token,
                @RequestParam(value = "id") int id);
 
@@ -42,7 +42,7 @@ public interface IUser {
      * @param token The token used to check permission of this action.
      * @return Feedback about the newly created user.
      */
-    @RequestMapping(value = "/api/user", method = RequestMethod.POST)
+    @RequestMapping(value = "/user", method = RequestMethod.POST)
     ConfirmationMessage user(@RequestParam(value = "userTypeId") int userTypeId,
                              @RequestParam(value = "calamityAssigneeId") int calamityAssigneeId,
                              @RequestParam(value = "buildingId") int buildingId,
@@ -62,11 +62,21 @@ public interface IUser {
      * @param city The city of the user.
      * @return Confirmation message with feedback about the update.
      */
-    @RequestMapping(value = "/api/user", method = RequestMethod.PUT)
+    @RequestMapping(value = "/user", method = RequestMethod.PUT)
     ConfirmationMessage user (@RequestParam(value = "token") String token,
                               @RequestParam(value = "id") int id,
                               @RequestParam(value = "username") String username,
                               @RequestParam(value = "password") String password,
                               @RequestParam(value = "email") String email,
                               @RequestParam(value = "city") String city);
+
+    /**
+     * Deletes a user.
+     * @param token The authentication token.
+     * @param id The id of the user to delete.
+     * @return Confirmation message with feedback about the deletion.
+     */
+    @RequestMapping(value = "/deleteuser", method = RequestMethod.DELETE)
+    ConfirmationMessage deleteUser (@RequestParam(value = "token") String token,
+                                    @RequestParam(value = "id") int id);
 }
