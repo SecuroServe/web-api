@@ -1,6 +1,7 @@
 package api;
 
 import library.Calamity;
+import library.Location;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -34,9 +35,7 @@ public interface ICalamity {
      * @param token The authentication token.
      * @param name The name of the calamity.
      * @param description The description of the calamity.
-     * @param lat The latitude of the calamity's location.
-     * @param lon The longtitude of the calamity's location.
-     * @param radius The radius of the calamity's location.
+     * @param location The location object of the new calamity.
      * @return Confirmation message with feedback about the addition
      * also containing the new calamity.
      */
@@ -44,9 +43,7 @@ public interface ICalamity {
     ConfirmationMessage calamity (@RequestParam(value = "token") String token,
                                   @RequestParam(value = "name") String name,
                                   @RequestParam(value = "description") String description,
-                                  @RequestParam(value = "lat") long lat,
-                                  @RequestParam(value = "lon") long lon,
-                                  @RequestParam(value = "radius") long radius);
+                                  @RequestParam(value = "location") Location location);
 
     /**
      * Updates a calamity.
@@ -54,9 +51,7 @@ public interface ICalamity {
      * @param id The id of the calamity.
      * @param name The name of the calamity.
      * @param description The description of the calamity.
-     * @param lat The latitude of the calamity's location.
-     * @param lon The longtitude of the calamity's location.
-     * @param radius The radius of the calamity's location.
+     * @param location A location object of the calamity
      * @return Confirmation message with feedback about the update.
      */
     @RequestMapping(value = "/api/calamity", method = RequestMethod.PUT)
@@ -64,7 +59,5 @@ public interface ICalamity {
                                   @RequestParam(value = "id") int id,
                                   @RequestParam(value = "name") String name,
                                   @RequestParam(value = "description") String description,
-                                  @RequestParam(value = "lat") long lat,
-                                  @RequestParam(value = "lon") long lon,
-                                  @RequestParam(value = "radius") long radius);
+                                  @RequestParam(value = "location") Location location);
 }

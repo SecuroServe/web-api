@@ -3,6 +3,7 @@ package controllers;
 import api.ConfirmationMessage;
 import api.IUser;
 import dataRepo.UserRepo;
+import enums.StatusType;
 import library.User;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -71,14 +72,14 @@ public class UserController implements IUser{
             User user = new UserRepo().register(userTypeId,
                     calamityAssigneeId, buildingId, username, password, email, city);
 
-            return new ConfirmationMessage("Succes", "User added!", user);
+            return new ConfirmationMessage(StatusType.SUCCES, "User added!", user);
 
         } catch (NoSuchAlgorithmException | SQLException e) {
             Logger.getLogger(UserController.class.getName()).log(Level.SEVERE,
                     "User addition failed!", e);
         }
 
-        return new ConfirmationMessage("Error",
+        return new ConfirmationMessage(StatusType.ERROR,
                 "User addition failed!", null);
     }
 
@@ -117,13 +118,13 @@ public class UserController implements IUser{
         try {
             new UserRepo().deleteUser(id);
 
-            return new ConfirmationMessage("Succes", "User deleted!", null);
+            return new ConfirmationMessage(StatusType.SUCCES, "User deleted!", null);
         } catch (SQLException e) {
             Logger.getLogger(UserController.class.getName()).log(Level.SEVERE,
                     "User deletion failed!", e);
         }
 
-        return new ConfirmationMessage("Error",
+        return new ConfirmationMessage(StatusType.ERROR,
                 "User deletion failed!", null);
     }
 }

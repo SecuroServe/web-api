@@ -1,5 +1,7 @@
 package api;
 
+import enums.StatusType;
+
 /**
  * Used for feedback in the web API.
  *
@@ -9,7 +11,7 @@ public class ConfirmationMessage {
     /**
      * The status of the action.
      */
-    private String status;
+    private StatusType status;
 
     /**
      * The message of the action.
@@ -27,7 +29,7 @@ public class ConfirmationMessage {
      * @param message The message of the action.
      * @param returnObject The object that has been added.
      */
-    public ConfirmationMessage(String status, String message, Object returnObject) {
+    public ConfirmationMessage(StatusType status, String message, Object returnObject) {
         this.status = status;
         this.message = message;
         this.returnObject = returnObject;
@@ -37,7 +39,7 @@ public class ConfirmationMessage {
      * Gets the status.
      * @return The status.
      */
-    public String getStatus() {
+    public StatusType getStatus() {
         return status;
     }
 
