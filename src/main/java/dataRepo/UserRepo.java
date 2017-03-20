@@ -182,4 +182,17 @@ public class UserRepo {
 
         return null;
     }
+
+    /**
+     * Deletes a user from the database by id.
+     * @param userId The id of the user to delete.
+     */
+    public void deleteUser(int userId) throws SQLException {
+        String query = "DELETE FROM `user` WHERE `id` = ?";
+
+        List<Object> parameters = new ArrayList<>();
+        parameters.add(userId);
+
+        database.executeQuery(query, parameters, QueryType.NON_QUERY);
+    }
 }
