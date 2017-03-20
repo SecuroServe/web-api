@@ -1,5 +1,7 @@
 package dataRepo;
 
+import api.ConfirmationMessage;
+import library.User;
 import utils.HashUtil;
 
 import javax.jws.Oneway;
@@ -13,6 +15,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 /**
  * Created by Jandie on 20-3-2017.
@@ -36,7 +39,7 @@ public class UserRepo {
         String tokenExpiration = null;
         String token = null;
 
-        String query = "SELECT `id`, `token`, `tokenExpiration` FROM `user` WHERE `username` = ? AND `password` = ?";
+        String query = "SELECT `id`, `token`, `tokenExpiration` FROM `user` WHERE `username` = ? AND `passwordhash` = ?";
 
         List<Object> parameters =  new ArrayList<>();
         parameters.add(username);
@@ -54,8 +57,8 @@ public class UserRepo {
         return token;
     }
 
-    private String getToken(int userId, String token, String tokenExpiration) throws SQLException,
-            ParseException, NoSuchAlgorithmException {
+    private String getToken(int userId, String token, String tokenExpiration)
+            throws SQLException, ParseException, NoSuchAlgorithmException {
 
         if (sdf.parse(tokenExpiration).getTime() > new Date().getTime()) {
             return token;
@@ -96,17 +99,33 @@ public class UserRepo {
         return salt;
     }
 
-    public void register(String username, String password) throws NoSuchAlgorithmException, SQLException {
+    public User register(int userTypeId, int calamityAssigneeId, int builingId, String username,
+                         String password, String email, String city)
+            throws NoSuchAlgorithmException, SQLException {
+
         String salt = HashUtil.generateSalt();
         password = HashUtil.hashPassword(password, salt, "SHA-256", "UTF-8");
 
-        String query = "INSERT INTO `securoserve`.`User` (`id`, `username`, `password`, `salt`) VALUES (?, ?, ?)";
+        String query = "INSERT INTO `securoserve`.`User` " +
+                "(`UserTypeID`, `CalamityAssigneeID`, `BuildingID`, `Username`, " +
+                "`PasswordHash`, `Salt`, `Email`, `City`, `Token`, `TokenExpiration`) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
         List<Object> parameters = new ArrayList<>();
 
+        parameters.add(userTypeId);
+        parameters.add(calamityAssigneeId);
+        parameters.add(builingId);
         parameters.add(username);
         parameters.add(password);
         parameters.add(salt);
+        parameters.add(email);
+        parameters.add(city);
+        parameters.add(HashUtil.generateSalt());
+        parameters.add(sdf.format(LocalDateTime.now().plusMinutes(15)));
 
         database.executeQuery(query, parameters, QueryType.NON_QUERY);
+
+        return null;
     }
 }

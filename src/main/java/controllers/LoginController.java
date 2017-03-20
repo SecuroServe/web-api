@@ -23,7 +23,8 @@ public class LoginController implements ILogin{
         try {
             return new UserRepo().login(username, password);
         } catch (SQLException | ParseException | NoSuchAlgorithmException e) {
-            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, "Login failed!", e);
+            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE,
+                    "Login failed!", e);
 
             return null;
         }
