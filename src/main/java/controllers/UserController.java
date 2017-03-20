@@ -4,6 +4,7 @@ import api.ConfirmationMessage;
 import api.IUser;
 import dataRepo.UserRepo;
 import library.User;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,6 +26,7 @@ public class UserController implements IUser{
      * @return A list of exsisting users.
      */
     @Override
+    @RequestMapping("/login")
     public List<User> user(@RequestParam(value = "token") String token) {
         return null;
     }
@@ -37,6 +39,7 @@ public class UserController implements IUser{
      * @return A single user.
      */
     @Override
+    @RequestMapping("/login")
     public User user(@RequestParam(value = "token") String token,
                      @RequestParam(value = "id") int id) {
         return null;
@@ -55,6 +58,7 @@ public class UserController implements IUser{
      * @return Feedback about the newly created user.
      */
     @Override
+    @RequestMapping("/login")
     public ConfirmationMessage user(@RequestParam(value = "userTypeId") int userTypeId,
                                     @RequestParam(value = "calamityAssigneeId") int calamityAssigneeId,
                                     @RequestParam(value = "buildingId") int buildingId,
@@ -91,6 +95,7 @@ public class UserController implements IUser{
      * @return Confirmation message with feedback about the update.
      */
     @Override
+    @RequestMapping("/login")
     public ConfirmationMessage user(@RequestParam(value = "token") String token,
                                     @RequestParam(value = "id") int id,
                                     @RequestParam(value = "username") String username,
