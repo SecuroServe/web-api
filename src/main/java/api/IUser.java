@@ -17,18 +17,16 @@ public interface IUser {
      * @param token The authentication token.
      * @return A list of exsisting users.
      */
-    @RequestMapping(value = "/user", method = RequestMethod.GET)
-    List<User> user (@RequestParam(value = "token") String token);
+    @RequestMapping(value = "/allusers", method = RequestMethod.GET)
+    List<User> allusers (@RequestParam(value = "token") String token);
 
     /**
-     * Gets a single user by id.
-     * @param token The authentication token.
-     * @param id The id of the user.
-     * @return A single user.
+     * Gets a user by token.
+     * @param userToken The token of the user.
+     * @return The user.
      */
     @RequestMapping(value = "/user", method = RequestMethod.GET)
-    User user (@RequestParam(value = "token") String token,
-               @RequestParam(value = "id") int id);
+    User user (@RequestParam(value = "usertoken") String userToken);
 
     /**
      * Inserts a new user to the database.
