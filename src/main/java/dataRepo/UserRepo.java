@@ -1,35 +1,52 @@
 package dataRepo;
 
-import api.ConfirmationMessage;
 import library.User;
 import utils.HashUtil;
 
-import javax.jws.Oneway;
 import java.security.NoSuchAlgorithmException;
-import java.text.ParseException;
-import java.time.LocalDateTime;
-import java.util.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import java.util.StringTokenizer;
 
 /**
+ * Manager user in the database.
+ *
  * Created by Jandie on 20-3-2017.
  */
 public class UserRepo {
 
+    /**
+     * Contains the intance of the database.
+     */
     private Database database;
 
+    /**
+     * Defines the default dateformat for user.
+     */
     private static final DateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
+    /**
+     * Creates new instance of database.
+     */
     public UserRepo() {
         database = new Database();
     }
 
+    /**
+     * Checks username and password then return a valid token.
+     * @param username The username of the user.
+     * @param password The password of the user.
+     * @return The valid token.
+     * @throws SQLException
+     * @throws ParseException
+     * @throws NoSuchAlgorithmException
+     */
     public String login(String username, String password) throws SQLException,
             ParseException, NoSuchAlgorithmException {
 
@@ -57,6 +74,17 @@ public class UserRepo {
         return token;
     }
 
+    /**
+     * Decides whether the token needs to be renewed or not and handles
+     * accordingly.
+     * @param userId The id of the user.
+     * @param token The token of the user.
+     * @param tokenExpiration The expiration date of the user token.
+     * @return The valid token.
+     * @throws SQLException
+     * @throws ParseException
+     * @throws NoSuchAlgorithmException
+     */
     private String getToken(int userId, String token, String tokenExpiration)
             throws SQLException, ParseException, NoSuchAlgorithmException {
 
@@ -67,6 +95,13 @@ public class UserRepo {
         return updateToken(userId);
     }
 
+    /**
+     * Updates and generates a new token in the database and renews the expiration date.
+     * @param userId The user id
+     * @return The new valid token.
+     * @throws NoSuchAlgorithmException
+     * @throws SQLException
+     */
     private String updateToken(int userId) throws NoSuchAlgorithmException, SQLException {
         String token = HashUtil.generateSalt();
         String tokenExpiration = sdf.format(LocalDateTime.now().plusMinutes(15));
@@ -82,6 +117,12 @@ public class UserRepo {
         return token;
     }
 
+    /**
+     * Fetches the user salt from the database.
+     * @param username The username of the user.
+     * @return The salt of the user.
+     * @throws SQLException
+     */
     private String getUserSalt(String username) throws SQLException {
         String query = "SELECT `salt` FROM `user` WHERE `username` = ?";
 
@@ -99,7 +140,20 @@ public class UserRepo {
         return salt;
     }
 
-    public User register(int userTypeId, int calamityAssigneeId, int builingId, String username,
+    /**
+     * Inserts a new user to the database.
+     * @param userTypeId The id of the usertype.
+     * @param calamityAssigneeId The calamityAssigneeId.
+     * @param buildingId The id of the building.
+     * @param username The username of the user.
+     * @param password The password of the user.
+     * @param email The email of the user.
+     * @param city The city of the user.
+     * @return The newly created user.
+     * @throws NoSuchAlgorithmException
+     * @throws SQLException
+     */
+    public User register(int userTypeId, int calamityAssigneeId, int buildingId, String username,
                          String password, String email, String city)
             throws NoSuchAlgorithmException, SQLException {
 
@@ -115,7 +169,7 @@ public class UserRepo {
 
         parameters.add(userTypeId);
         parameters.add(calamityAssigneeId);
-        parameters.add(builingId);
+        parameters.add(buildingId);
         parameters.add(username);
         parameters.add(password);
         parameters.add(salt);

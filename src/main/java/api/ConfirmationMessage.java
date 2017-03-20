@@ -1,16 +1,24 @@
 package api;
 
 /**
+ * Used for feedback in the web API.
+ *
  * Created by Jandie on 13-3-2017.
  */
 public class ConfirmationMessage {
-    //The status of the action.
+    /**
+     * The status of the action.
+     */
     private String status;
 
-    //The message of the action.
+    /**
+     * The message of the action.
+     */
     private String message;
 
-    //The object that has been added.
+    /**
+     * The object that has been added.
+     */
     private Object returnObject;
 
     /**

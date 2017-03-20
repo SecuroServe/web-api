@@ -31,20 +31,20 @@ public interface IUser {
                @RequestParam(value = "id") int id);
 
     /**
-     * Adds new user
-     * @param userTypeId
-     * @param calamityAssigneeId
-     * @param builingId
-     * @param username
-     * @param password
-     * @param email
-     * @param city
-     * @return Feedback of action with user object.
+     * Inserts a new user to the database.
+     * @param userTypeId The id of the usertype.
+     * @param calamityAssigneeId the calamityAssigneeId.
+     * @param buildingId The building id.
+     * @param username The username of the user.
+     * @param password The password of the user.
+     * @param email The email of the user.
+     * @param city The city of the user.
+     * @return Feedback about the newly created user.
      */
     @RequestMapping(value = "/api/user", method = RequestMethod.POST)
     ConfirmationMessage user(@RequestParam(value = "userTypeId") int userTypeId,
                              @RequestParam(value = "calamityAssigneeId") int calamityAssigneeId,
-                             @RequestParam(value = "builingId") int builingId,
+                             @RequestParam(value = "buildingId") int buildingId,
                              @RequestParam(value = "username") String username,
                              @RequestParam(value = "password") String password,
                              @RequestParam(value = "email") String email,

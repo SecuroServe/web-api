@@ -42,11 +42,21 @@ public class UserController implements IUser{
         return null;
     }
 
-
+    /**
+     * Inserts a new user to the database.
+     * @param userTypeId The id of the usertype.
+     * @param calamityAssigneeId the calamityAssigneeId.
+     * @param buildingId The building id.
+     * @param username The username of the user.
+     * @param password The password of the user.
+     * @param email The email of the user.
+     * @param city The city of the user.
+     * @return Feedback about the newly created user.
+     */
     @Override
     public ConfirmationMessage user(@RequestParam(value = "userTypeId") int userTypeId,
                                     @RequestParam(value = "calamityAssigneeId") int calamityAssigneeId,
-                                    @RequestParam(value = "builingId") int builingId,
+                                    @RequestParam(value = "buildingId") int buildingId,
                                     @RequestParam(value = "username") String username,
                                     @RequestParam(value = "password") String password,
                                     @RequestParam(value = "email") String email,
@@ -54,7 +64,7 @@ public class UserController implements IUser{
 
         try {
             User user = new UserRepo().register(userTypeId,
-                    calamityAssigneeId, builingId, username, password, email, city);
+                    calamityAssigneeId, buildingId, username, password, email, city);
 
             return new ConfirmationMessage("Succes", "User added!", user);
 
