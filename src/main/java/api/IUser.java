@@ -39,6 +39,7 @@ public interface IUser {
      * @param password The password of the user.
      * @param email The email of the user.
      * @param city The city of the user.
+     * @param token The token used to check permission of this action.
      * @return Feedback about the newly created user.
      */
     @RequestMapping(value = "/api/user", method = RequestMethod.POST)
@@ -48,7 +49,8 @@ public interface IUser {
                              @RequestParam(value = "username") String username,
                              @RequestParam(value = "password") String password,
                              @RequestParam(value = "email") String email,
-                             @RequestParam(value = "city") String city);
+                             @RequestParam(value = "city") String city,
+                             @RequestParam(value = "token") String token);
 
     /**
      * Updates an exsisting user.
