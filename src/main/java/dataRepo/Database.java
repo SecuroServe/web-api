@@ -53,9 +53,9 @@ public final class Database implements AutoCloseable {
     /**
      * Alternative constructor for the database class which creates a new
      * instance of the Database. This constructor is only to be used in
-     * unittests.
+     * unit tests.
      *
-     * @param url  The url of the databace for jdbc.
+     * @param url  The url of the database for jdbc.
      * @param user The database user.
      * @param pass The database password.
      */
@@ -80,7 +80,7 @@ public final class Database implements AutoCloseable {
     /**
      * Initialises the Database
      *
-     * @param url  The url of the databace for jdbc.
+     * @param url  The url of the database for jdbc.
      * @param user The database user.
      * @param pass The database password.
      */
