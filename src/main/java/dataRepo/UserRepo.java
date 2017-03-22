@@ -3,7 +3,6 @@ package dataRepo;
 import library.User;
 import utils.HashUtil;
 
-import javax.jws.soap.SOAPBinding;
 import java.security.NoSuchAlgorithmException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -166,14 +165,13 @@ public class UserRepo {
         String salt = HashUtil.generateSalt();
         password = HashUtil.hashPassword(password, salt, "SHA-256", "UTF-8");
         String token = HashUtil.generateSalt();
-
+        String tokenExpiration = sdf.format(LocalDateTime.now().plusMinutes(15));
         String query = "INSERT INTO `securoserve`.`User` " +
                 "(`UserTypeID`, `CalamityAssigneeID`, `BuildingID`, `Username`, " +
                 "`PasswordHash`, `Salt`, `Email`, `City`, `Token`, `TokenExpiration`) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         List<Object> parameters = new ArrayList<>();
-
         parameters.add(userTypeId);
         parameters.add(calamityAssigneeId);
         parameters.add(buildingId);
@@ -183,7 +181,7 @@ public class UserRepo {
         parameters.add(email);
         parameters.add(city);
         parameters.add(token);
-        parameters.add(sdf.format(LocalDateTime.now().plusMinutes(15)));
+        parameters.add(tokenExpiration);
 
         try (ResultSet rs = database.executeQuery(query, parameters, QueryType.INSERT)){
             if (rs.next()) {
