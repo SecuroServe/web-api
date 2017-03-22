@@ -1,5 +1,6 @@
 package dataRepo;
 
+import enums.QueryType;
 import library.User;
 import utils.HashUtil;
 

@@ -1,4 +1,4 @@
-package dataRepo;
+package enums;
 
 /**
  * Enum which sets the type of query.

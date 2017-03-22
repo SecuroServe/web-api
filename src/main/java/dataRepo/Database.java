@@ -1,6 +1,7 @@
 package dataRepo;
 
-import java.io.FileInputStream;
+import enums.QueryType;
+
 import java.io.InputStream;
 import java.sql.*;
 import java.util.ArrayList;
