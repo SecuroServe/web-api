@@ -1,5 +1,6 @@
 package dataRepo;
 
+import enums.QueryType;
 import library.User;
 import utils.HashUtil;
 
@@ -161,17 +162,17 @@ public class UserRepo {
     public User register(int userTypeId, int calamityAssigneeId, int buildingId, String username,
                          String password, String email, String city)
             throws NoSuchAlgorithmException, SQLException {
-
+        User user = null;
         String salt = HashUtil.generateSalt();
         password = HashUtil.hashPassword(password, salt, "SHA-256", "UTF-8");
-
+        String token = HashUtil.generateSalt();
+        String tokenExpiration = sdf.format(LocalDateTime.now().plusMinutes(15));
         String query = "INSERT INTO `securoserve`.`User` " +
                 "(`UserTypeID`, `CalamityAssigneeID`, `BuildingID`, `Username`, " +
                 "`PasswordHash`, `Salt`, `Email`, `City`, `Token`, `TokenExpiration`) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         List<Object> parameters = new ArrayList<>();
-
         parameters.add(userTypeId);
         parameters.add(calamityAssigneeId);
         parameters.add(buildingId);
@@ -180,12 +181,19 @@ public class UserRepo {
         parameters.add(salt);
         parameters.add(email);
         parameters.add(city);
-        parameters.add(HashUtil.generateSalt());
-        parameters.add(sdf.format(LocalDateTime.now().plusMinutes(15)));
+        parameters.add(token);
+        parameters.add(tokenExpiration);
 
-        database.executeQuery(query, parameters, QueryType.NON_QUERY);
+        try (ResultSet rs = database.executeQuery(query, parameters, QueryType.INSERT)){
+            if (rs.next()) {
+                int id = rs.getInt(1);
 
-        return null;
+                user = new User(id, null, null, null,
+                        username, email, city, token);
+            }
+        }
+
+        return user;
     }
 
     /**

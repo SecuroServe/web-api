@@ -24,7 +24,7 @@ public class ConfirmationMessage {
     private Object returnObject;
 
     /**
-     * Creates a new instace of ConfirmationMessage.
+     * Creates a new instance of ConfirmationMessage.
      * @param status The status of the action.
      * @param message The message of the action.
      * @param returnObject The object that has been added.

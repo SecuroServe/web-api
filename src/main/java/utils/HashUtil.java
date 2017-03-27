@@ -45,7 +45,7 @@ public class HashUtil {
      * Generates a pseudo randomized salt.
      *
      * @return A pseudo randomized salt.
-     * @throws NoSuchAlgorithmException
+     * @throws NoSuchAlgorithmException Algorithm doesn't exist.
      */
     public static String generateSalt() throws NoSuchAlgorithmException {
         SecureRandom sr = SecureRandom.getInstance("SHA1PRNG");

@@ -1,4 +1,4 @@
-package dataRepo;
+package enums;
 
 /**
  * Enum which sets the type of query.
@@ -15,5 +15,10 @@ public enum QueryType {
     /**
      * A non query type.
      */
-    NON_QUERY
+    NON_QUERY,
+
+    /**
+     * Insert query for ID return.
+     */
+    INSERT,
 }

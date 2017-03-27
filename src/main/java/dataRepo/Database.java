@@ -1,6 +1,7 @@
 package dataRepo;
 
-import java.io.FileInputStream;
+import enums.QueryType;
+
 import java.io.InputStream;
 import java.sql.*;
 import java.util.ArrayList;
@@ -53,9 +54,9 @@ public final class Database implements AutoCloseable {
     /**
      * Alternative constructor for the database class which creates a new
      * instance of the Database. This constructor is only to be used in
-     * unittests.
+     * unit tests.
      *
-     * @param url  The url of the databace for jdbc.
+     * @param url  The url of the database for jdbc.
      * @param user The database user.
      * @param pass The database password.
      */
@@ -80,7 +81,7 @@ public final class Database implements AutoCloseable {
     /**
      * Initialises the Database
      *
-     * @param url  The url of the databace for jdbc.
+     * @param url  The url of the database for jdbc.
      * @param user The database user.
      * @param pass The database password.
      */
@@ -121,10 +122,10 @@ public final class Database implements AutoCloseable {
             par = new ArrayList<>();
         }
 
-        try {
+        if (queryType == QueryType.INSERT) {
+            statement = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+        } else {
             statement = conn.prepareStatement(query);
-        } catch (Exception ex) {
-            Logger.getLogger(java.lang.System.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
         }
 
         for (Object p : par) {
@@ -134,7 +135,7 @@ public final class Database implements AutoCloseable {
         }
 
         if (statement != null) {
-            if (queryType == QueryType.QUERY) {
+            if (queryType != QueryType.NON_QUERY) {
                 return statement.executeQuery();
             }
 

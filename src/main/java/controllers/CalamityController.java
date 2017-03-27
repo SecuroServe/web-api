@@ -4,6 +4,7 @@ import api.ConfirmationMessage;
 import api.ICalamity;
 import library.Calamity;
 import library.Location;
+import logic.CalamityLogic;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
@@ -12,6 +13,12 @@ import java.util.List;
  * Created by yannic on 20/03/2017.
  */
 public class CalamityController implements ICalamity {
+
+    private CalamityLogic calamityLogic;
+
+    public CalamityController() {
+        this.calamityLogic = new CalamityLogic();
+    }
 
     /**
      * Returns a list with all current calamities.
@@ -31,8 +38,9 @@ public class CalamityController implements ICalamity {
      * @return A single calamity by id.
      */
     @Override
-    public Calamity calamity(@RequestParam(value = "token") String token, @RequestParam(value = "id") int id) {
-        return null;
+    public Calamity calamity(@RequestParam(value = "token") String token,
+                             @RequestParam(value = "id") int id) {
+        return (Calamity) calamityLogic.getCalamity(token, id).getReturnObject();
     }
 
     /**
@@ -46,8 +54,11 @@ public class CalamityController implements ICalamity {
      * also containing the new calamity.
      */
     @Override
-    public ConfirmationMessage calamity(@RequestParam(value = "token") String token, @RequestParam(value = "name") String name, @RequestParam(value = "description") String description, @RequestParam(value = "location") Location location) {
-        return null;
+    public ConfirmationMessage calamity(@RequestParam(value = "token") String token,
+                                        @RequestParam(value = "name") String name,
+                                        @RequestParam(value = "description") String description,
+                                        @RequestParam(value = "location") Location location) {
+        return calamityLogic.addCalamity(token, name, description, location);
     }
 
     /**
@@ -61,7 +72,11 @@ public class CalamityController implements ICalamity {
      * @return Confirmation message with feedback about the update.
      */
     @Override
-    public ConfirmationMessage calamity(@RequestParam(value = "token") String token, @RequestParam(value = "id") int id, @RequestParam(value = "name") String name, @RequestParam(value = "description") String description, @RequestParam(value = "location") Location location) {
-        return null;
+    public ConfirmationMessage calamity(@RequestParam(value = "token") String token,
+                                        @RequestParam(value = "id") int id,
+                                        @RequestParam(value = "name") String name,
+                                        @RequestParam(value = "description") String description,
+                                        @RequestParam(value = "location") Location location) {
+        return calamityLogic.updateCalamity(token, id, name, description, location);
     }
 }
