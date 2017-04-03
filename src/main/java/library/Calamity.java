@@ -1,5 +1,8 @@
 package library;
 
+import java.sql.Timestamp;
+import java.util.Date;
+
 public class Calamity {
 
     /**
@@ -16,6 +19,21 @@ public class Calamity {
      * The User who created this Calamity
      */
     private User user;
+
+    /**
+     * If this Calamity is confirmed
+     */
+    private boolean isConfirmed;
+
+    /**
+     * If this Calamity is closed
+     */
+    private boolean isClosed;
+
+    /**
+     * Creation date of this Calamity
+     */
+    private Date date;
 
     /**
      * The title of this Calamity
@@ -35,10 +53,13 @@ public class Calamity {
      * @param title the Title of this Calamity
      * @param message the Message of this Calamity
      */
-    public Calamity(int id, Location location, User user, String title, String message){
+    public Calamity(int id, Location location, User user, boolean isConfirmed, boolean isClosed, Date date, String title, String message){
         this.id = id;
         this.location = location;
         this.user = user;
+        this.isConfirmed = isConfirmed;
+        this.isClosed = isClosed;
+        this.date = date;
         this.title = title;
         this.message = message;
     }
@@ -65,6 +86,30 @@ public class Calamity {
      */
     public User getUser(){
         return this.user;
+    }
+
+    /**
+     * Get the creation date of this Calamity
+     * @return the creation date of this Calamity
+     */
+    public Date getDate(){
+        return this.date;
+    }
+
+    /**
+     * Get the status of this Calamity
+     * @return the status of the Calamity
+     */
+    public boolean getStatus(){
+        return this.isClosed;
+    }
+
+    /**
+     * Check if this Calamity is confirmed
+     * @return the boolean of the Calamity
+     */
+    public boolean getConfirmation(){
+        return this.isConfirmed;
     }
 
     /**
