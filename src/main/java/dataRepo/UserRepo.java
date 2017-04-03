@@ -60,7 +60,7 @@ public class UserRepo {
         String tokenExpiration;
         String token = null;
 
-        String query = "SELECT `id`, `token`, `tokenExpiration` FROM `user` WHERE `username` = ? AND `passwordhash` = ?";
+        String query = "SELECT `id`, `token`, `tokenExpiration` FROM `securoserve`.`User` WHERE `username` = ? AND `passwordhash` = ?";
 
         List<Object> parameters = new ArrayList<>();
         parameters.add(username);
@@ -68,9 +68,9 @@ public class UserRepo {
 
         try (ResultSet rs = database.executeQuery(query, parameters, QueryType.QUERY)) {
             if (rs != null && rs.next()) {
-                userId = rs.getInt(0);
-                token = rs.getString(1);
-                tokenExpiration = rs.getString(2);
+                userId = rs.getInt(1);
+                token = rs.getString(2);
+                tokenExpiration = rs.getString(3);
                 token = getToken(userId, token, tokenExpiration);
             }
         }
@@ -111,7 +111,7 @@ public class UserRepo {
     private String updateToken(int userId) throws NoSuchAlgorithmException, SQLException {
         String token = HashUtil.generateSalt();
         String tokenExpiration = sdf.format(LocalDateTime.now().plusMinutes(15));
-        String query = "UPDATE `user` SET `token` = ?, `tokenexpiration` = ? WHERE `id` = ?";
+        String query = "UPDATE `securoserve`.`User` SET `token` = ?, `tokenexpiration` = ? WHERE `id` = ?";
 
         List<Object> parameters = new ArrayList<>();
         parameters.add(token);
@@ -131,7 +131,7 @@ public class UserRepo {
      * @throws SQLException
      */
     private String getUserSalt(String username) throws SQLException {
-        String query = "SELECT `salt` FROM `user` WHERE `username` = ?";
+        String query = "SELECT `Salt` FROM `securoserve`.`User` WHERE `Username` = ?";
 
         List<Object> parameters = new ArrayList<>();
         parameters.add(username);
@@ -140,7 +140,7 @@ public class UserRepo {
 
         try (ResultSet rs = database.executeQuery(query, parameters, QueryType.QUERY)) {
             if (rs != null && rs.next()) {
-                salt = rs.getString(0);
+                salt = rs.getString(1);
             }
         }
 
@@ -208,7 +208,7 @@ public class UserRepo {
      * @param userId The id of the user to delete.
      */
     public void deleteUser(int userId) throws SQLException {
-        String query = "DELETE FROM `user` WHERE `id` = ?";
+        String query = "DELETE FROM `securoserve`.`User` WHERE `id` = ?";
 
         List<Object> parameters = new ArrayList<>();
         parameters.add(userId);
@@ -225,15 +225,17 @@ public class UserRepo {
         parameters.add(token);
 
         try (ResultSet rs = database.executeQuery(query, parameters, QueryType.QUERY)) {
-            int id = rs.getInt(0);
-            int userTypeId = rs.getInt(1);
-            int calamityId = rs.getInt(2);
-            int buildingId = rs.getInt(3);
-            String username = rs.getString(4);
-            String email = rs.getString(5);
-            String city = rs.getString(6);
+            if (rs.next()) {
+                int id = rs.getInt(1);
+                int userTypeId = rs.getInt(2);
+                int calamityId = rs.getInt(3);
+                int buildingId = rs.getInt(4);
+                String username = rs.getString(5);
+                String email = rs.getString(6);
+                String city = rs.getString(7);
 
-            user = new User(id, null, null, null, username, email, city, token);
+                user = new User(id, null, null, null, username, email, city, token);
+            }
         }
 
         return user;
