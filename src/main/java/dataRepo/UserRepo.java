@@ -10,8 +10,10 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -58,7 +60,7 @@ public class UserRepo {
         String tokenExpiration;
         String token = null;
 
-        String query = "SELECT `id`, `token`, `tokenExpiration` FROM `user` WHERE `username` = ? AND `passwordhash` = ?";
+        String query = "SELECT `id`, `token`, `tokenExpiration` FROM `securoserve`.`User` WHERE `username` = ? AND `passwordhash` = ?";
 
         List<Object> parameters = new ArrayList<>();
         parameters.add(username);
@@ -66,9 +68,9 @@ public class UserRepo {
 
         try (ResultSet rs = database.executeQuery(query, parameters, QueryType.QUERY)) {
             if (rs != null && rs.next()) {
-                userId = rs.getInt(0);
-                token = rs.getString(1);
-                tokenExpiration = rs.getString(2);
+                userId = rs.getInt(1);
+                token = rs.getString(2);
+                tokenExpiration = rs.getString(3);
                 token = getToken(userId, token, tokenExpiration);
             }
         }
@@ -109,7 +111,7 @@ public class UserRepo {
     private String updateToken(int userId) throws NoSuchAlgorithmException, SQLException {
         String token = HashUtil.generateSalt();
         String tokenExpiration = sdf.format(LocalDateTime.now().plusMinutes(15));
-        String query = "UPDATE `user` SET `token` = ?, `tokenexpiration` = ? WHERE `id` = ?";
+        String query = "UPDATE `securoserve`.`User` SET `token` = ?, `tokenexpiration` = ? WHERE `id` = ?";
 
         List<Object> parameters = new ArrayList<>();
         parameters.add(token);
@@ -129,7 +131,7 @@ public class UserRepo {
      * @throws SQLException
      */
     private String getUserSalt(String username) throws SQLException {
-        String query = "SELECT `salt` FROM `user` WHERE `username` = ?";
+        String query = "SELECT `Salt` FROM `securoserve`.`User` WHERE `Username` = ?";
 
         List<Object> parameters = new ArrayList<>();
         parameters.add(username);
@@ -138,7 +140,7 @@ public class UserRepo {
 
         try (ResultSet rs = database.executeQuery(query, parameters, QueryType.QUERY)) {
             if (rs != null && rs.next()) {
-                salt = rs.getString(0);
+                salt = rs.getString(1);
             }
         }
 
@@ -163,10 +165,14 @@ public class UserRepo {
                          String password, String email, String city)
             throws NoSuchAlgorithmException, SQLException {
         User user = null;
+
+        Calendar date = Calendar.getInstance();
+        date.add(Calendar.MINUTE, 15);
+
         String salt = HashUtil.generateSalt();
         password = HashUtil.hashPassword(password, salt, "SHA-256", "UTF-8");
         String token = HashUtil.generateSalt();
-        String tokenExpiration = sdf.format(LocalDateTime.now().plusMinutes(15));
+        String tokenExpiration = sdf.format(date.getTime());
         String query = "INSERT INTO `securoserve`.`User` " +
                 "(`UserTypeID`, `CalamityAssigneeID`, `BuildingID`, `Username`, " +
                 "`PasswordHash`, `Salt`, `Email`, `City`, `Token`, `TokenExpiration`) " +
@@ -202,11 +208,36 @@ public class UserRepo {
      * @param userId The id of the user to delete.
      */
     public void deleteUser(int userId) throws SQLException {
-        String query = "DELETE FROM `user` WHERE `id` = ?";
+        String query = "DELETE FROM `securoserve`.`User` WHERE `id` = ?";
 
         List<Object> parameters = new ArrayList<>();
         parameters.add(userId);
 
         database.executeQuery(query, parameters, QueryType.NON_QUERY);
+    }
+
+    public User getUser(String token) throws SQLException {
+        User user = null;
+        String query = "SELECT `ID`, `UserTypeID`, `CalamityAssigneeID`, `BuildingID`, `Username`, " +
+                "`Email`,  `City` FROM `securoserve`.`User` WHERE `Token` = ?";
+
+        List<Object> parameters =  new ArrayList<>();
+        parameters.add(token);
+
+        try (ResultSet rs = database.executeQuery(query, parameters, QueryType.QUERY)) {
+            if (rs.next()) {
+                int id = rs.getInt(1);
+                int userTypeId = rs.getInt(2);
+                int calamityId = rs.getInt(3);
+                int buildingId = rs.getInt(4);
+                String username = rs.getString(5);
+                String email = rs.getString(6);
+                String city = rs.getString(7);
+
+                user = new User(id, null, null, null, username, email, city, token);
+            }
+        }
+
+        return user;
     }
 }
