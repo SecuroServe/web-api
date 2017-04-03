@@ -148,12 +148,6 @@ public final class Database implements AutoCloseable {
                     statement.executeUpdate();
                     return statement.getGeneratedKeys();
             }
-
-            if (queryType != QueryType.NON_QUERY) {
-                return statement.executeQuery();
-            }
-
-            statement.executeUpdate();
         }
 
         return null;
