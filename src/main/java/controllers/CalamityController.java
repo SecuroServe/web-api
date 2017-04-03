@@ -26,7 +26,7 @@ public class CalamityController implements ICalamity {
      * @return A list with all current calamities.
      */
     @Override
-    public List<Calamity> calamity() {
+    public List<Calamity> allCalamity() {
         return null;
     }
 
@@ -38,7 +38,7 @@ public class CalamityController implements ICalamity {
      * @return A single calamity by id.
      */
     @Override
-    public Calamity calamity(@RequestParam(value = "token") String token,
+    public Calamity calamityById(@RequestParam(value = "token") String token,
                              @RequestParam(value = "id") int id) {
         return (Calamity) calamityLogic.getCalamity(token, id).getReturnObject();
     }
@@ -54,7 +54,7 @@ public class CalamityController implements ICalamity {
      * also containing the new calamity.
      */
     @Override
-    public ConfirmationMessage calamity(@RequestParam(value = "token") String token,
+    public ConfirmationMessage addCalamity(@RequestParam(value = "token") String token,
                                         @RequestParam(value = "name") String name,
                                         @RequestParam(value = "description") String description,
                                         @RequestParam(value = "location") Location location) {
@@ -72,7 +72,7 @@ public class CalamityController implements ICalamity {
      * @return Confirmation message with feedback about the update.
      */
     @Override
-    public ConfirmationMessage calamity(@RequestParam(value = "token") String token,
+    public ConfirmationMessage updateCalamity(@RequestParam(value = "token") String token,
                                         @RequestParam(value = "id") int id,
                                         @RequestParam(value = "name") String name,
                                         @RequestParam(value = "description") String description,
