@@ -68,10 +68,9 @@ public class UserRepo {
 
         try (ResultSet rs = database.executeQuery(query, parameters, QueryType.QUERY)) {
             if (rs != null && rs.next()) {
-                userId = rs.getInt(1);
                 token = rs.getString(2);
                 tokenExpiration = rs.getString(3);
-                token = getToken(userId, token, tokenExpiration);
+                token = getToken(token, tokenExpiration);
             }
         }
 
@@ -82,7 +81,6 @@ public class UserRepo {
      * Decides whether the token needs to be renewed or not and handles
      * accordingly.
      *
-     * @param userId          The id of the user.
      * @param token           The token of the user.
      * @param tokenExpiration The expiration date of the user token.
      * @return The valid token.
@@ -90,33 +88,43 @@ public class UserRepo {
      * @throws ParseException
      * @throws NoSuchAlgorithmException
      */
-    private String getToken(int userId, String token, String tokenExpiration)
+    private String getToken(String token, String tokenExpiration)
             throws SQLException, ParseException, NoSuchAlgorithmException {
 
         if (sdf.parse(tokenExpiration).getTime() > new Date().getTime()) {
             return token;
         }
 
-        return updateToken(userId);
+        return updateToken(token, true);
     }
 
     /**
      * Updates and generates a new token in the database and renews the expiration date.
      *
-     * @param userId The user id
+     * @param authToken The user id
      * @return The new valid token.
      * @throws NoSuchAlgorithmException
      * @throws SQLException
      */
-    private String updateToken(int userId) throws NoSuchAlgorithmException, SQLException {
-        String token = HashUtil.generateSalt();
-        String tokenExpiration = sdf.format(LocalDateTime.now().plusMinutes(15));
-        String query = "UPDATE `securoserve`.`User` SET `token` = ?, `tokenexpiration` = ? WHERE `id` = ?";
+    private String updateToken(String authToken, boolean regenerate) throws NoSuchAlgorithmException, SQLException {
+        String token;
+
+        if (regenerate) {
+            token = HashUtil.generateSalt();
+        } else {
+            token = authToken;
+        }
+
+        Calendar date = Calendar.getInstance();
+        date.add(Calendar.MINUTE, 15);
+
+        String tokenExpiration = sdf.format(date.getTime());
+        String query = "UPDATE `securoserve`.`User` SET `token` = ?, `tokenexpiration` = ? WHERE `token` = ?";
 
         List<Object> parameters = new ArrayList<>();
         parameters.add(token);
         parameters.add(tokenExpiration);
-        parameters.add(userId);
+        parameters.add(authToken);
 
         database.executeQuery(query, parameters, QueryType.NON_QUERY);
 
@@ -216,10 +224,10 @@ public class UserRepo {
         database.executeQuery(query, parameters, QueryType.NON_QUERY);
     }
 
-    public User getUser(String token) throws SQLException {
+    public User getUser(String token) throws SQLException, NoSuchAlgorithmException, ParseException {
         User user = null;
         String query = "SELECT `ID`, `UserTypeID`, `CalamityAssigneeID`, `BuildingID`, `Username`, " +
-                "`Email`,  `City` FROM `securoserve`.`User` WHERE `Token` = ?";
+                "`Email`,  `City`, `TokenExpiration` FROM `securoserve`.`User` WHERE `Token` = ?";
 
         List<Object> parameters =  new ArrayList<>();
         parameters.add(token);
@@ -234,8 +242,16 @@ public class UserRepo {
                 String email = rs.getString(6);
                 String city = rs.getString(7);
 
+                if (new Date().after(sdf.parse(rs.getString(8)))) {
+                    return null;
+                }
+
                 user = new User(id, null, null, null, username, email, city, token);
             }
+        }
+
+        if (user != null) {
+            updateToken(token, false);
         }
 
         return user;

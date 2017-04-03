@@ -66,7 +66,7 @@ public class UserLogic {
                 "User deletion failed!", null);
     }
 
-    public User getUser(String token) {
+    public User getUser(String token) throws NoSuchAlgorithmException, ParseException {
         try {
 
             return new UserRepo(database).getUser(token);
