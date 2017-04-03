@@ -65,4 +65,16 @@ public class UserLogic {
         return new ConfirmationMessage(StatusType.ERROR,
                 "User deletion failed!", null);
     }
+
+    public User getUser(String token) {
+        try {
+
+            return new UserRepo(database).getUser(token);
+        } catch (SQLException e) {
+            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE,
+                    "Failed to retrieve user!", e);
+
+            return null;
+        }
+    }
 }

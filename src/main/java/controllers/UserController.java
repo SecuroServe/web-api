@@ -19,6 +19,7 @@ public class UserController implements IUser {
     private UserLogic userLogic;
 
     public UserController() {
+
         this.userLogic = new UserLogic();
     }
 
@@ -43,7 +44,8 @@ public class UserController implements IUser {
     @Override
     @RequestMapping("/getuser")
     public User getUser(@RequestParam(value = "usertoken") String userToken) {
-        return null;
+
+        return userLogic.getUser(userToken);
     }
 
     /**
