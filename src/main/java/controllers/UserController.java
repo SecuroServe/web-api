@@ -19,6 +19,7 @@ public class UserController implements IUser {
     private UserLogic userLogic;
 
     public UserController() {
+
         this.userLogic = new UserLogic();
     }
 
@@ -41,9 +42,10 @@ public class UserController implements IUser {
      * @return The user.
      */
     @Override
-    @RequestMapping("/user")
-    public User user(@RequestParam(value = "usertoken") String userToken) {
-        return null;
+    @RequestMapping("/getuser")
+    public User getUser(@RequestParam(value = "usertoken") String userToken) {
+
+        return userLogic.getUser(userToken);
     }
 
     /**
@@ -60,8 +62,8 @@ public class UserController implements IUser {
      * @return Feedback about the newly created user.
      */
     @Override
-    @RequestMapping("/user")
-    public ConfirmationMessage user(@RequestParam(value = "userTypeId") int userTypeId,
+    @RequestMapping("/adduser")
+    public ConfirmationMessage addUser(@RequestParam(value = "userTypeId") int userTypeId,
                                     @RequestParam(value = "calamityAssigneeId") int calamityAssigneeId,
                                     @RequestParam(value = "buildingId") int buildingId,
                                     @RequestParam(value = "username") String username,
@@ -85,8 +87,8 @@ public class UserController implements IUser {
      * @return Confirmation message with feedback about the update.
      */
     @Override
-    @RequestMapping("/user")
-    public ConfirmationMessage user(@RequestParam(value = "token") String token,
+    @RequestMapping("/updateuser")
+    public ConfirmationMessage updateUser(@RequestParam(value = "token") String token,
                                     @RequestParam(value = "id") int id,
                                     @RequestParam(value = "username") String username,
                                     @RequestParam(value = "password") String password,

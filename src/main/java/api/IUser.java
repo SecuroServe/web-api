@@ -28,7 +28,7 @@ public interface IUser {
      * @return The user.
      */
     @RequestMapping(value = "/user", method = RequestMethod.GET)
-    User user(@RequestParam(value = "usertoken") String userToken);
+    User getUser(@RequestParam(value = "usertoken") String userToken);
 
     /**
      * Inserts a new user to the database.
@@ -44,7 +44,7 @@ public interface IUser {
      * @return Feedback about the newly created user.
      */
     @RequestMapping(value = "/user", method = RequestMethod.POST)
-    ConfirmationMessage user(@RequestParam(value = "userTypeId") int userTypeId,
+    ConfirmationMessage addUser(@RequestParam(value = "userTypeId") int userTypeId,
                              @RequestParam(value = "calamityAssigneeId") int calamityAssigneeId,
                              @RequestParam(value = "buildingId") int buildingId,
                              @RequestParam(value = "username") String username,
@@ -65,7 +65,7 @@ public interface IUser {
      * @return Confirmation message with feedback about the update.
      */
     @RequestMapping(value = "/user", method = RequestMethod.PUT)
-    ConfirmationMessage user(@RequestParam(value = "token") String token,
+    ConfirmationMessage updateUser(@RequestParam(value = "token") String token,
                              @RequestParam(value = "id") int id,
                              @RequestParam(value = "username") String username,
                              @RequestParam(value = "password") String password,

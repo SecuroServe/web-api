@@ -209,4 +209,27 @@ public class UserRepo {
 
         database.executeQuery(query, parameters, QueryType.NON_QUERY);
     }
+
+    public User getUser(String token) throws SQLException {
+        User user = null;
+        String query = "SELECT `ID`, `UserTypeID`, `CalamityAssigneeID`, `BuildingID`, `Username`, " +
+                "`Email`,  `City` FROM `securoserve`.`User` WHERE `Token` = ?";
+
+        List<Object> parameters =  new ArrayList<>();
+        parameters.add(token);
+
+        try (ResultSet rs = database.executeQuery(query, parameters, QueryType.QUERY)) {
+            int id = rs.getInt(0);
+            int userTypeId = rs.getInt(1);
+            int calamityId = rs.getInt(2);
+            int buildingId = rs.getInt(3);
+            String username = rs.getString(4);
+            String email = rs.getString(5);
+            String city = rs.getString(6);
+
+            user = new User(id, null, null, null, username, email, city, token);
+        }
+
+        return user;
+    }
 }
