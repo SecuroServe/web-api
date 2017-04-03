@@ -20,7 +20,7 @@ public final class Database implements AutoCloseable {
     /**
      * String that contains the name of the database properties file.
      */
-    private static final String DB_PROPERTIES = "C:\\Users\\Jandie\\IdeaProjects\\web-api\\src\\main\\java\\dataRepo\\database.properties";
+    private static final String DB_PROPERTIES = "src/properties/database.properties";
     /**
      * Instance of the database.
      */
