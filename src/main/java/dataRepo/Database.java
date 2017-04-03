@@ -135,6 +135,20 @@ public final class Database implements AutoCloseable {
         }
 
         if (statement != null) {
+            switch (queryType) {
+
+                case QUERY:
+                    return statement.executeQuery();
+
+                case NON_QUERY:
+                    statement.executeUpdate();
+                    break;
+
+                case INSERT:
+                    statement.executeUpdate();
+                    return statement.getGeneratedKeys();
+            }
+
             if (queryType != QueryType.NON_QUERY) {
                 return statement.executeQuery();
             }
