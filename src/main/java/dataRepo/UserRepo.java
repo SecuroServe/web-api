@@ -10,8 +10,10 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -163,10 +165,14 @@ public class UserRepo {
                          String password, String email, String city)
             throws NoSuchAlgorithmException, SQLException {
         User user = null;
+
+        Calendar date = Calendar.getInstance();
+        date.add(Calendar.MINUTE, 15);
+
         String salt = HashUtil.generateSalt();
         password = HashUtil.hashPassword(password, salt, "SHA-256", "UTF-8");
         String token = HashUtil.generateSalt();
-        String tokenExpiration = sdf.format(LocalDateTime.now().plusMinutes(15));
+        String tokenExpiration = sdf.format(date.getTime());
         String query = "INSERT INTO `securoserve`.`User` " +
                 "(`UserTypeID`, `CalamityAssigneeID`, `BuildingID`, `Username`, " +
                 "`PasswordHash`, `Salt`, `Email`, `City`, `Token`, `TokenExpiration`) " +
