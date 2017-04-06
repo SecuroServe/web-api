@@ -17,6 +17,7 @@ public interface ILogin {
      * @param password The password of the user.
      * @return The token of the user.
      */
+    @RequestMapping(value = "/api/login", method = RequestMethod.POST)
     String login(@RequestParam(value="username") String username,
                     @RequestParam(value="password") String password);
 }
