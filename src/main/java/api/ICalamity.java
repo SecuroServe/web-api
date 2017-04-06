@@ -17,7 +17,6 @@ public interface ICalamity {
      * Returns a list with all current calamities.
      * @return A list with all current calamities.
      */
-    @RequestMapping(value = "/api/calamity", method = RequestMethod.GET)
     List<Calamity> allCalamity ();
 
     /**
@@ -26,7 +25,7 @@ public interface ICalamity {
      * @param id The id of the calamity.
      * @return A single calamity by id.
      */
-    @RequestMapping(value = "/api/calamity", method = RequestMethod.GET)
+
     Calamity calamityById (@RequestParam(value = "token") String token,
                        @RequestParam(value = "id") int id);
 
@@ -39,7 +38,7 @@ public interface ICalamity {
      * @return Confirmation message with feedback about the addition
      * also containing the new calamity.
      */
-    @RequestMapping(value = "/api/calamity", method = RequestMethod.POST)
+
     ConfirmationMessage addCalamity (@RequestParam(value = "token") String token,
                                   @RequestParam(value = "name") String name,
                                   @RequestParam(value = "description") String description,
@@ -54,7 +53,7 @@ public interface ICalamity {
      * @param location A location object of the calamity
      * @return Confirmation message with feedback about the update.
      */
-    @RequestMapping(value = "/api/calamity", method = RequestMethod.PUT)
+
     ConfirmationMessage updateCalamity (@RequestParam(value = "token") String token,
                                   @RequestParam(value = "id") int id,
                                   @RequestParam(value = "name") String name,

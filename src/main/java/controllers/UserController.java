@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.security.NoSuchAlgorithmException;
+import java.text.ParseException;
 import java.util.List;
 
 /**
@@ -45,7 +47,13 @@ public class UserController implements IUser {
     @RequestMapping("/getuser")
     public User getUser(@RequestParam(value = "usertoken") String userToken) {
 
-        return userLogic.getUser(userToken);
+        try {
+            return userLogic.getUser(userToken);
+        } catch (NoSuchAlgorithmException | ParseException e) {
+            e.printStackTrace();
+
+            return null;
+        }
     }
 
     /**

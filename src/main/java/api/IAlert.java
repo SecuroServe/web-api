@@ -17,7 +17,6 @@ public interface IAlert {
      * @param token The authentication token.
      * @return A list with current alerts.
      */
-    @RequestMapping(value = "/api/alert", method = RequestMethod.GET)
     List<Alert> alert (@RequestParam(value = "token") String token);
 
     /**
@@ -26,7 +25,6 @@ public interface IAlert {
      * @param id The id of the alert.
      * @return A single alert that matches the id.
      */
-    @RequestMapping(value = "/api/alert", method = RequestMethod.GET)
     Alert alert (@RequestParam(value = "token") String token,
                     @RequestParam(value = "id") int id);
 
@@ -41,7 +39,6 @@ public interface IAlert {
      * @return Confirmation message with feedback about the addition
      * also containing the new alert.
      */
-    @RequestMapping(value = "/api/alert", method = RequestMethod.POST)
     ConfirmationMessage alert (@RequestParam(value = "token") String token,
                                   @RequestParam(value = "name") String name,
                                   @RequestParam(value = "description") String description,
@@ -60,7 +57,6 @@ public interface IAlert {
      * @param radius The radius of the alert's location.
      * @return Confirmation message with feedback about the update.
      */
-    @RequestMapping(value = "/api/alert", method = RequestMethod.PUT)
     ConfirmationMessage alert (@RequestParam(value = "token") String token,
                                @RequestParam(value = "id") int id,
                                @RequestParam(value = "name") String name,

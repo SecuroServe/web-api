@@ -18,7 +18,6 @@ public interface IUser {
      * @param token The authentication token.
      * @return A list of exsisting users.
      */
-    @RequestMapping(value = "/allusers", method = RequestMethod.GET)
     List<User> allusers(@RequestParam(value = "token") String token);
 
     /**
@@ -27,7 +26,6 @@ public interface IUser {
      * @param userToken The token of the user.
      * @return The user.
      */
-    @RequestMapping(value = "/user", method = RequestMethod.GET)
     User getUser(@RequestParam(value = "usertoken") String userToken);
 
     /**
@@ -43,7 +41,6 @@ public interface IUser {
      * @param token              The token used to check permission of this action.
      * @return Feedback about the newly created user.
      */
-    @RequestMapping(value = "/user", method = RequestMethod.POST)
     ConfirmationMessage addUser(@RequestParam(value = "userTypeId") int userTypeId,
                              @RequestParam(value = "calamityAssigneeId") int calamityAssigneeId,
                              @RequestParam(value = "buildingId") int buildingId,
@@ -64,7 +61,6 @@ public interface IUser {
      * @param city     The city of the user.
      * @return Confirmation message with feedback about the update.
      */
-    @RequestMapping(value = "/user", method = RequestMethod.PUT)
     ConfirmationMessage updateUser(@RequestParam(value = "token") String token,
                              @RequestParam(value = "id") int id,
                              @RequestParam(value = "username") String username,
@@ -79,7 +75,6 @@ public interface IUser {
      * @param id    The id of the user to delete.
      * @return Confirmation message with feedback about the deletion.
      */
-    @RequestMapping(value = "/deleteuser", method = RequestMethod.DELETE)
     ConfirmationMessage deleteUser(@RequestParam(value = "token") String token,
                                    @RequestParam(value = "id") int id);
 }
