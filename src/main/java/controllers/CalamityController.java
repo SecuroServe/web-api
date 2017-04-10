@@ -79,4 +79,9 @@ public class CalamityController implements ICalamity {
                                         @RequestParam(value = "location") Location location) {
         return calamityLogic.updateCalamity(token, id, name, description, location);
     }
+
+    @Override
+    public ConfirmationMessage deleteCalamity(String token, int id) {
+        return null;
+    }
 }

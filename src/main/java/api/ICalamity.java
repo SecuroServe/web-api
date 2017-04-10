@@ -26,8 +26,8 @@ public interface ICalamity {
      * @return A single calamity by id.
      */
 
-    Calamity calamityById (@RequestParam(value = "token") String token,
-                       @RequestParam(value = "id") int id);
+    Calamity calamityById (String token,
+                       int id);
 
     /**
      * Adds a new calamity.
@@ -39,10 +39,10 @@ public interface ICalamity {
      * also containing the new calamity.
      */
 
-    ConfirmationMessage addCalamity (@RequestParam(value = "token") String token,
-                                  @RequestParam(value = "name") String name,
-                                  @RequestParam(value = "description") String description,
-                                  @RequestParam(value = "location") Location location);
+    ConfirmationMessage addCalamity (String token,
+                                  String name,
+                                  String description,
+                                  Location location);
 
     /**
      * Updates a calamity.
@@ -54,9 +54,11 @@ public interface ICalamity {
      * @return Confirmation message with feedback about the update.
      */
 
-    ConfirmationMessage updateCalamity (@RequestParam(value = "token") String token,
-                                  @RequestParam(value = "id") int id,
-                                  @RequestParam(value = "name") String name,
-                                  @RequestParam(value = "description") String description,
-                                  @RequestParam(value = "location") Location location);
+    ConfirmationMessage updateCalamity (String token,
+                                  int id,
+                                  String name,
+                                  String description,
+                                  Location location);
+
+    ConfirmationMessage deleteCalamity (String token, int id);
 }

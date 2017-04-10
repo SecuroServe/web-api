@@ -17,7 +17,7 @@ public interface IAlert {
      * @param token The authentication token.
      * @return A list with current alerts.
      */
-    List<Alert> alert (@RequestParam(value = "token") String token);
+    List<Alert> alert (String token);
 
     /**
      * Returns a single alert that matches the id.
@@ -25,8 +25,8 @@ public interface IAlert {
      * @param id The id of the alert.
      * @return A single alert that matches the id.
      */
-    Alert alert (@RequestParam(value = "token") String token,
-                    @RequestParam(value = "id") int id);
+    Alert alert (String token,
+                    int id);
 
     /**
      * Adds a new alert.
@@ -39,12 +39,12 @@ public interface IAlert {
      * @return Confirmation message with feedback about the addition
      * also containing the new alert.
      */
-    ConfirmationMessage alert (@RequestParam(value = "token") String token,
-                                  @RequestParam(value = "name") String name,
-                                  @RequestParam(value = "description") String description,
-                                  @RequestParam(value = "lat") long lat,
-                                  @RequestParam(value = "lon") long lon,
-                                  @RequestParam(value = "radius") long radius);
+    ConfirmationMessage alert (String token,
+                                  String name,
+                                  String description,
+                                  long lat,
+                                  long lon,
+                                  long radius);
 
     /**
      * Updates an alert.
@@ -57,11 +57,11 @@ public interface IAlert {
      * @param radius The radius of the alert's location.
      * @return Confirmation message with feedback about the update.
      */
-    ConfirmationMessage alert (@RequestParam(value = "token") String token,
-                               @RequestParam(value = "id") int id,
-                               @RequestParam(value = "name") String name,
-                               @RequestParam(value = "description") String description,
-                               @RequestParam(value = "lat") long lat,
-                               @RequestParam(value = "lon") long lon,
-                               @RequestParam(value = "radius") long radius);
+    ConfirmationMessage alert (String token,
+                               int id,
+                               String name,
+                               String description,
+                               long lat,
+                               long lon,
+                               long radius);
 }
