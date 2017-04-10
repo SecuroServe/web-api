@@ -84,4 +84,30 @@ public class CalamityController implements ICalamity {
     public ConfirmationMessage deleteCalamity(String token, int id) {
         return null;
     }
+
+    /**
+     * Adds an assignee to a calamity
+     *
+     * @param token      The authentication token.
+     * @param calamityId The id of the calamity.
+     * @param userId     The id of the user.
+     * @return Confirmation message with feedback about the addition.
+     */
+    @Override
+    public ConfirmationMessage addCalamityAssignee(String token, int calamityId, int userId) {
+        return null;
+    }
+
+    /**
+     * Removes an assignee from a calamity
+     *
+     * @param token      The authentication token.
+     * @param calamityId The id of the calamity.
+     * @param userId     The id of the user.
+     * @return Confirmation message with feedback about the deletion.
+     */
+    @Override
+    public ConfirmationMessage deleteCalamityAssignee(String token, int calamityId, int userId) {
+        return null;
+    }
 }

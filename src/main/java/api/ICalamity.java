@@ -60,5 +60,29 @@ public interface ICalamity {
                                   String description,
                                   Location location);
 
+    /**
+     * Deletes a calamity.
+     * @param token The authentication token.
+     * @param id The id of the calamity.
+     * @return Confirmation message with feedback about the deletion.
+     */
     ConfirmationMessage deleteCalamity (String token, int id);
+
+    /**
+     * Adds an assignee to a calamity
+     * @param token The authentication token.
+     * @param calamityId The id of the calamity.
+     * @param userId The id of the user.
+     * @return Confirmation message with feedback about the addition.
+     */
+    ConfirmationMessage addCalamityAssignee (String token, int calamityId, int userId);
+
+    /**
+     * Removes an assignee from a calamity
+     * @param token The authentication token.
+     * @param calamityId The id of the calamity.
+     * @param userId The id of the user.
+     * @return Confirmation message with feedback about the deletion.
+     */
+    ConfirmationMessage deleteCalamityAssignee (String token, int calamityId, int userId);
 }
