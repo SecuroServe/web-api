@@ -34,12 +34,11 @@ public class UserLogic {
         }
     }
 
-    public ConfirmationMessage addUser(int userTypeId, int calamityAssigneeId, int buildingId,
+    public ConfirmationMessage addUser(int userTypeId, int buildingId,
                                        String username, String password, String email, String city, String token) {
 
         try {
-            User user = new UserRepo(database).register(userTypeId,
-                    calamityAssigneeId, buildingId, username, password, email, city);
+            User user = new UserRepo(database).register(userTypeId, buildingId, username, password, email, city);
 
             return new ConfirmationMessage(StatusType.SUCCES, "User added!", user);
 

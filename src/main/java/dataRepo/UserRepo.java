@@ -159,7 +159,6 @@ public class UserRepo {
      * Inserts a new user to the database.
      *
      * @param userTypeId         The id of the usertype.
-     * @param calamityAssigneeId The calamityAssigneeId.
      * @param buildingId         The id of the building.
      * @param username           The username of the user.
      * @param password           The password of the user.
@@ -169,7 +168,7 @@ public class UserRepo {
      * @throws NoSuchAlgorithmException
      * @throws SQLException
      */
-    public User register(int userTypeId, int calamityAssigneeId, int buildingId, String username,
+    public User register(int userTypeId, int buildingId, String username,
                          String password, String email, String city)
             throws NoSuchAlgorithmException, SQLException {
         User user = null;
@@ -182,13 +181,12 @@ public class UserRepo {
         String token = HashUtil.generateSalt();
         String tokenExpiration = sdf.format(date.getTime());
         String query = "INSERT INTO `securoserve`.`User` " +
-                "(`UserTypeID`, `CalamityAssigneeID`, `BuildingID`, `Username`, " +
+                "(`UserTypeID`, `BuildingID`, `Username`, " +
                 "`PasswordHash`, `Salt`, `Email`, `City`, `Token`, `TokenExpiration`) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         List<Object> parameters = new ArrayList<>();
         parameters.add(userTypeId);
-        parameters.add(calamityAssigneeId);
         parameters.add(buildingId);
         parameters.add(username);
         parameters.add(password);
@@ -226,7 +224,7 @@ public class UserRepo {
 
     public User getUser(String token) throws SQLException, NoSuchAlgorithmException, ParseException {
         User user = null;
-        String query = "SELECT `ID`, `UserTypeID`, `CalamityAssigneeID`, `BuildingID`, `Username`, " +
+        String query = "SELECT `ID`, `UserTypeID`, `BuildingID`, `Username`, " +
                 "`Email`,  `City`, `TokenExpiration` FROM `securoserve`.`User` WHERE `Token` = ?";
 
         List<Object> parameters =  new ArrayList<>();
@@ -236,11 +234,10 @@ public class UserRepo {
             if (rs.next()) {
                 int id = rs.getInt(1);
                 int userTypeId = rs.getInt(2);
-                int calamityId = rs.getInt(3);
-                int buildingId = rs.getInt(4);
-                String username = rs.getString(5);
-                String email = rs.getString(6);
-                String city = rs.getString(7);
+                int buildingId = rs.getInt(3);
+                String username = rs.getString(4);
+                String email = rs.getString(5);
+                String city = rs.getString(6);
 
                 if (new Date().after(sdf.parse(rs.getString(8)))) {
                     return null;
