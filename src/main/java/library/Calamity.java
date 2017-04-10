@@ -220,7 +220,9 @@ public class Calamity {
         PENDING,
         OPEN,
         CLOSED
-          
+
+    }
+    
     /**
      * Adds an assignee to this calamity
      * @param user The assignee.
