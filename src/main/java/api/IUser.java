@@ -18,7 +18,7 @@ public interface IUser {
      * @param token The authentication token.
      * @return A list of exsisting users.
      */
-    List<User> allusers(@RequestParam(value = "token") String token);
+    List<User> allusers(String token);
 
     /**
      * Gets a user by token.
@@ -26,7 +26,7 @@ public interface IUser {
      * @param userToken The token of the user.
      * @return The user.
      */
-    User getUser(@RequestParam(value = "usertoken") String userToken);
+    User getUser(String userToken);
 
     /**
      * Inserts a new user to the database.
@@ -40,13 +40,13 @@ public interface IUser {
      * @param token              The token used to check permission of this action.
      * @return Feedback about the newly created user.
      */
-    ConfirmationMessage addUser(@RequestParam(value = "userTypeId") int userTypeId,
-                             @RequestParam(value = "buildingId") int buildingId,
-                             @RequestParam(value = "username") String username,
-                             @RequestParam(value = "password") String password,
-                             @RequestParam(value = "email") String email,
-                             @RequestParam(value = "city") String city,
-                             @RequestParam(value = "token") String token);
+    ConfirmationMessage addUser(int userTypeId,
+                                int buildingId,
+                                String username,
+                                String password,
+                                String email,
+                                String city,
+                                String token);
 
     /**
      * Updates an exsisting user.
@@ -59,12 +59,7 @@ public interface IUser {
      * @param city     The city of the user.
      * @return Confirmation message with feedback about the update.
      */
-    ConfirmationMessage updateUser(@RequestParam(value = "token") String token,
-                             @RequestParam(value = "id") int id,
-                             @RequestParam(value = "username") String username,
-                             @RequestParam(value = "password") String password,
-                             @RequestParam(value = "email") String email,
-                             @RequestParam(value = "city") String city);
+    ConfirmationMessage updateUser(String token, int id, String username, String password, String email, String city);
 
     /**
      * Deletes a user.
@@ -73,6 +68,6 @@ public interface IUser {
      * @param id    The id of the user to delete.
      * @return Confirmation message with feedback about the deletion.
      */
-    ConfirmationMessage deleteUser(@RequestParam(value = "token") String token,
-                                   @RequestParam(value = "id") int id);
+    ConfirmationMessage deleteUser(String token,
+                                   int id);
 }

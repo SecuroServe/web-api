@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.util.Date;
 import library.Location;
 import library.User;
+import java.util.List;
 
 public class Calamity {
 
@@ -51,6 +52,11 @@ public class Calamity {
      * Status of the calamity
      */
     private CalamityState state;
+  
+    /**
+     * The assignees of this calamtiy;
+     */
+    private List<User> assignees;
 
     /**
      * Creates a new instance of Calamity with all fields.
@@ -214,5 +220,19 @@ public class Calamity {
         PENDING,
         OPEN,
         CLOSED
+          
+    /**
+     * Adds an assignee to this calamity
+     * @param user The assignee.
+     */
+    public void addAssignee(User user) {
+        assignees.add(user);
+    }
+
+    /**
+     * Get the assignees of this calamity.
+     */
+    public List<User> getAssignees() {
+        return this.assignees;
     }
 }

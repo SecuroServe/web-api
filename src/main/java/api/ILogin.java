@@ -17,6 +17,6 @@ public interface ILogin {
      * @param password The password of the user.
      * @return The token of the user.
      */
-    String login(@RequestParam(value="username") String username,
-                    @RequestParam(value="password") String password);
+    String login(String username,
+                 String password);
 }

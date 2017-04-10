@@ -26,23 +26,23 @@ public interface ICalamity {
      * @return A single calamity by id.
      */
 
-    Calamity calamityById (@RequestParam(value = "token") String token,
-                       @RequestParam(value = "id") int id);
+    Calamity calamityById (String token,
+                       int id);
 
     /**
      * Adds a new calamity.
      * @param token The authentication token.
-     * @param name The name of the calamity.
-     * @param description The description of the calamity.
+     * @param title The name of the calamity.
+     * @param message The description of the calamity.
      * @param location The location object of the new calamity.
      * @return Confirmation message with feedback about the addition
      * also containing the new calamity.
      */
 
-    ConfirmationMessage addCalamity (@RequestParam(value = "token") String token,
-                                  @RequestParam(value = "name") String name,
-                                  @RequestParam(value = "description") String description,
-                                  @RequestParam(value = "location") Location location);
+    ConfirmationMessage addCalamity (String token,
+                                  String title,
+                                  String message,
+                                  Location location, boolean isConfirmed, boolean isClosed);
 
     /**
      * Updates a calamity.
@@ -54,9 +54,35 @@ public interface ICalamity {
      * @return Confirmation message with feedback about the update.
      */
 
-    ConfirmationMessage updateCalamity (@RequestParam(value = "token") String token,
-                                  @RequestParam(value = "id") int id,
-                                  @RequestParam(value = "name") String name,
-                                  @RequestParam(value = "description") String description,
-                                  @RequestParam(value = "location") Location location);
+    ConfirmationMessage updateCalamity (String token,
+                                  int id,
+                                  String name,
+                                  String description,
+                                  Location location);
+
+    /**
+     * Deletes a calamity.
+     * @param token The authentication token.
+     * @param id The id of the calamity.
+     * @return Confirmation message with feedback about the deletion.
+     */
+    ConfirmationMessage deleteCalamity (String token, int id);
+
+    /**
+     * Adds an assignee to a calamity
+     * @param token The authentication token.
+     * @param calamityId The id of the calamity.
+     * @param userId The id of the user.
+     * @return Confirmation message with feedback about the addition.
+     */
+    ConfirmationMessage addCalamityAssignee (String token, int calamityId, int userId);
+
+    /**
+     * Removes an assignee from a calamity
+     * @param token The authentication token.
+     * @param calamityId The id of the calamity.
+     * @param userId The id of the user.
+     * @return Confirmation message with feedback about the deletion.
+     */
+    ConfirmationMessage deleteCalamityAssignee (String token, int calamityId, int userId);
 }

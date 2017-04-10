@@ -1,7 +1,6 @@
 package controllers;
 
 import api.ConfirmationMessage;
-import enums.StatusType;
 import library.User;
 import org.junit.Assert;
 import org.junit.Test;
@@ -27,7 +26,7 @@ public class LoginControllerTest {
                 uc.addUser(-1, -1,
                         USERNAME, PASSWORD, EMAIL, CITY, "");
 
-        Assert.assertEquals(StatusType.SUCCES, cm.getStatus());
+        Assert.assertEquals(ConfirmationMessage.StatusType.SUCCES, cm.getStatus());
 
         user = (User) cm.getReturnObject();
         Assert.assertEquals(USERNAME, user.getUsername());
@@ -47,6 +46,13 @@ public class LoginControllerTest {
 
         token = lc.login(USERNAME, PASSWORD);
         Assert.assertEquals(null, token);
+    }
+
+    @Test
+    public void performance() throws Exception{
+        for (int i = 0; i < 10; i++) {
+            login();
+        }
     }
 
 }
