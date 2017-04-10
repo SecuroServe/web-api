@@ -47,14 +47,12 @@ public class Calamity {
 
     /**
      * Creates a new instance of Calamity with all fields.
-     * @param id the id of the Calamity
      * @param location the Location of the Calamity
      * @param user the User who created this Calamity
      * @param title the Title of this Calamity
      * @param message the Message of this Calamity
      */
-    public Calamity(int id, Location location, User user, boolean isConfirmed, boolean isClosed, Date date, String title, String message){
-        this.id = id;
+    public Calamity(Location location, User user, boolean isConfirmed, boolean isClosed, Date date, String title, String message){
         this.location = location;
         this.user = user;
         this.isConfirmed = isConfirmed;
@@ -127,6 +125,8 @@ public class Calamity {
     public String getMessage(){
         return this.message;
     }
+
+    public void setId(int id) { this.id = id; }
 
     /**
      * Set the new Location of a Calamity
