@@ -1,7 +1,5 @@
 package api;
 
-import enums.StatusType;
-
 /**
  * Used for feedback in the web API.
  *
@@ -57,5 +55,10 @@ public class ConfirmationMessage {
      */
     public Object getReturnObject() {
         return returnObject;
+    }
+
+    public enum StatusType {
+        SUCCES,
+        ERROR
     }
 }
