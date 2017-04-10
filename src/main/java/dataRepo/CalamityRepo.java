@@ -60,6 +60,7 @@ public class CalamityRepo {
     public Calamity getCalamity(int id) throws SQLException, ParseException, NoSuchAlgorithmException {
         Calamity calamity = null;
         UserRepo userRepo = new UserRepo(database);
+        LocationRepo locationRepo = new LocationRepo(database);
 
         String query = "SELECT `LocationID`, `CreatedByUserID`, `isConfirmed`, " +
                 "`isClosed`, `Time`, `Title`, `Message` " +
@@ -78,7 +79,7 @@ public class CalamityRepo {
             String title = rs.getString(6);
             String message = rs.getString(7);
 
-            calamity = new Calamity(null, userRepo.getUserById(createdByUserId),
+            calamity = new Calamity(locationRepo.getLocation(locationId), userRepo.getUserById(createdByUserId),
                     isConfirmed, isClosed, time, title, message);
         }
 
