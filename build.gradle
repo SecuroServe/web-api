@@ -28,6 +28,6 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-web")
     testCompile('org.springframework.boot:spring-boot-starter-test')
     testCompile('com.jayway.jsonpath:json-path')
-    compile 'mysql:mysql-connector-java:6.0.6'
+    compile 'mysql:mysql-connector-java:5.1.39'
 }
 
