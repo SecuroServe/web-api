@@ -1,8 +1,8 @@
 package securoserve.api.controllers;
 
 import org.springframework.web.bind.annotation.RequestParam;
-import securoserve.api.ConfirmationMessage;
-import securoserve.api.ICalamity;
+import securoserve.api.interfaces.ConfirmationMessage;
+import securoserve.api.interfaces.ICalamity;
 import securoserve.api.logic.CalamityLogic;
 import securoserve.library.Calamity;
 import securoserve.library.Location;

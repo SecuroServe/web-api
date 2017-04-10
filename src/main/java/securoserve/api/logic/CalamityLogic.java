@@ -1,6 +1,6 @@
 package securoserve.api.logic;
 
-import securoserve.api.ConfirmationMessage;
+import securoserve.api.interfaces.ConfirmationMessage;
 import securoserve.api.datarepo.CalamityRepo;
 import securoserve.api.datarepo.Database;
 import securoserve.api.datarepo.UserRepo;

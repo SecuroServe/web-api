@@ -1,4 +1,4 @@
-package securoserve.api;
+package securoserve.api.interfaces;
 
 /**
  * Created by Jandie on 13-3-2017.

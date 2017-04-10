@@ -1,4 +1,4 @@
-package securoserve.api;
+package securoserve.api.interfaces;
 
 import securoserve.library.User;
 
