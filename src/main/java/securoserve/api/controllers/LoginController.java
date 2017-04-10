@@ -1,10 +1,10 @@
 package securoserve.api.controllers;
 
-import securoserve.api.ILogin;
-import securoserve.api.logic.UserLogic;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import securoserve.api.ILogin;
+import securoserve.api.logic.UserLogic;
 
 /**
  * Manages user login

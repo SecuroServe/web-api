@@ -1,9 +1,9 @@
 package securoserve.api.controllers;
 
-import securoserve.api.ConfirmationMessage;
-import securoserve.library.User;
 import org.junit.Assert;
 import org.junit.Test;
+import securoserve.api.ConfirmationMessage;
+import securoserve.library.User;
 
 /**
  * Created by Jandie on 4/3/2017.
@@ -47,7 +47,7 @@ public class LoginControllerTest {
     }
 
     @Test
-    public void performance() throws Exception{
+    public void performance() throws Exception {
         for (int i = 0; i < 10; i++) {
             login();
         }

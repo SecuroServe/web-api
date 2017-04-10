@@ -2,7 +2,7 @@ package securoserve.api;
 
 /**
  * Used for feedback in the web API.
- *
+ * <p>
  * Created by Jandie on 13-3-2017.
  */
 public class ConfirmationMessage {
@@ -23,8 +23,9 @@ public class ConfirmationMessage {
 
     /**
      * Creates a new instance of ConfirmationMessage.
-     * @param status The status of the action.
-     * @param message The message of the action.
+     *
+     * @param status       The status of the action.
+     * @param message      The message of the action.
      * @param returnObject The object that has been added.
      */
     public ConfirmationMessage(StatusType status, String message, Object returnObject) {
@@ -35,6 +36,7 @@ public class ConfirmationMessage {
 
     /**
      * Gets the status.
+     *
      * @return The status.
      */
     public StatusType getStatus() {
@@ -43,6 +45,7 @@ public class ConfirmationMessage {
 
     /**
      * Gets the message.
+     *
      * @return The message.
      */
     public String getMessage() {
@@ -51,6 +54,7 @@ public class ConfirmationMessage {
 
     /**
      * Gets the return object.
+     *
      * @return The return object.
      */
     public Object getReturnObject() {

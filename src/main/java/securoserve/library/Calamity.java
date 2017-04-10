@@ -49,7 +49,7 @@ public class Calamity {
      * Status of the calamity
      */
     private CalamityState state;
-  
+
     /**
      * The assignees of this calamtiy;
      */
@@ -57,12 +57,13 @@ public class Calamity {
 
     /**
      * Creates a new instance of Calamity with all fields.
+     *
      * @param location the Location of the Calamity
-     * @param user the User who created this Calamity
-     * @param title the Title of this Calamity
-     * @param message the Message of this Calamity
+     * @param user     the User who created this Calamity
+     * @param title    the Title of this Calamity
+     * @param message  the Message of this Calamity
      */
-    public Calamity(Location location, User user, boolean isConfirmed, boolean isClosed, Date date, String title, String message){
+    public Calamity(Location location, User user, boolean isConfirmed, boolean isClosed, Date date, String title, String message) {
         this.location = location;
         this.user = user;
         this.isConfirmed = isConfirmed;
@@ -75,104 +76,119 @@ public class Calamity {
 
     /**
      * Get the Calamity ID
+     *
      * @return the ID of this Calamity
      */
-    public int getId(){
+    public int getId() {
         return this.id;
     }
 
     /**
      * Get the Location of this Calamity
+     *
      * @return the Location of this Calamity
      */
-    public Location getLocation(){
+    public Location getLocation() {
         return this.location;
     }
 
     /**
      * Get the User who created this Calamity
+     *
      * @return the User who created this Calamity
      */
-    public User getUser(){
+    public User getUser() {
         return this.user;
     }
 
     /**
      * Get the creation date of this Calamity
+     *
      * @return the creation date of this Calamity
      */
-    public Date getDate(){
+    public Date getDate() {
         return this.date;
     }
 
     /**
      * Get the status of this Calamity
+     *
      * @return the status of the Calamity
      */
-    public boolean getStatus(){
+    public boolean getStatus() {
         return this.isClosed;
     }
 
     /**
      * Check if this Calamity is confirmed
+     *
      * @return the boolean of the Calamity
      */
-    public boolean getConfirmation(){
+    public boolean getConfirmation() {
         return this.isConfirmed;
     }
 
     /**
      * Get the title of this Calamity
+     *
      * @return the title of this Calamity
      */
-    public String getTitle(){
+    public String getTitle() {
         return this.title;
     }
 
     /**
      * Get the message of this Calamity
+     *
      * @return the title of this Calamity
      */
-    public String getMessage(){
+    public String getMessage() {
         return this.message;
     }
 
-    public void setId(int id) { this.id = id; }
+    public void setId(int id) {
+        this.id = id;
+    }
 
     /**
      * Set the new Location of a Calamity
+     *
      * @param location The updated location of a Calamity
      */
-    public void setLocation(Location location){
+    public void setLocation(Location location) {
         this.location = location;
     }
 
     /**
      * Change the user who is assigned to this Calamity
+     *
      * @param user The other user who has to be assigned
      */
-    public void setUser(User user){
+    public void setUser(User user) {
         this.user = user;
     }
 
     /**
      * Change the title of this Calamity
+     *
      * @param title updated title of the Calamity
      */
-    public void setTitle(String title){
+    public void setTitle(String title) {
         this.title = title;
     }
 
     /**
      * Change the message of this Calamity
+     *
      * @param message updated message of the Calamity
      */
-    public void setMessage(String message){
+    public void setMessage(String message) {
         this.message = message;
     }
 
     /**
      * Change the value of isConfirmed
+     *
      * @param confirmed Bool of confirmed
      */
     public void setConfirmed(boolean confirmed) {
@@ -182,6 +198,7 @@ public class Calamity {
 
     /**
      * Change the value of isClosed
+     *
      * @param closed Bool of closed
      */
     public void setClosed(boolean closed) {
@@ -196,21 +213,21 @@ public class Calamity {
     /**
      * Gives the calamity a status
      */
-    private CalamityState updateStatus(){
-        if(this.isClosed)
+    private CalamityState updateStatus() {
+        if (this.isClosed)
             return CalamityState.CLOSED;
 
-        if(this.isConfirmed && !this.isClosed)
+        if (this.isConfirmed && !this.isClosed)
             return CalamityState.OPEN;
 
-        if(!this.isConfirmed && !this.isClosed)
+        if (!this.isConfirmed && !this.isClosed)
             return CalamityState.PENDING;
 
         return null;
     }
 
     /**
-     *  Calamity status enum
+     * Calamity status enum
      */
     public enum CalamityState {
 
@@ -219,9 +236,10 @@ public class Calamity {
         CLOSED
 
     }
-    
+
     /**
      * Adds an assignee to this calamity
+     *
      * @param user The assignee.
      */
     public void addAssignee(User user) {

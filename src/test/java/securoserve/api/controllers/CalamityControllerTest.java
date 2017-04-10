@@ -1,11 +1,11 @@
 package securoserve.api.controllers;
 
+import org.junit.Assert;
+import org.junit.Test;
 import securoserve.api.ConfirmationMessage;
 import securoserve.library.Calamity;
 import securoserve.library.Location;
 import securoserve.library.User;
-import org.junit.Assert;
-import org.junit.Test;
 
 import java.util.List;
 
@@ -32,7 +32,7 @@ public class CalamityControllerTest {
 
         boolean check = false;
 
-        for (Calamity calamity : calamities){
+        for (Calamity calamity : calamities) {
             if (c1.getId() == calamity.getId()) {
                 Assert.assertEquals(c1.getConfirmation(), calamity.getConfirmation());
                 Assert.assertEquals(c1.getTitle(), calamity.getTitle());
@@ -78,7 +78,7 @@ public class CalamityControllerTest {
         Assert.assertEquals(false, isAssigned(user, c1));
     }
 
-    private boolean isAssigned(User user, Calamity calamity){
+    private boolean isAssigned(User user, Calamity calamity) {
         for (User u : calamity.getAssignees()) {
             if (u.getId() == user.getId()) {
                 return true;

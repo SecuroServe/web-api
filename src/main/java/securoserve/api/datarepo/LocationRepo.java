@@ -12,7 +12,9 @@ public class LocationRepo {
 
     private Database database;
 
-    public LocationRepo(Database database) { this.database = database; }
+    public LocationRepo(Database database) {
+        this.database = database;
+    }
 
     public Location addLocation(Location location) throws SQLException {
         String query = "INSERT INTO `securoserve`.`Location` " +
@@ -24,7 +26,7 @@ public class LocationRepo {
         parameters.add(location.getLongitude());
         parameters.add(location.getRadius());
 
-        try (ResultSet rs = database.executeQuery(query, parameters, QueryType.INSERT)){
+        try (ResultSet rs = database.executeQuery(query, parameters, QueryType.INSERT)) {
             if (rs.next()) {
                 location.setId(rs.getInt(1));
             }
@@ -62,7 +64,7 @@ public class LocationRepo {
 
         String query = "SELECT `ID`, `Latitude`, `Longitude`, `Radius` FROM `securoserve`.`Location` WHERE `ID` = ?";
 
-        List<Object> parameters =  new ArrayList<>();
+        List<Object> parameters = new ArrayList<>();
         parameters.add(id);
 
         try (ResultSet rs = database.executeQuery(query, parameters, QueryType.QUERY)) {

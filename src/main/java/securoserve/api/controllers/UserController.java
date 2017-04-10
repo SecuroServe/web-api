@@ -1,12 +1,12 @@
 package securoserve.api.controllers;
 
-import securoserve.api.ConfirmationMessage;
-import securoserve.api.IUser;
-import securoserve.library.User;
-import securoserve.api.logic.UserLogic;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import securoserve.api.ConfirmationMessage;
+import securoserve.api.IUser;
+import securoserve.api.logic.UserLogic;
+import securoserve.library.User;
 
 import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
@@ -59,24 +59,24 @@ public class UserController implements IUser {
     /**
      * Inserts a new user to the database.
      *
-     * @param userTypeId         The id of the usertype.
-     * @param buildingId         The building id.
-     * @param username           The username of the user.
-     * @param password           The password of the user.
-     * @param email              The email of the user.
-     * @param city               The city of the user.
-     * @param token              The token used to check permission of this action.
+     * @param userTypeId The id of the usertype.
+     * @param buildingId The building id.
+     * @param username   The username of the user.
+     * @param password   The password of the user.
+     * @param email      The email of the user.
+     * @param city       The city of the user.
+     * @param token      The token used to check permission of this action.
      * @return Feedback about the newly created user.
      */
     @Override
     @RequestMapping("/adduser")
     public ConfirmationMessage addUser(@RequestParam(value = "userTypeId") int userTypeId,
-                                    @RequestParam(value = "buildingId") int buildingId,
-                                    @RequestParam(value = "username") String username,
-                                    @RequestParam(value = "password") String password,
-                                    @RequestParam(value = "email") String email,
-                                    @RequestParam(value = "city") String city,
-                                    @RequestParam(value = "token") String token) {
+                                       @RequestParam(value = "buildingId") int buildingId,
+                                       @RequestParam(value = "username") String username,
+                                       @RequestParam(value = "password") String password,
+                                       @RequestParam(value = "email") String email,
+                                       @RequestParam(value = "city") String city,
+                                       @RequestParam(value = "token") String token) {
 
         return userLogic.addUser(userTypeId, buildingId, username, password, email, city, token);
     }
@@ -95,11 +95,11 @@ public class UserController implements IUser {
     @Override
     @RequestMapping("/updateuser")
     public ConfirmationMessage updateUser(@RequestParam(value = "token") String token,
-                                    @RequestParam(value = "id") int id,
-                                    @RequestParam(value = "username") String username,
-                                    @RequestParam(value = "password") String password,
-                                    @RequestParam(value = "email") String email,
-                                    @RequestParam(value = "city") String city) {
+                                          @RequestParam(value = "id") int id,
+                                          @RequestParam(value = "username") String username,
+                                          @RequestParam(value = "password") String password,
+                                          @RequestParam(value = "email") String email,
+                                          @RequestParam(value = "city") String city) {
         return null;
     }
 

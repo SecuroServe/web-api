@@ -41,7 +41,7 @@ public class CalamityRepo {
         parameters.add(calamity.getTitle());
         parameters.add(calamity.getMessage());
 
-        try (ResultSet rs = database.executeQuery(query, parameters, QueryType.INSERT)){
+        try (ResultSet rs = database.executeQuery(query, parameters, QueryType.INSERT)) {
             if (rs.next()) {
                 calamity.setId(rs.getInt(1));
             }
@@ -70,7 +70,7 @@ public class CalamityRepo {
         List<Object> parameters = new ArrayList<>();
         parameters.add(id);
 
-        try(ResultSet rs = database.executeQuery(query, parameters, QueryType.QUERY)) {
+        try (ResultSet rs = database.executeQuery(query, parameters, QueryType.QUERY)) {
             int locationId = rs.getInt(1);
             int createdByUserId = rs.getInt(2);
             boolean isConfirmed = rs.getInt(3) == 1;

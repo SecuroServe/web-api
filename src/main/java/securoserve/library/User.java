@@ -47,14 +47,15 @@ public class User {
 
     /**
      * Creates a new instance of user with all fields.
-     * @param id The id of the user.
-     * @param userType The type of user.
+     *
+     * @param id               The id of the user.
+     * @param userType         The type of user.
      * @param assignedCalamity The assigned calamity.
-     * @param building The building where the user is stationed.
-     * @param username The username of the user.
-     * @param email The email of the user.
-     * @param city The city of the user's adress
-     * @param token The authentication token of the user.
+     * @param building         The building where the user is stationed.
+     * @param username         The username of the user.
+     * @param email            The email of the user.
+     * @param city             The city of the user's adress
+     * @param token            The authentication token of the user.
      */
     public User(int id, UserType userType, Calamity assignedCalamity,
                 Building building, String username, String email,

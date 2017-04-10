@@ -28,13 +28,13 @@ public interface IUser {
     /**
      * Inserts a new user to the database.
      *
-     * @param userTypeId         The id of the usertype.
-     * @param buildingId         The building id.
-     * @param username           The username of the user.
-     * @param password           The password of the user.
-     * @param email              The email of the user.
-     * @param city               The city of the user.
-     * @param token              The token used to check permission of this action.
+     * @param userTypeId The id of the usertype.
+     * @param buildingId The building id.
+     * @param username   The username of the user.
+     * @param password   The password of the user.
+     * @param email      The email of the user.
+     * @param city       The city of the user.
+     * @param token      The token used to check permission of this action.
      * @return Feedback about the newly created user.
      */
     ConfirmationMessage addUser(int userTypeId,

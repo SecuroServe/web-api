@@ -1,11 +1,11 @@
 package securoserve.api.controllers;
 
+import org.springframework.web.bind.annotation.RequestParam;
 import securoserve.api.ConfirmationMessage;
 import securoserve.api.ICalamity;
+import securoserve.api.logic.CalamityLogic;
 import securoserve.library.Calamity;
 import securoserve.library.Location;
-import securoserve.api.logic.CalamityLogic;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -39,27 +39,27 @@ public class CalamityController implements ICalamity {
      */
     @Override
     public Calamity calamityById(@RequestParam(value = "token") String token,
-                             @RequestParam(value = "id") int id) {
+                                 @RequestParam(value = "id") int id) {
         return (Calamity) calamityLogic.getCalamity(token, id).getReturnObject();
     }
 
     /**
      * Adds a new calamity.
      *
-     * @param token         The authentication token.
-     * @param title         The name of the calamity.
-     * @param message       The description of the calamity.
-     * @param location      The location object of the new calamity.
+     * @param token    The authentication token.
+     * @param title    The name of the calamity.
+     * @param message  The description of the calamity.
+     * @param location The location object of the new calamity.
      * @return Confirmation message with feedback about the addition
      * also containing the new calamity.
      */
     @Override
     public ConfirmationMessage addCalamity(@RequestParam(value = "token") String token,
-                                            @RequestParam(value = "title") String title,
-                                            @RequestParam(value = "message") String message,
-                                            @RequestParam(value = "location") Location location,
-                                            @RequestParam(value = "confirmed") boolean isConfirmed,
-                                            @RequestParam(value = "status") boolean isClosed) {
+                                           @RequestParam(value = "title") String title,
+                                           @RequestParam(value = "message") String message,
+                                           @RequestParam(value = "location") Location location,
+                                           @RequestParam(value = "confirmed") boolean isConfirmed,
+                                           @RequestParam(value = "status") boolean isClosed) {
         return calamityLogic.addCalamity(token, title, message, location, isConfirmed, isClosed);
     }
 
@@ -75,10 +75,10 @@ public class CalamityController implements ICalamity {
      */
     @Override
     public ConfirmationMessage updateCalamity(@RequestParam(value = "token") String token,
-                                        @RequestParam(value = "id") int id,
-                                        @RequestParam(value = "name") String name,
-                                        @RequestParam(value = "description") String description,
-                                        @RequestParam(value = "location") Location location) {
+                                              @RequestParam(value = "id") int id,
+                                              @RequestParam(value = "name") String name,
+                                              @RequestParam(value = "description") String description,
+                                              @RequestParam(value = "location") Location location) {
         return calamityLogic.updateCalamity(token, id, name, description, location);
     }
 

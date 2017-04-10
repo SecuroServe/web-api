@@ -1,8 +1,8 @@
 package securoserve.api.datarepo;
 
 import securoserve.api.enums.QueryType;
-import securoserve.library.User;
 import securoserve.api.utils.HashUtil;
+import securoserve.library.User;
 
 import java.security.NoSuchAlgorithmException;
 import java.sql.ResultSet;
@@ -156,12 +156,12 @@ public class UserRepo {
     /**
      * Inserts a new user to the database.
      *
-     * @param userTypeId         The id of the usertype.
-     * @param buildingId         The id of the building.
-     * @param username           The username of the user.
-     * @param password           The password of the user.
-     * @param email              The email of the user.
-     * @param city               The city of the user.
+     * @param userTypeId The id of the usertype.
+     * @param buildingId The id of the building.
+     * @param username   The username of the user.
+     * @param password   The password of the user.
+     * @param email      The email of the user.
+     * @param city       The city of the user.
      * @return The newly created user.
      * @throws NoSuchAlgorithmException
      * @throws SQLException
@@ -194,7 +194,7 @@ public class UserRepo {
         parameters.add(token);
         parameters.add(tokenExpiration);
 
-        try (ResultSet rs = database.executeQuery(query, parameters, QueryType.INSERT)){
+        try (ResultSet rs = database.executeQuery(query, parameters, QueryType.INSERT)) {
             if (rs.next()) {
                 int id = rs.getInt(1);
 
@@ -225,7 +225,7 @@ public class UserRepo {
         String query = "SELECT `ID`, `UserTypeID`, `BuildingID`, `Username`, " +
                 "`Email`,  `City`, `TokenExpiration` FROM `securoserve`.`User` WHERE `Token` = ?";
 
-        List<Object> parameters =  new ArrayList<>();
+        List<Object> parameters = new ArrayList<>();
         parameters.add(token);
 
         try (ResultSet rs = database.executeQuery(query, parameters, QueryType.QUERY)) {
@@ -257,7 +257,7 @@ public class UserRepo {
         String query = "SELECT `UserTypeID`, `BuildingID`, `Username`, " +
                 "`Email`,  `City`, `TokenExpiration` FROM `securoserve`.`User` WHERE `ID` = ?";
 
-        List<Object> parameters =  new ArrayList<>();
+        List<Object> parameters = new ArrayList<>();
         parameters.add(id);
 
         try (ResultSet rs = database.executeQuery(query, parameters, QueryType.QUERY)) {

@@ -41,12 +41,13 @@ public class Building {
 
     /**
      * Creates a new instance of Building based on the Location given
-     * @param id the id of the Building
-     * @param location the Location of the Building
-     * @param type the Type of the Building
+     *
+     * @param id          the id of the Building
+     * @param location    the Location of the Building
+     * @param type        the Type of the Building
      * @param description the Description of the Building
      */
-    public Building(int id, Location location, BuildingType type, String description){
+    public Building(int id, Location location, BuildingType type, String description) {
         this.id = id;
         this.location = location;
         this.type = type;
@@ -57,14 +58,15 @@ public class Building {
 
     /**
      * Creates a new instance of Calamity based on the address given.
-     * @param id the id of the Building
-     * @param postalCode the PostalCode of the Building
-     * @param number the Number of the Building
+     *
+     * @param id             the id of the Building
+     * @param postalCode     the PostalCode of the Building
+     * @param number         the Number of the Building
      * @param numberAddition any addition to the Number of the Building
-     * @param type the Type of the Building
-     * @param description the Description of the Building
+     * @param type           the Type of the Building
+     * @param description    the Description of the Building
      */
-    public Building(int id, String postalCode, int number, String numberAddition, BuildingType type, String description){
+    public Building(int id, String postalCode, int number, String numberAddition, BuildingType type, String description) {
         this.id = id;
         this.postalCode = postalCode;
         this.number = number;
@@ -77,73 +79,82 @@ public class Building {
 
     /**
      * Get the Building ID
+     *
      * @return the ID of this Building
      */
-    public int getId(){
+    public int getId() {
         return this.id;
     }
 
     /**
      * Get the Location of this Building
+     *
      * @return the Location of this Building
      */
-    public Location getLocation(){
+    public Location getLocation() {
         return this.location;
     }
 
     /**
      * Get the BuildingType of this Building
+     *
      * @return the BuildingType of this Building
      */
-    public BuildingType getType(){
+    public BuildingType getType() {
         return this.type;
     }
 
     /**
      * Get the Description of this Building
+     *
      * @return the Description of this Building
      */
-    public String getDescription(){
+    public String getDescription() {
         return this.description;
     }
 
     /**
      * Get the PostalCode of this Building
+     *
      * @return the PostalCode of this Building
      */
-    public String getPostalCode(){
+    public String getPostalCode() {
         return this.postalCode;
     }
 
     /**
      * Get the Number of this Building
+     *
      * @return the Number of this Building
      */
-    public int getNumber(){
+    public int getNumber() {
         return this.number;
     }
 
     /**
      * Get the NumberAddition of this Building
+     *
      * @return the NumberAddition of this Building
      */
-    public String getNumberAddition(){
+    public String getNumberAddition() {
         return this.numberAddition;
     }
 
     /**
      * Set the Description of this Building
+     *
      * @param description the new Description of this Building
      */
-    public void setDescription(String description){
+    public void setDescription(String description) {
         this.description = description;
     }
 
     /**
      * Set the BuildingType of this Building
+     *
      * @param type the new BuildingType of this Building
      */
-    public void setType(BuildingType type){
+    public void setType(BuildingType type) {
         this.type = type;
     }
 
