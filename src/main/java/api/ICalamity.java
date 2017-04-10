@@ -32,17 +32,17 @@ public interface ICalamity {
     /**
      * Adds a new calamity.
      * @param token The authentication token.
-     * @param name The name of the calamity.
-     * @param description The description of the calamity.
+     * @param title The name of the calamity.
+     * @param message The description of the calamity.
      * @param location The location object of the new calamity.
      * @return Confirmation message with feedback about the addition
      * also containing the new calamity.
      */
 
     ConfirmationMessage addCalamity (String token,
-                                  String name,
-                                  String description,
-                                  Location location);
+                                  String title,
+                                  String message,
+                                  Location location, boolean isConfirmed, boolean isClosed);
 
     /**
      * Updates a calamity.
@@ -60,5 +60,29 @@ public interface ICalamity {
                                   String description,
                                   Location location);
 
+    /**
+     * Deletes a calamity.
+     * @param token The authentication token.
+     * @param id The id of the calamity.
+     * @return Confirmation message with feedback about the deletion.
+     */
     ConfirmationMessage deleteCalamity (String token, int id);
+
+    /**
+     * Adds an assignee to a calamity
+     * @param token The authentication token.
+     * @param calamityId The id of the calamity.
+     * @param userId The id of the user.
+     * @return Confirmation message with feedback about the addition.
+     */
+    ConfirmationMessage addCalamityAssignee (String token, int calamityId, int userId);
+
+    /**
+     * Removes an assignee from a calamity
+     * @param token The authentication token.
+     * @param calamityId The id of the calamity.
+     * @param userId The id of the user.
+     * @return Confirmation message with feedback about the deletion.
+     */
+    ConfirmationMessage deleteCalamityAssignee (String token, int calamityId, int userId);
 }

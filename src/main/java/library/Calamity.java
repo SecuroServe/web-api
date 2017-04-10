@@ -2,6 +2,9 @@ package library;
 
 import java.sql.Timestamp;
 import java.util.Date;
+import library.Location;
+import library.User;
+import java.util.List;
 
 public class Calamity {
 
@@ -46,6 +49,16 @@ public class Calamity {
     private String message;
 
     /**
+     * Status of the calamity
+     */
+    private CalamityState state;
+  
+    /**
+     * The assignees of this calamtiy;
+     */
+    private List<User> assignees;
+
+    /**
      * Creates a new instance of Calamity with all fields.
      * @param location the Location of the Calamity
      * @param user the User who created this Calamity
@@ -60,6 +73,7 @@ public class Calamity {
         this.date = date;
         this.title = title;
         this.message = message;
+        this.state = updateStatus();
     }
 
     /**
@@ -158,5 +172,69 @@ public class Calamity {
      */
     public void setMessage(String message){
         this.message = message;
+    }
+
+    /**
+     * Change the value of isConfirmed
+     * @param confirmed Bool of confirmed
+     */
+    public void setConfirmed(boolean confirmed) {
+        isConfirmed = confirmed;
+        state = updateStatus();
+    }
+
+    /**
+     * Change the value of isClosed
+     * @param closed Bool of closed
+     */
+    public void setClosed(boolean closed) {
+        isClosed = closed;
+        state = updateStatus();
+    }
+
+    public CalamityState getState() {
+        return state;
+    }
+
+    /**
+     * Gives the calamity a status
+     */
+    private CalamityState updateStatus(){
+        if(this.isClosed)
+            return CalamityState.CLOSED;
+
+        if(this.isConfirmed && !this.isClosed)
+            return CalamityState.OPEN;
+
+        if(!this.isConfirmed && !this.isClosed)
+            return CalamityState.PENDING;
+
+        return null;
+    }
+
+    /**
+     *  Calamity status enum
+     */
+    public enum CalamityState {
+
+        PENDING,
+        OPEN,
+        CLOSED
+
+    }
+    
+    /**
+     * Adds an assignee to this calamity
+     * @param user The assignee.
+     */
+    public void addAssignee(User user) {
+        assignees.add(user);
+    }
+
+    /**
+     * Get the assignees of this calamity.
+     */
+    public List<User> getAssignees() {
+        return this.assignees;
     }
 }
