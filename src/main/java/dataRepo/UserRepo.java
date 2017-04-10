@@ -239,7 +239,7 @@ public class UserRepo {
                 String email = rs.getString(5);
                 String city = rs.getString(6);
 
-                if (new Date().after(sdf.parse(rs.getString(8)))) {
+                if (new Date().after(sdf.parse(rs.getString(7)))) {
                     return null;
                 }
 

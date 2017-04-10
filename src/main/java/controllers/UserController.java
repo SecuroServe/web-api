@@ -72,7 +72,6 @@ public class UserController implements IUser {
     @Override
     @RequestMapping("/adduser")
     public ConfirmationMessage addUser(@RequestParam(value = "userTypeId") int userTypeId,
-                                    @RequestParam(value = "calamityAssigneeId") int calamityAssigneeId,
                                     @RequestParam(value = "buildingId") int buildingId,
                                     @RequestParam(value = "username") String username,
                                     @RequestParam(value = "password") String password,
@@ -80,7 +79,7 @@ public class UserController implements IUser {
                                     @RequestParam(value = "city") String city,
                                     @RequestParam(value = "token") String token) {
 
-        return userLogic.addUser(userTypeId, calamityAssigneeId, buildingId, username, password, email, city, token);
+        return userLogic.addUser(userTypeId, buildingId, username, password, email, city, token);
     }
 
     /**

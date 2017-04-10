@@ -32,7 +32,6 @@ public interface IUser {
      * Inserts a new user to the database.
      *
      * @param userTypeId         The id of the usertype.
-     * @param calamityAssigneeId the calamityAssigneeId.
      * @param buildingId         The building id.
      * @param username           The username of the user.
      * @param password           The password of the user.
@@ -42,7 +41,6 @@ public interface IUser {
      * @return Feedback about the newly created user.
      */
     ConfirmationMessage addUser(@RequestParam(value = "userTypeId") int userTypeId,
-                             @RequestParam(value = "calamityAssigneeId") int calamityAssigneeId,
                              @RequestParam(value = "buildingId") int buildingId,
                              @RequestParam(value = "username") String username,
                              @RequestParam(value = "password") String password,

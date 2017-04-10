@@ -24,7 +24,7 @@ public class LoginControllerTest {
         User user;
 
         ConfirmationMessage cm =
-                uc.addUser(-1, -1, -1,
+                uc.addUser(-1, -1,
                         USERNAME, PASSWORD, EMAIL, CITY, "");
 
         Assert.assertEquals(StatusType.SUCCES, cm.getStatus());
