@@ -253,4 +253,27 @@ public class UserRepo {
 
         return user;
     }
+
+    public User getUserById(int id) throws SQLException, NoSuchAlgorithmException, ParseException {
+        User user = null;
+        String query = "SELECT `UserTypeID`, `BuildingID`, `Username`, " +
+                "`Email`,  `City`, `TokenExpiration` FROM `securoserve`.`User` WHERE `ID` = ?";
+
+        List<Object> parameters =  new ArrayList<>();
+        parameters.add(id);
+
+        try (ResultSet rs = database.executeQuery(query, parameters, QueryType.QUERY)) {
+            if (rs.next()) {
+                int userTypeId = rs.getInt(1);
+                int buildingId = rs.getInt(2);
+                String username = rs.getString(3);
+                String email = rs.getString(4);
+                String city = rs.getString(5);
+
+                user = new User(id, null, null, null, username, email, city, null);
+            }
+        }
+
+        return user;
+    }
 }
