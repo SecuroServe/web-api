@@ -4,9 +4,12 @@ import enums.QueryType;
 import library.Calamity;
 import library.Location;
 
+import java.security.NoSuchAlgorithmException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -54,8 +57,30 @@ public class CalamityRepo {
         return calamity;
     }
 
-    public Calamity getCalamity(int id) {
+    public Calamity getCalamity(int id) throws SQLException, ParseException, NoSuchAlgorithmException {
         Calamity calamity = null;
+        UserRepo userRepo = new UserRepo(database);
+
+        String query = "SELECT `LocationID`, `CreatedByUserID`, `isConfirmed`, " +
+                "`isClosed`, `Time`, `Title`, `Message` " +
+                "FROM `securoserve`.`Calamity` " +
+                "WHERE `ID` = ?";
+
+        List<Object> parameters = new ArrayList<>();
+        parameters.add(id);
+
+        try(ResultSet rs = database.executeQuery(query, parameters, QueryType.QUERY)) {
+            int locationId = rs.getInt(1);
+            int createdByUserId = rs.getInt(2);
+            boolean isConfirmed = rs.getInt(3) == 1;
+            boolean isClosed = rs.getInt(4) == 1;
+            Date time = rs.getDate(5);
+            String title = rs.getString(6);
+            String message = rs.getString(7);
+
+            calamity = new Calamity(null, userRepo.getUserById(createdByUserId),
+                    isConfirmed, isClosed, time, title, message);
+        }
 
         return calamity;
     }
