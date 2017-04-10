@@ -59,4 +59,6 @@ public interface ICalamity {
                                   String name,
                                   String description,
                                   Location location);
+
+    ConfirmationMessage deleteCalamity (String token, int id);
 }

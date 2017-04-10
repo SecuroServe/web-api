@@ -60,7 +60,6 @@ public class UserController implements IUser {
      * Inserts a new user to the database.
      *
      * @param userTypeId         The id of the usertype.
-     * @param calamityAssigneeId the calamityAssigneeId.
      * @param buildingId         The building id.
      * @param username           The username of the user.
      * @param password           The password of the user.
