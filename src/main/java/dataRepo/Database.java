@@ -171,7 +171,7 @@ public final class Database implements AutoCloseable {
         Properties prop = new Properties();
 
         try {
-            prop.load(getClass().getResourceAsStream("/properties/database.properties"));
+            prop.load(getClass().getResourceAsStream("/properties/db.properties"));
         } catch (Exception e) {
             Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, e);
         }
