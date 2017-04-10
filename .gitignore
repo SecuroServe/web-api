@@ -87,6 +87,6 @@ com_crashlytics_export_strings.xml
 crashlytics.properties
 crashlytics-build.properties
 fabric.properties
-/src/main/java/dataRepo/database.properties
+/src/main/java/securoserve.dataRepo/database.properties
 /src/properties/database.properties
 /src/main/resources/properties/db.properties
