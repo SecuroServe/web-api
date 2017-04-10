@@ -1,7 +1,6 @@
 package controllers;
 
 import api.ConfirmationMessage;
-import enums.StatusType;
 import library.Calamity;
 import library.Location;
 import org.junit.Assert;
@@ -43,8 +42,8 @@ public class CalamityControllerTest {
 
         Assert.assertEquals(true, check);
 
-        StatusType status = cc.deleteCalamity("dasjdjkasd", c1.getId()).getStatus();
-        Assert.assertEquals(StatusType.SUCCES, status);
+        ConfirmationMessage.StatusType status = cc.deleteCalamity("dasjdjkasd", c1.getId()).getStatus();
+        Assert.assertEquals(ConfirmationMessage.StatusType.SUCCES, status);
     }
 
 }
