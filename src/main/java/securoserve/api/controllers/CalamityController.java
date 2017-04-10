@@ -78,8 +78,10 @@ public class CalamityController implements ICalamity {
                                               @RequestParam(value = "id") int id,
                                               @RequestParam(value = "name") String name,
                                               @RequestParam(value = "description") String description,
-                                              @RequestParam(value = "location") Location location) {
-        return calamityLogic.updateCalamity(token, id, name, description, location);
+                                              @RequestParam(value = "location") Location location,
+                                              @RequestParam(value = "isConfirmed") boolean isConfirmed,
+                                              @RequestParam(value = "isClosed") boolean isClosed) {
+        return calamityLogic.updateCalamity(token, id, name, description, location, isConfirmed, isClosed);
     }
 
     @Override

@@ -59,7 +59,7 @@ public interface ICalamity {
                                        int id,
                                        String name,
                                        String description,
-                                       Location location);
+                                       Location location, boolean isConfirmed, boolean isClosed);
 
     /**
      * Deletes a calamity.
