@@ -1,4 +1,4 @@
-package securoserve.api;
+package securoserve.api.interfaces;
 
 /**
  * Used for feedback in the web API.

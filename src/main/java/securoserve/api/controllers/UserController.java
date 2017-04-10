@@ -3,8 +3,8 @@ package securoserve.api.controllers;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import securoserve.api.ConfirmationMessage;
-import securoserve.api.IUser;
+import securoserve.api.interfaces.ConfirmationMessage;
+import securoserve.api.interfaces.IUser;
 import securoserve.api.logic.UserLogic;
 import securoserve.library.User;
 

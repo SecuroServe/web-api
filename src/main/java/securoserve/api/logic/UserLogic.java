@@ -1,6 +1,6 @@
 package securoserve.api.logic;
 
-import securoserve.api.ConfirmationMessage;
+import securoserve.api.interfaces.ConfirmationMessage;
 import securoserve.api.controllers.LoginController;
 import securoserve.api.controllers.UserController;
 import securoserve.api.datarepo.Database;
