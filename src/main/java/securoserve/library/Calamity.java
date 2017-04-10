@@ -63,7 +63,8 @@ public class Calamity {
      * @param title    the Title of this Calamity
      * @param message  the Message of this Calamity
      */
-    public Calamity(Location location, User user, boolean isConfirmed, boolean isClosed, Date date, String title, String message) {
+    public Calamity(int id, Location location, User user, boolean isConfirmed, boolean isClosed, Date date, String title, String message) {
+        this.id = id;
         this.location = location;
         this.user = user;
         this.isConfirmed = isConfirmed;

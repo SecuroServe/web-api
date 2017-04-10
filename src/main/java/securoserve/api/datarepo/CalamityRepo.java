@@ -18,7 +18,6 @@ import java.util.List;
  */
 public class CalamityRepo {
 
-    //todo create querries and implement this.
     private Database database;
 
     public CalamityRepo(Database database) {
@@ -51,8 +50,23 @@ public class CalamityRepo {
     }
 
 
-    public Calamity updateCalamity(int id, String name, String description, Location location) {
-        Calamity calamity = null;
+    public Calamity updateCalamity(Calamity calamity) throws SQLException {
+
+        Location location = new LocationRepo(database).updateLocation(calamity.getLocation());
+
+        String query = "UPDATE `securoserve`.`Calamity` SET `LocationID` = ?, `CreatedByUserID` = ?, `isConfirmed` = ?, `isClosed` = ?, `Time` = ?, `Title` = ?, `Message` = ? WHERE `id` = ?";
+
+        List<Object> parameters = new ArrayList<>();
+        parameters.add(location.getId());
+        parameters.add(calamity.getUser().getId());
+        parameters.add(calamity.getConfirmation() ? 1 : 0);
+        parameters.add(calamity.getStatus() ? 1 : 0);
+        parameters.add(calamity.getDate());
+        parameters.add(calamity.getTitle());
+        parameters.add(calamity.getMessage());
+        parameters.add(calamity.getId());
+
+        database.executeQuery(query, parameters, QueryType.NON_QUERY);
 
         return calamity;
     }
@@ -79,7 +93,7 @@ public class CalamityRepo {
             String title = rs.getString(6);
             String message = rs.getString(7);
 
-            calamity = new Calamity(locationRepo.getLocation(locationId), userRepo.getUserById(createdByUserId),
+            calamity = new Calamity(id, locationRepo.getLocation(locationId), userRepo.getUserById(createdByUserId),
                     isConfirmed, isClosed, time, title, message);
         }
 
