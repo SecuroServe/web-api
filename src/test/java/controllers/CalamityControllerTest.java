@@ -1,9 +1,9 @@
 package controllers;
 
 import api.ConfirmationMessage;
-import enums.StatusType;
 import library.Calamity;
 import library.Location;
+import library.User;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -18,6 +18,11 @@ import static org.junit.Assert.*;
  * Created by Jandie on 10-Apr-17.
  */
 public class CalamityControllerTest {
+    private final String USERNAME = "testuser789987";
+    private final String PASSWORD = "testpwd*()1223";
+    private final String EMAIL = "testuser789987@test123weqr456.nl";
+    private final String CITY = "Amsterdam";
+
     @Test
     public void allCalamity() throws Exception {
         CalamityController cc = new CalamityController();
@@ -43,8 +48,48 @@ public class CalamityControllerTest {
 
         Assert.assertEquals(true, check);
 
-        StatusType status = cc.deleteCalamity("dasjdjkasd", c1.getId()).getStatus();
-        Assert.assertEquals(StatusType.SUCCES, status);
+        ConfirmationMessage.StatusType status = cc.deleteCalamity("dasjdjkasd", c1.getId()).getStatus();
+        Assert.assertEquals(ConfirmationMessage.StatusType.SUCCES, status);
+    }
+
+    @Test
+    public void addCalamityAssignee() throws Exception {
+        CalamityController cc = new CalamityController();
+        UserController uc = new UserController();
+        User user;
+
+        Location location = new Location(5, 51, 1);
+
+        Calamity c1 = (Calamity) cc.addCalamity("asdasd", "nine-eleven-test",
+                "test of 911", location).getReturnObject();
+
+        ConfirmationMessage cm =
+                uc.addUser(-1, -1,
+                        USERNAME, PASSWORD, EMAIL, CITY, "");
+
+        user = (User) cm.getReturnObject();
+
+        cc.addCalamityAssignee("sdasd", c1.getId(), user.getId());
+
+        c1 = cc.calamityById("sdasd", c1.getId());
+
+        Assert.assertEquals(true, isAssigned(user, c1));
+
+        cc.deleteCalamityAssignee("sdasd", c1.getId(), user.getId());
+
+        c1 = cc.calamityById("sdasd", c1.getId());
+
+        Assert.assertEquals(false, isAssigned(user, c1));
+    }
+
+    private boolean isAssigned(User user, Calamity calamity){
+        for (User u : calamity.getAssignees()) {
+            if (u.getId() == user.getId()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
 }

@@ -2,6 +2,7 @@ package library;
 
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
 
 public class Calamity {
 
@@ -44,6 +45,11 @@ public class Calamity {
      * The message of this Calamity
      */
     private String message;
+
+    /**
+     * The assignees of this calamtiy;
+     */
+    private List<User> assignees;
 
     /**
      * Creates a new instance of Calamity with all fields.
@@ -158,5 +164,20 @@ public class Calamity {
      */
     public void setMessage(String message){
         this.message = message;
+    }
+
+    /**
+     * Adds an assignee to this calamity
+     * @param user The assignee.
+     */
+    public void addAssignee(User user) {
+        assignees.add(user);
+    }
+
+    /**
+     * Get the assignees of this calamity.
+     */
+    public List<User> getAssignees() {
+        return this.assignees;
     }
 }
