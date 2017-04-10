@@ -2,7 +2,6 @@ package dataRepo;
 
 import enums.QueryType;
 
-import java.io.FileInputStream;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +19,7 @@ public final class Database implements AutoCloseable {
     /**
      * String that contains the name of the database properties file.
      */
-    private static final String DB_PROPERTIES = "src/properties/database.properties";
+    private static final String DB_PROPERTIES = "/properties/database.properties";
     /**
      * Instance of the database.
      */
@@ -172,9 +171,7 @@ public final class Database implements AutoCloseable {
         Properties prop = new Properties();
 
         try {
-            FileInputStream input = new FileInputStream(properties);
-
-            prop.load(input);
+            prop.load(getClass().getResourceAsStream("/properties/database.properties"));
         } catch (Exception e) {
             Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, e);
         }
