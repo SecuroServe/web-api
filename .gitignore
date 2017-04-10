@@ -90,3 +90,6 @@ fabric.properties
 /src/main/java/securoserve.dataRepo/database.properties
 /src/properties/database.properties
 /src/main/resources/properties/db.properties
+/gradle/
+/gradlew
+/gradlew.bat
