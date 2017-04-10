@@ -5,7 +5,6 @@ import dataRepo.CalamityRepo;
 import dataRepo.Database;
 import dataRepo.LocationRepo;
 import dataRepo.UserRepo;
-import enums.StatusType;
 import library.Calamity;
 import library.Location;
 import library.User;
@@ -32,7 +31,7 @@ public class CalamityLogic {
     public ConfirmationMessage updateCalamity(String token, int id, String name, String description, Location location) {
         //check token
         calamityRepo.updateCalamity(id, name, description, location);
-        return new ConfirmationMessage(StatusType.ERROR, "no method definition", null);
+        return new ConfirmationMessage(ConfirmationMessage.StatusType.ERROR, "no method definition", null);
     }
 
     public ConfirmationMessage getCalamity(String token, int id) {
@@ -40,9 +39,9 @@ public class CalamityLogic {
         Calamity returnCal = null;
         try {
             returnCal = calamityRepo.getCalamity(id);
-            return new ConfirmationMessage(StatusType.SUCCES, "got calamity", returnCal);
+            return new ConfirmationMessage(ConfirmationMessage.StatusType.SUCCES, "got calamity", returnCal);
         } catch (Exception e) {
-            return new ConfirmationMessage(StatusType.ERROR, "Error while loading calamity", null);
+            return new ConfirmationMessage(ConfirmationMessage.StatusType.ERROR, "Error while loading calamity", null);
         }
     }
 
@@ -52,9 +51,9 @@ public class CalamityLogic {
             User user = userRepo.getUser(token);
             Calamity calamity = new Calamity(location, user, isConfirmed, isClosed, null, name, description);
             Calamity returnCal = calamityRepo.addCalamity(calamity);
-            return new ConfirmationMessage(StatusType.SUCCES, "Added calamity", returnCal);
+            return new ConfirmationMessage(ConfirmationMessage.StatusType.SUCCES, "Added calamity", returnCal);
         } catch (Exception e) {
-            return new ConfirmationMessage(StatusType.ERROR, "Error while adding a calamity", null);
+            return new ConfirmationMessage(ConfirmationMessage.StatusType.ERROR, "Error while adding a calamity", null);
         }
     }
 }
