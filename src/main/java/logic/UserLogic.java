@@ -5,7 +5,6 @@ import controllers.LoginController;
 import controllers.UserController;
 import dataRepo.Database;
 import dataRepo.UserRepo;
-import enums.StatusType;
 import library.User;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
@@ -40,14 +39,14 @@ public class UserLogic {
         try {
             User user = new UserRepo(database).register(userTypeId, buildingId, username, password, email, city);
 
-            return new ConfirmationMessage(StatusType.SUCCES, "User added!", user);
+            return new ConfirmationMessage(ConfirmationMessage.StatusType.SUCCES, "User added!", user);
 
         } catch (NoSuchAlgorithmException | SQLException e) {
             Logger.getLogger(UserController.class.getName()).log(Level.SEVERE,
                     "User addition failed!", e);
         }
 
-        return new ConfirmationMessage(StatusType.ERROR,
+        return new ConfirmationMessage(ConfirmationMessage.StatusType.ERROR,
                 "User addition failed!", null);
     }
 
@@ -55,13 +54,13 @@ public class UserLogic {
         try {
             new UserRepo(database).deleteUser(id);
 
-            return new ConfirmationMessage(StatusType.SUCCES, "User deleted!", null);
+            return new ConfirmationMessage(ConfirmationMessage.StatusType.SUCCES, "User deleted!", null);
         } catch (SQLException e) {
             Logger.getLogger(UserController.class.getName()).log(Level.SEVERE,
                     "User deletion failed!", e);
         }
 
-        return new ConfirmationMessage(StatusType.ERROR,
+        return new ConfirmationMessage(ConfirmationMessage.StatusType.ERROR,
                 "User deletion failed!", null);
     }
 

@@ -3,7 +3,6 @@ package logic;
 import api.ConfirmationMessage;
 import dataRepo.CalamityRepo;
 import dataRepo.Database;
-import enums.StatusType;
 import library.Calamity;
 import library.Location;
 
@@ -22,12 +21,12 @@ public class CalamityLogic {
     public ConfirmationMessage updateCalamity(String token, int id, String name, String description, Location location) {
         //check token
         calamityRepo.updateCalamity(id, name, description, location);
-        return new ConfirmationMessage(StatusType.ERROR, "no method definition", null);
+        return new ConfirmationMessage(ConfirmationMessage.StatusType.ERROR, "no method definition", null);
     }
 
     public ConfirmationMessage getCalamity(String token, int id) {
         Calamity returnCal = calamityRepo.getCalamity(id);
-        return new ConfirmationMessage(StatusType.SUCCES, "got calamity", returnCal);
+        return new ConfirmationMessage(ConfirmationMessage.StatusType.SUCCES, "got calamity", returnCal);
     }
 
     public ConfirmationMessage addCalamity(String token, String name, String description, Location location) {
