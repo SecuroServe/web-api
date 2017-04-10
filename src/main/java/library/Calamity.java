@@ -176,9 +176,8 @@ public class Calamity {
 
     /**
      * Get the assignees of this calamity.
-     * @param assignees The assignees of this calamity.
      */
-    public void getAssignees(List<User> assignees) {
-        this.assignees = assignees;
+    public List<User> getAssignees() {
+        return this.assignees;
     }
 }
