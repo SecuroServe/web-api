@@ -255,7 +255,7 @@ public class UserRepo {
     public User getUserById(int id) throws SQLException, NoSuchAlgorithmException, ParseException {
         User user = null;
         String query = "SELECT `UserTypeID`, `BuildingID`, `Username`, " +
-                "`Email`,  `City`, `TokenExpiration` FROM `securoserve`.`User` WHERE `ID` = ?";
+                "`Email`, `City` FROM `securoserve`.`User` WHERE `ID` = ?";
 
         List<Object> parameters = new ArrayList<>();
         parameters.add(id);

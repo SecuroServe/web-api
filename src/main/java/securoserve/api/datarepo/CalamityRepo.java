@@ -3,6 +3,7 @@ package securoserve.api.datarepo;
 import securoserve.api.enums.QueryType;
 import securoserve.library.Calamity;
 import securoserve.library.Location;
+import securoserve.library.User;
 
 import java.security.NoSuchAlgorithmException;
 import java.sql.ResultSet;
@@ -30,7 +31,7 @@ public class CalamityRepo {
      * @return the updated Calamity with the correct ID
      * @throws SQLException exception when an SQL Error occurs
      */
-    public Calamity addCalamity(Calamity calamity) throws SQLException {
+    public void addCalamity(Calamity calamity) throws SQLException {
         Location location = new LocationRepo(database).addLocation(calamity.getLocation());
 
         String query = "INSERT INTO `securoserve`.`Calamity` " +
@@ -51,17 +52,14 @@ public class CalamityRepo {
                 calamity.setId(rs.getInt(1));
             }
         }
-
-        return calamity;
     }
 
     /**
      * Update an existing Calamity into the database
      * @param calamity the updated Calamity with the correct ID
-     * @return the updated Calamity
      * @throws SQLException exception when an SQL Error occurs
      */
-    public Calamity updateCalamity(Calamity calamity) throws SQLException {
+    public void updateCalamity(Calamity calamity) throws SQLException {
 
         Location location = new LocationRepo(database).updateLocation(calamity.getLocation());
 
@@ -78,8 +76,6 @@ public class CalamityRepo {
         parameters.add(calamity.getId());
 
         database.executeQuery(query, parameters, QueryType.NON_QUERY);
-
-        return calamity;
     }
 
     /**
@@ -104,16 +100,22 @@ public class CalamityRepo {
         parameters.add(id);
 
         try (ResultSet rs = database.executeQuery(query, parameters, QueryType.QUERY)) {
-            int locationId = rs.getInt(1);
-            int createdByUserId = rs.getInt(2);
-            boolean isConfirmed = rs.getInt(3) == 1;
-            boolean isClosed = rs.getInt(4) == 1;
-            Date time = rs.getDate(5);
-            String title = rs.getString(6);
-            String message = rs.getString(7);
+            if (rs.next()) {
+                int locationId = rs.getInt(1);
+                int createdByUserId = rs.getInt(2);
+                boolean isConfirmed = rs.getInt(3) == 1;
+                boolean isClosed = rs.getInt(4) == 1;
+                Date time = rs.getDate(5);
+                String title = rs.getString(6);
+                String message = rs.getString(7);
 
-            calamity = new Calamity(id, locationRepo.getLocation(locationId), userRepo.getUserById(createdByUserId),
-                    isConfirmed, isClosed, time, title, message);
+                calamity = new Calamity(id, locationRepo.getLocation(locationId), userRepo.getUserById(createdByUserId),
+                        isConfirmed, isClosed, time, title, message);
+
+                for (User user : getCalamityAssignees(calamity.getId())) {
+                    calamity.addAssignee(user);
+                }
+            }
         }
 
         return calamity;
@@ -170,5 +172,70 @@ public class CalamityRepo {
         }
 
         return calamities;
+    }
+
+    /**
+     * Adds a calamity assignee to the database.
+     * @param calamityId The id of the calamity.
+     * @param userId The id of the user (assignee).
+     * @throws SQLException Database error.
+     */
+    public void addCalamityAssignee(int  calamityId, int userId) throws SQLException {
+        String query = "INSERT INTO `securoserve`.`CalamityAssignee` (`CalamityID`, `AssigneeID`) VALUES (?, ?)";
+
+        List<Object> parameters = new ArrayList<>();
+        parameters.add(calamityId);
+        parameters.add(userId);
+
+        database.executeQuery(query, parameters, QueryType.NON_QUERY);
+    }
+
+    /**
+     * Gets list of assignees for a calamity.
+     * @param calamityId The id of the calamity.
+     * @return List of assignees.
+     * @throws SQLException Database error.
+     */
+    public List<User> getCalamityAssignees(int calamityId) throws SQLException {
+        List<User> assignees = new ArrayList<>();
+
+        String query = "SELECT u.`ID`, u.`UserTypeID`, u.`BuildingID`, u.`Username`, u.`Email`, u.`City` " +
+                        "FROM `securoserve`.`CalamityAssignee` ca " +
+                        "INNER JOIN `securoserve`.`User` u ON ca.AssigneeID = u.ID " +
+                        "WHERE `CalamityID` = ?";
+
+        List<Object> parameters = new ArrayList<>();
+        parameters.add(calamityId);
+
+        try (ResultSet rs = database.executeQuery(query, parameters, QueryType.QUERY)) {
+            while (rs.next()) {
+                int id = rs.getInt(1);
+                int userTypeId = rs.getInt(2);
+                int buildingId = rs.getInt(3);
+                String username = rs.getString(4);
+                String email = rs.getString(5);
+                String city = rs.getString(6);
+
+                assignees.add(new User(id, null, null, null, username, email, city, null));
+            }
+        }
+
+        return assignees;
+    }
+
+    /**
+     * Deletes a assignee from the database.
+     * @param calamityId The id of the calamity.
+     * @param userId The id of the user.
+     * @throws SQLException Database error.
+     */
+    public void deleteCalamityAssignee(int calamityId, int userId) throws SQLException {
+        String query = "DELETE FROM `securoserve`.`CalamityAssignee` WHERE `CalamityID` = ? AND `AssigneeID` = ?";
+
+        List<Object> parameters = new ArrayList<>();
+        parameters.add(calamityId);
+        parameters.add(userId);
+
+        database.executeQuery(query, parameters, QueryType.NON_QUERY);
     }
 }

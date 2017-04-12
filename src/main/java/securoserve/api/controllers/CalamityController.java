@@ -99,7 +99,7 @@ public class CalamityController implements ICalamity {
      */
     @Override
     public ConfirmationMessage addCalamityAssignee(String token, int calamityId, int userId) {
-        return null;
+        return calamityLogic.addCalamityAssignee(token, calamityId, userId);
     }
 
     /**
@@ -112,6 +112,6 @@ public class CalamityController implements ICalamity {
      */
     @Override
     public ConfirmationMessage deleteCalamityAssignee(String token, int calamityId, int userId) {
-        return null;
+        return calamityLogic.deleteCalamityAssignee(token, calamityId, userId);
     }
 }
