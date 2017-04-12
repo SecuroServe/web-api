@@ -92,7 +92,7 @@ public class CalamityLogic {
             return new ConfirmationMessage(ConfirmationMessage.StatusType.ERROR, "Error while adding a calamity", null);
         }
     }
-
+  
     /**
      * Adds a calamity assignee.
      * @param token The authentication token.
@@ -136,6 +136,14 @@ public class CalamityLogic {
                     ConfirmationMessage.StatusType.ERROR,
                     "Error while deleting calamity assignee",
                     null);
+        }
+    }
+  
+    public ConfirmationMessage allCalamity(){
+        try {
+            return new ConfirmationMessage(ConfirmationMessage.StatusType.SUCCES, "Get all calamities", calamityRepo.allCalamity());
+        } catch (Exception e) {
+            return new ConfirmationMessage(ConfirmationMessage.StatusType.ERROR, "Error while getting all calamities", null);
         }
     }
 }
