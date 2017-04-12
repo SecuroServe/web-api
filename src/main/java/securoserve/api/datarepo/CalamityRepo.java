@@ -156,7 +156,7 @@ public class CalamityRepo {
         List<Object> parameters = new ArrayList<>();
 
         try (ResultSet rs = database.executeQuery(query, parameters, Database.QueryType.QUERY)) {
-            if (rs.next()) {
+            while (rs.next()) {
                 int id = rs.getInt(1);
                 int locationId = rs.getInt(2);
                 int createdByUserId = rs.getInt(3);
