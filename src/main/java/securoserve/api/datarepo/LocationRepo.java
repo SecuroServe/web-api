@@ -93,9 +93,9 @@ public class LocationRepo {
         try (ResultSet rs = database.executeQuery(query, parameters, QueryType.QUERY)) {
             if (rs.next()) {
                 int locationId = rs.getInt(1);
-                float latitude = rs.getFloat(2);
-                float longitude = rs.getFloat(3);
-                float radius = rs.getFloat(4);
+                double latitude = rs.getLong(2);
+                double longitude = rs.getLong(3);
+                double radius = rs.getLong(4);
 
                 location = new Location(latitude, longitude, radius);
             }
