@@ -64,4 +64,12 @@ public class CalamityLogic {
             return new ConfirmationMessage(ConfirmationMessage.StatusType.ERROR, "Error while adding a calamity", null);
         }
     }
+
+    public ConfirmationMessage allCalamity(){
+        try {
+            return new ConfirmationMessage(ConfirmationMessage.StatusType.SUCCES, "Get all calamities", calamityRepo.allCalamity());
+        } catch (Exception e) {
+            return new ConfirmationMessage(ConfirmationMessage.StatusType.ERROR, "Error while getting all calamities", null);
+        }
+    }
 }
