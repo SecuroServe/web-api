@@ -62,16 +62,15 @@ public class LocationRepo {
     }
 
     /**
-     * Remove an existing Location from the database
-     * @param location the Location to remove
+     * Delete an existing Location from the database
+     * @param id the id of the Location to delete
      * @throws SQLException exception when an SQL Error occurs
      */
-    public void removeLocation(Location location) throws SQLException {
-        int locationId = location.getId();
+    public void deleteLocation(int id) throws SQLException {
         String query = "DELETE FROM `securoserve`.`Location` WHERE `id` = ?";
 
         List<Object> parameters = new ArrayList<>();
-        parameters.add(locationId);
+        parameters.add(id);
 
         database.executeQuery(query, parameters, QueryType.NON_QUERY);
     }
