@@ -1,8 +1,6 @@
 package securoserve.api.datarepo;
 
-import securoserve.api.enums.QueryType;
 import securoserve.library.Location;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -32,7 +30,7 @@ public class LocationRepo {
         parameters.add(location.getLongitude());
         parameters.add(location.getRadius());
 
-        try (ResultSet rs = database.executeQuery(query, parameters, QueryType.INSERT)) {
+        try (ResultSet rs = database.executeQuery(query, parameters, Database.QueryType.INSERT)) {
             if (rs.next()) {
                 location.setId(rs.getInt(1));
             }
@@ -55,7 +53,7 @@ public class LocationRepo {
         parameters.add(location.getRadius());
         parameters.add(location.getId());
 
-        database.executeQuery(query, parameters, QueryType.NON_QUERY);
+        database.executeQuery(query, parameters, Database.QueryType.NON_QUERY);
 
         return location;
     }
@@ -71,7 +69,7 @@ public class LocationRepo {
         List<Object> parameters = new ArrayList<>();
         parameters.add(id);
 
-        database.executeQuery(query, parameters, QueryType.NON_QUERY);
+        database.executeQuery(query, parameters, Database.QueryType.NON_QUERY);
     }
 
     /**
@@ -88,7 +86,7 @@ public class LocationRepo {
         List<Object> parameters = new ArrayList<>();
         parameters.add(id);
 
-        try (ResultSet rs = database.executeQuery(query, parameters, QueryType.QUERY)) {
+        try (ResultSet rs = database.executeQuery(query, parameters, Database.QueryType.QUERY)) {
             if (rs.next()) {
                 int locationId = rs.getInt(1);
                 double latitude = rs.getLong(2);

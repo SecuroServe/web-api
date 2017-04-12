@@ -20,4 +20,18 @@ public class UserType {
     public String getName() {
         return name;
     }
+
+    public void addPermission(Permission permission) {
+        permissions.add(permission);
+    }
+
+    public enum Permission {
+        CALAMITY_ADD,
+        CALAMITY_UPDATE,
+        CALAMITY_GET,
+        CALAMITY_DELETE,
+        USER_REGISTER,
+        USER_DELETE,
+        USER_UPDATE
+    }
 }

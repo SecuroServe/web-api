@@ -1,6 +1,5 @@
 package securoserve.api.datarepo;
 
-import securoserve.api.enums.QueryType;
 import securoserve.library.Calamity;
 import securoserve.library.Location;
 import securoserve.library.User;
@@ -47,7 +46,7 @@ public class CalamityRepo {
         parameters.add(calamity.getTitle());
         parameters.add(calamity.getMessage());
 
-        try (ResultSet rs = database.executeQuery(query, parameters, QueryType.INSERT)) {
+        try (ResultSet rs = database.executeQuery(query, parameters, Database.QueryType.INSERT)) {
             if (rs.next()) {
                 calamity.setId(rs.getInt(1));
             }
@@ -75,7 +74,7 @@ public class CalamityRepo {
         parameters.add(calamity.getMessage());
         parameters.add(calamity.getId());
 
-        database.executeQuery(query, parameters, QueryType.NON_QUERY);
+        database.executeQuery(query, parameters, Database.QueryType.NON_QUERY);
     }
 
     /**
@@ -99,7 +98,7 @@ public class CalamityRepo {
         List<Object> parameters = new ArrayList<>();
         parameters.add(id);
 
-        try (ResultSet rs = database.executeQuery(query, parameters, QueryType.QUERY)) {
+        try (ResultSet rs = database.executeQuery(query, parameters, Database.QueryType.QUERY)) {
             if (rs.next()) {
                 int locationId = rs.getInt(1);
                 int createdByUserId = rs.getInt(2);
@@ -139,7 +138,7 @@ public class CalamityRepo {
         List<Object> parameters = new ArrayList<>();
         parameters.add(id);
 
-        database.executeQuery(query, parameters, QueryType.NON_QUERY);
+        database.executeQuery(query, parameters, Database.QueryType.NON_QUERY);
 
     }
 
@@ -155,7 +154,7 @@ public class CalamityRepo {
 
         List<Object> parameters = new ArrayList<>();
 
-        try (ResultSet rs = database.executeQuery(query, parameters, QueryType.QUERY)) {
+        try (ResultSet rs = database.executeQuery(query, parameters, Database.QueryType.QUERY)) {
             if(rs.next()){
                 int id = rs.getInt(1);
                 int locationId = rs.getInt(2);
@@ -187,7 +186,7 @@ public class CalamityRepo {
         parameters.add(calamityId);
         parameters.add(userId);
 
-        database.executeQuery(query, parameters, QueryType.NON_QUERY);
+        database.executeQuery(query, parameters, Database.QueryType.NON_QUERY);
     }
 
     /**
@@ -207,7 +206,7 @@ public class CalamityRepo {
         List<Object> parameters = new ArrayList<>();
         parameters.add(calamityId);
 
-        try (ResultSet rs = database.executeQuery(query, parameters, QueryType.QUERY)) {
+        try (ResultSet rs = database.executeQuery(query, parameters, Database.QueryType.QUERY)) {
             while (rs.next()) {
                 int id = rs.getInt(1);
                 int userTypeId = rs.getInt(2);
@@ -236,6 +235,6 @@ public class CalamityRepo {
         parameters.add(calamityId);
         parameters.add(userId);
 
-        database.executeQuery(query, parameters, QueryType.NON_QUERY);
+        database.executeQuery(query, parameters, Database.QueryType.NON_QUERY);
     }
 }

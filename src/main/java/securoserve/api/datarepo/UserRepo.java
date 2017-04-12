@@ -1,6 +1,5 @@
 package securoserve.api.datarepo;
 
-import securoserve.api.enums.QueryType;
 import securoserve.api.utils.HashUtil;
 import securoserve.library.User;
 
@@ -64,7 +63,7 @@ public class UserRepo {
         parameters.add(username);
         parameters.add(password);
 
-        try (ResultSet rs = database.executeQuery(query, parameters, QueryType.QUERY)) {
+        try (ResultSet rs = database.executeQuery(query, parameters, Database.QueryType.QUERY)) {
             if (rs != null && rs.next()) {
                 token = rs.getString(2);
                 tokenExpiration = rs.getString(3);
@@ -124,7 +123,7 @@ public class UserRepo {
         parameters.add(tokenExpiration);
         parameters.add(authToken);
 
-        database.executeQuery(query, parameters, QueryType.NON_QUERY);
+        database.executeQuery(query, parameters, Database.QueryType.NON_QUERY);
 
         return token;
     }
@@ -144,7 +143,7 @@ public class UserRepo {
 
         String salt = null;
 
-        try (ResultSet rs = database.executeQuery(query, parameters, QueryType.QUERY)) {
+        try (ResultSet rs = database.executeQuery(query, parameters, Database.QueryType.QUERY)) {
             if (rs != null && rs.next()) {
                 salt = rs.getString(1);
             }
@@ -194,7 +193,7 @@ public class UserRepo {
         parameters.add(token);
         parameters.add(tokenExpiration);
 
-        try (ResultSet rs = database.executeQuery(query, parameters, QueryType.INSERT)) {
+        try (ResultSet rs = database.executeQuery(query, parameters, Database.QueryType.INSERT)) {
             if (rs.next()) {
                 int id = rs.getInt(1);
 
@@ -217,7 +216,7 @@ public class UserRepo {
         List<Object> parameters = new ArrayList<>();
         parameters.add(userId);
 
-        database.executeQuery(query, parameters, QueryType.NON_QUERY);
+        database.executeQuery(query, parameters, Database.QueryType.NON_QUERY);
     }
 
     public User getUser(String token) throws SQLException, NoSuchAlgorithmException, ParseException {
@@ -228,7 +227,7 @@ public class UserRepo {
         List<Object> parameters = new ArrayList<>();
         parameters.add(token);
 
-        try (ResultSet rs = database.executeQuery(query, parameters, QueryType.QUERY)) {
+        try (ResultSet rs = database.executeQuery(query, parameters, Database.QueryType.QUERY)) {
             if (rs.next()) {
                 int id = rs.getInt(1);
                 int userTypeId = rs.getInt(2);
@@ -260,7 +259,7 @@ public class UserRepo {
         List<Object> parameters = new ArrayList<>();
         parameters.add(id);
 
-        try (ResultSet rs = database.executeQuery(query, parameters, QueryType.QUERY)) {
+        try (ResultSet rs = database.executeQuery(query, parameters, Database.QueryType.QUERY)) {
             if (rs.next()) {
                 int userTypeId = rs.getInt(1);
                 int buildingId = rs.getInt(2);

@@ -1,7 +1,5 @@
 package securoserve.api.datarepo;
 
-import securoserve.api.enums.QueryType;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -179,5 +177,23 @@ public final class Database implements AutoCloseable {
         dbUrl = prop.getProperty("dburl");
         dbPass = prop.getProperty("password");
         dbUser = prop.getProperty("user");
+    }
+
+    public enum QueryType {
+
+        /**
+         * Type of query.
+         */
+        QUERY,
+
+        /**
+         * A non query type.
+         */
+        NON_QUERY,
+
+        /**
+         * Insert query for ID return.
+         */
+        INSERT,
     }
 }
