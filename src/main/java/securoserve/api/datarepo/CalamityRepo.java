@@ -32,14 +32,14 @@ public class CalamityRepo {
      * @throws SQLException exception when an SQL Error occurs
      */
     public void addCalamity(Calamity calamity) throws SQLException {
-        Location location = new LocationRepo(database).addLocation(calamity.getLocation());
+        new LocationRepo(database).addLocation(calamity.getLocation());
 
         String query = "INSERT INTO `securoserve`.`Calamity` " +
                 "(`LocationID`, `CreatedByUserID`, `isConfirmed`, `isClosed`, `Time`, `Title`, `Message`) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         List<Object> parameters = new ArrayList<>();
-        parameters.add(location.getId());
+        parameters.add(calamity.getLocation().getId());
         parameters.add(calamity.getUser().getId());
         parameters.add(calamity.getConfirmation() ? 1 : 0);
         parameters.add(calamity.getStatus() ? 1 : 0);

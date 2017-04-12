@@ -24,7 +24,7 @@ public class CalamityControllerTest {
         UserController uc = new UserController();
         User user = createTempUser();
 
-        Location location = new Location(5, 51, 1);
+        Location location = new Location(-1, 5, 51, 1);
 
         Calamity c1 = (Calamity) cc.addCalamity(user.getToken(), "nine-eleven-test",
                 "test of 911", location, false, true).getReturnObject();
@@ -58,7 +58,7 @@ public class CalamityControllerTest {
         UserController uc = new UserController();
         User user = createTempUser();
 
-        Location location = new Location(5, 51, 1);
+        Location location = new Location(-1, 5, 51, 1);
 
         Calamity c1 = (Calamity) cc.addCalamity(user.getToken(), "nine-eleven-test",
                 "test of 911", location, false, true).getReturnObject();
@@ -74,6 +74,8 @@ public class CalamityControllerTest {
         c1 = cc.calamityById(user.getToken(), c1.getId());
 
         Assert.assertEquals(false, isAssigned(user, c1));
+
+        cc.deleteCalamity(user.getToken(), c1.getId());
 
         deleteTempUser(user);
     }

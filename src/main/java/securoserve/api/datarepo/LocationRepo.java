@@ -22,7 +22,7 @@ public class LocationRepo {
      * @return the updated Location with ID
      * @throws SQLException exception when an SQL Error occurs
      */
-    public Location addLocation(Location location) throws SQLException {
+    public void addLocation(Location location) throws SQLException {
         String query = "INSERT INTO `securoserve`.`Location` " +
                 "(`Latitude`, `Longitude`, `Radius`) " +
                 "VALUES (?, ?, ?)";
@@ -37,7 +37,6 @@ public class LocationRepo {
                 location.setId(rs.getInt(1));
             }
         }
-        return location;
     }
 
     /**
@@ -96,7 +95,7 @@ public class LocationRepo {
                 double longitude = rs.getLong(3);
                 double radius = rs.getLong(4);
 
-                location = new Location(latitude, longitude, radius);
+                location = new Location(locationId, latitude, longitude, radius);
             }
         }
 
