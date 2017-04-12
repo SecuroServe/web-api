@@ -131,11 +131,8 @@ public class CalamityRepo {
      * @throws NoSuchAlgorithmException exception when Algorithm is not found
      */
     public void deleteCalamity(int id) throws ParseException, NoSuchAlgorithmException, SQLException {
-        Calamity cal = getCalamity(id);
-        new LocationRepo(database).deleteLocation(cal.getLocation().getId());
 
-        String query = "DELETE FROM `securoserve`.`Calamity` WHERE `id` = ?";
-
+        String query = "DELETE c, l FROM Calamity c INNER JOIN Location l ON l.id = c.locationID WHERE c.id = ?";
         List<Object> parameters = new ArrayList<>();
         parameters.add(id);
 
