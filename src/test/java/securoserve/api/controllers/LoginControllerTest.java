@@ -30,11 +30,4 @@ public class LoginControllerTest {
         TestUtil.deleteTempUser(user);
     }
 
-    @Test
-    public void performance() throws Exception {
-        for (int i = 0; i < 10; i++) {
-            login();
-        }
-    }
-
 }

@@ -2,6 +2,7 @@ package securoserve.api.datarepo;
 
 import securoserve.api.utils.HashUtil;
 import securoserve.library.User;
+import securoserve.library.UserType;
 
 import java.security.NoSuchAlgorithmException;
 import java.sql.ResultSet;
@@ -230,7 +231,6 @@ public class UserRepo {
         try (ResultSet rs = database.executeQuery(query, parameters, Database.QueryType.QUERY)) {
             if (rs.next()) {
                 int id = rs.getInt(1);
-                int userTypeId = rs.getInt(2);
                 int buildingId = rs.getInt(3);
                 String username = rs.getString(4);
                 String email = rs.getString(5);
@@ -240,7 +240,9 @@ public class UserRepo {
                     return null;
                 }
 
-                user = new User(id, null, null, null, username, email, city, token);
+                UserType userType = new UserTypeRepo(database).getUserTypeOfUser(id);
+
+                user = new User(id, userType, null, null, username, email, city, token);
             }
         }
 
@@ -261,13 +263,14 @@ public class UserRepo {
 
         try (ResultSet rs = database.executeQuery(query, parameters, Database.QueryType.QUERY)) {
             if (rs.next()) {
-                int userTypeId = rs.getInt(1);
                 int buildingId = rs.getInt(2);
                 String username = rs.getString(3);
                 String email = rs.getString(4);
                 String city = rs.getString(5);
 
-                user = new User(id, null, null, null, username, email, city, null);
+                UserType userType = new UserTypeRepo(database).getUserTypeOfUser(id);
+
+                user = new User(id, userType, null, null, username, email, city, null);
             }
         }
 
