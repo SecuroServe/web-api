@@ -117,5 +117,27 @@ public class CalamityRepo {
         }
 
         return calamity;
+
+
+    }
+
+    /**
+     * Delete an existing Calamity from the Database
+     * @param id the id of a Calamity
+     * @throws SQLException exception when an SQL Error occurs
+     * @throws ParseException exception when an Parse Error occurs
+     * @throws NoSuchAlgorithmException exception when Algorithm is not found
+     */
+    public void deleteCalamity(int id) throws ParseException, NoSuchAlgorithmException, SQLException {
+        Calamity cal = getCalamity(id);
+        new LocationRepo(database).deleteLocation(cal.getLocation().getId());
+
+        String query = "DELETE FROM `securoserve`.`Calamity` WHERE `id` = ?";
+
+        List<Object> parameters = new ArrayList<>();
+        parameters.add(id);
+
+        database.executeQuery(query, parameters, QueryType.NON_QUERY);
+
     }
 }
