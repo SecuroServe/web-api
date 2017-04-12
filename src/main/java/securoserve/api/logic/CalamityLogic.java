@@ -92,6 +92,17 @@ public class CalamityLogic {
             return new ConfirmationMessage(ConfirmationMessage.StatusType.ERROR, "Error while adding a calamity", null);
         }
     }
+
+    public ConfirmationMessage deleteCalamity(String token, int calamityId){
+        try {
+            userRepo.getUser(token);
+            calamityRepo.deleteCalamity(calamityId);
+
+            return new ConfirmationMessage(ConfirmationMessage.StatusType.SUCCES, "Deleted calamity", null);
+        } catch (Exception e) {
+            return new ConfirmationMessage(ConfirmationMessage.StatusType.ERROR, "Delete calamity failed!", null);
+        }
+    }
   
     /**
      * Adds a calamity assignee.

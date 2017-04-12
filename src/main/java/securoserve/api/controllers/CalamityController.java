@@ -86,7 +86,7 @@ public class CalamityController implements ICalamity {
 
     @Override
     public ConfirmationMessage deleteCalamity(String token, int id) {
-        return null;
+        return calamityLogic.deleteCalamity(token, id);
     }
 
     /**
