@@ -5,9 +5,9 @@ package securoserve.library;
  * Created by Jandie on 13-3-2017.
  */
 public class Location {
-    private float longitude;
-    private float latitude;
-    private float radius;
+    private double longitude;
+    private double latitude;
+    private double radius;
     private int id;
 
     /***
@@ -16,13 +16,13 @@ public class Location {
      * @param latitude the latutude of the location.
      * @param radius the radius of the location, can be 0.
      */
-    public Location(float latitude, float longitude, float radius) {
+    public Location(double latitude, double longitude, double radius) {
         this.longitude = longitude;
         this.latitude = latitude;
         this.radius = radius;
     }
 
-    public float getLongitude() {
+    public double getLongitude() {
         return this.longitude;
     }
 
@@ -30,7 +30,7 @@ public class Location {
         this.longitude = longitude;
     }
 
-    public float getLatitude() {
+    public double getLatitude() {
         return this.latitude;
     }
 
@@ -38,7 +38,7 @@ public class Location {
         this.latitude = latitude;
     }
 
-    public float getRadius() {
+    public double getRadius() {
         return this.radius;
     }
 

@@ -21,10 +21,12 @@ public class CalamityControllerTest {
     @Test
     public void allCalamity() throws Exception {
         CalamityController cc = new CalamityController();
+        UserController uc = new UserController();
+        User user = createTempUser();
 
         Location location = new Location(5, 51, 1);
 
-        Calamity c1 = (Calamity) cc.addCalamity("asdasd", "nine-eleven-test",
+        Calamity c1 = (Calamity) cc.addCalamity(user.getToken(), "nine-eleven-test",
                 "test of 911", location, false, true).getReturnObject();
 
         List<Calamity> calamities = cc.allCalamity();
@@ -44,38 +46,59 @@ public class CalamityControllerTest {
 
         Assert.assertEquals(true, check);
 
-        ConfirmationMessage.StatusType status = cc.deleteCalamity("dasjdjkasd", c1.getId()).getStatus();
+        ConfirmationMessage.StatusType status = cc.deleteCalamity(user.getToken(), c1.getId()).getStatus();
         Assert.assertEquals(ConfirmationMessage.StatusType.SUCCES, status);
+
+        deleteTempUser(user);
     }
 
     @Test
     public void addCalamityAssignee() throws Exception {
         CalamityController cc = new CalamityController();
         UserController uc = new UserController();
-        User user;
+        User user = createTempUser();
 
         Location location = new Location(5, 51, 1);
 
-        Calamity c1 = (Calamity) cc.addCalamity("asdasd", "nine-eleven-test",
+        Calamity c1 = (Calamity) cc.addCalamity(user.getToken(), "nine-eleven-test",
                 "test of 911", location, false, true).getReturnObject();
 
-        ConfirmationMessage cm =
-                uc.addUser(-1, -1,
-                        USERNAME, PASSWORD, EMAIL, CITY, "");
+        cc.addCalamityAssignee(user.getToken(), c1.getId(), user.getId());
 
-        user = (User) cm.getReturnObject();
-
-        cc.addCalamityAssignee("sdasd", c1.getId(), user.getId());
-
-        c1 = cc.calamityById("sdasd", c1.getId());
+        c1 = cc.calamityById(user.getToken(), c1.getId());
 
         Assert.assertEquals(true, isAssigned(user, c1));
 
-        cc.deleteCalamityAssignee("sdasd", c1.getId(), user.getId());
+        cc.deleteCalamityAssignee(user.getToken(), c1.getId(), user.getId());
 
-        c1 = cc.calamityById("sdasd", c1.getId());
+        c1 = cc.calamityById(user.getToken(), c1.getId());
 
         Assert.assertEquals(false, isAssigned(user, c1));
+
+        deleteTempUser(user);
+    }
+
+    private User createTempUser() {
+        UserController uc = new UserController();
+        User user = (User) uc.addUser(-1, -1,
+                USERNAME, PASSWORD, EMAIL, CITY, "").getReturnObject();
+
+        user = uc.getUser(user.getToken());
+        Assert.assertEquals(USERNAME, user.getUsername());
+        Assert.assertEquals(EMAIL, user.getEmail());
+        Assert.assertEquals(CITY, user.getCity());
+
+        return user;
+    }
+
+    private void deleteTempUser(User user) {
+        UserController uc = new UserController();
+        LoginController lc = new LoginController();
+
+        uc.deleteUser(user.getToken(), user.getId());
+
+        String token = lc.login(USERNAME, PASSWORD);
+        Assert.assertEquals(null, token);
     }
 
     private boolean isAssigned(User user, Calamity calamity) {

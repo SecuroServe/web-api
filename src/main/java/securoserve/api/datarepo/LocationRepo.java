@@ -16,6 +16,12 @@ public class LocationRepo {
         this.database = database;
     }
 
+    /**
+     * Add a Location into the database
+     * @param location the Location to insert into the database
+     * @return the updated Location with ID
+     * @throws SQLException exception when an SQL Error occurs
+     */
     public Location addLocation(Location location) throws SQLException {
         String query = "INSERT INTO `securoserve`.`Location` " +
                 "(`Latitude`, `Longitude`, `Radius`) " +
@@ -34,6 +40,12 @@ public class LocationRepo {
         return location;
     }
 
+    /**
+     * Update an existing Location into the database
+     * @param location the updated Location with the correct ID
+     * @return the updated Location
+     * @throws SQLException exception when an SQL Error occurs
+     */
     public Location updateLocation(Location location) throws SQLException {
 
         String query = "UPDATE `securoserve`.`Location` SET `Latitude` = ?, `Longitude` = ?, `Radius` = ? WHERE `id` = ?";
@@ -49,16 +61,26 @@ public class LocationRepo {
         return location;
     }
 
-    public void removeLocation(Location location) throws SQLException {
-        int locationId = location.getId();
+    /**
+     * Delete an existing Location from the database
+     * @param id the id of the Location to delete
+     * @throws SQLException exception when an SQL Error occurs
+     */
+    public void deleteLocation(int id) throws SQLException {
         String query = "DELETE FROM `securoserve`.`Location` WHERE `id` = ?";
 
         List<Object> parameters = new ArrayList<>();
-        parameters.add(locationId);
+        parameters.add(id);
 
         database.executeQuery(query, parameters, QueryType.NON_QUERY);
     }
 
+    /**
+     * Get a Location by an ID
+     * @param id the ID of a Location
+     * @return the Location with the given ID
+     * @throws SQLException exception when an SQL Error occurs
+     */
     public Location getLocation(int id) throws SQLException {
         Location location = null;
 
@@ -70,9 +92,9 @@ public class LocationRepo {
         try (ResultSet rs = database.executeQuery(query, parameters, QueryType.QUERY)) {
             if (rs.next()) {
                 int locationId = rs.getInt(1);
-                float latitude = rs.getFloat(2);
-                float longitude = rs.getFloat(3);
-                float radius = rs.getFloat(4);
+                double latitude = rs.getLong(2);
+                double longitude = rs.getLong(3);
+                double radius = rs.getLong(4);
 
                 location = new Location(latitude, longitude, radius);
             }
