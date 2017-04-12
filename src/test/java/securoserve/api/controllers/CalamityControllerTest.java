@@ -75,6 +75,8 @@ public class CalamityControllerTest {
 
         Assert.assertEquals(false, isAssigned(user, c1));
 
+        cc.deleteCalamity(user.getToken(), c1.getId());
+
         deleteTempUser(user);
     }
 
