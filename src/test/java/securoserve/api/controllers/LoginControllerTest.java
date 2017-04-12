@@ -3,7 +3,6 @@ package securoserve.api.controllers;
 import org.junit.Assert;
 import org.junit.Test;
 import securoserve.api.TestUtil;
-import securoserve.api.interfaces.ConfirmationMessage;
 import securoserve.library.User;
 
 /**
