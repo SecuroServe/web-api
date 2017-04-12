@@ -149,7 +149,11 @@ public class CalamityLogic {
                     null);
         }
     }
-  
+
+    /**
+     * Get all existing calamities from the Database
+     * @return ConfirmationMessage with feedback
+     */
     public ConfirmationMessage allCalamity(){
         try {
             return new ConfirmationMessage(ConfirmationMessage.StatusType.SUCCES, "Get all calamities", calamityRepo.allCalamity());

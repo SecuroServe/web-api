@@ -16,10 +16,11 @@ public class Location {
      * @param latitude the latutude of the location.
      * @param radius the radius of the location, can be 0.
      */
-    public Location(double latitude, double longitude, double radius) {
+    public Location(int id, double latitude, double longitude, double radius) {
         this.longitude = longitude;
         this.latitude = latitude;
         this.radius = radius;
+        this.id = id;
     }
 
     public double getLongitude() {
