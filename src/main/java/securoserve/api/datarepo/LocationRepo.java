@@ -16,6 +16,12 @@ public class LocationRepo {
         this.database = database;
     }
 
+    /**
+     * Add a Location into the database
+     * @param location the Location to insert into the database
+     * @return the updated Location with ID
+     * @throws SQLException exception when an SQL Error occurs
+     */
     public Location addLocation(Location location) throws SQLException {
         String query = "INSERT INTO `securoserve`.`Location` " +
                 "(`Latitude`, `Longitude`, `Radius`) " +
@@ -34,6 +40,12 @@ public class LocationRepo {
         return location;
     }
 
+    /**
+     * Update an existing Location into the database
+     * @param location the updated Location with the correct ID
+     * @return the updated Location
+     * @throws SQLException exception when an SQL Error occurs
+     */
     public Location updateLocation(Location location) throws SQLException {
 
         String query = "UPDATE `securoserve`.`Location` SET `Latitude` = ?, `Longitude` = ?, `Radius` = ? WHERE `id` = ?";
@@ -49,6 +61,11 @@ public class LocationRepo {
         return location;
     }
 
+    /**
+     * Remove an existing Location from the database
+     * @param location the Location to remove
+     * @throws SQLException exception when an SQL Error occurs
+     */
     public void removeLocation(Location location) throws SQLException {
         int locationId = location.getId();
         String query = "DELETE FROM `securoserve`.`Location` WHERE `id` = ?";
@@ -59,6 +76,12 @@ public class LocationRepo {
         database.executeQuery(query, parameters, QueryType.NON_QUERY);
     }
 
+    /**
+     * Get a Location by an ID
+     * @param id the ID of a Location
+     * @return the Location with the given ID
+     * @throws SQLException exception when an SQL Error occurs
+     */
     public Location getLocation(int id) throws SQLException {
         Location location = null;
 

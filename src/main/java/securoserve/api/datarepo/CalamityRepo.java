@@ -24,6 +24,12 @@ public class CalamityRepo {
         this.database = database;
     }
 
+    /**
+     * Add a new Calamity to the database
+     * @param calamity the Calamity to add into the database
+     * @return the updated Calamity with the correct ID
+     * @throws SQLException exception when an SQL Error occurs
+     */
     public Calamity addCalamity(Calamity calamity) throws SQLException {
         Location location = new LocationRepo(database).addLocation(calamity.getLocation());
 
@@ -49,7 +55,12 @@ public class CalamityRepo {
         return calamity;
     }
 
-
+    /**
+     * Update an existing Calamity into the database
+     * @param calamity the updated Calamity with the correct ID
+     * @return the updated Calamity
+     * @throws SQLException exception when an SQL Error occurs
+     */
     public Calamity updateCalamity(Calamity calamity) throws SQLException {
 
         Location location = new LocationRepo(database).updateLocation(calamity.getLocation());
@@ -71,6 +82,14 @@ public class CalamityRepo {
         return calamity;
     }
 
+    /**
+     * Get a Calamity by an ID
+     * @param id the ID of a calamity
+     * @return the Calamity with the given ID
+     * @throws SQLException exception when an SQL Error occurs
+     * @throws ParseException exception when an Parse Error occurs
+     * @throws NoSuchAlgorithmException exception when Algorithm is not found
+     */
     public Calamity getCalamity(int id) throws SQLException, ParseException, NoSuchAlgorithmException {
         Calamity calamity = null;
         UserRepo userRepo = new UserRepo(database);
