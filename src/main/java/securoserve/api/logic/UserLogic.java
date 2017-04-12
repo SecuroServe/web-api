@@ -1,10 +1,10 @@
 package securoserve.api.logic;
 
-import securoserve.api.interfaces.ConfirmationMessage;
 import securoserve.api.controllers.LoginController;
 import securoserve.api.controllers.UserController;
 import securoserve.api.datarepo.Database;
 import securoserve.api.datarepo.UserRepo;
+import securoserve.api.interfaces.ConfirmationMessage;
 import securoserve.library.User;
 import securoserve.library.UserType;
 
@@ -23,7 +23,7 @@ public class UserLogic {
 
     public UserLogic() {
         database = new Database();
-        userRepo =  new UserRepo(database);
+        userRepo = new UserRepo(database);
     }
 
     public String login(String username, String password) {

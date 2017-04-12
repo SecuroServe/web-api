@@ -14,7 +14,7 @@ public class UserType {
     public UserType(String name) {
         this.name = name;
 
-        permissions =  new ArrayList<>();
+        permissions = new ArrayList<>();
     }
 
     public String getName() {
@@ -26,7 +26,7 @@ public class UserType {
     }
 
     public boolean containsPermission(Permission permission) {
-        for (Permission p : permissions){
+        for (Permission p : permissions) {
             if (permission.equals(p)) {
                 return true;
             }

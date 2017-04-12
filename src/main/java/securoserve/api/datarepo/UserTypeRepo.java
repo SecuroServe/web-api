@@ -19,6 +19,7 @@ public class UserTypeRepo {
 
     /**
      * Gets the UserType of user.
+     *
      * @param userId The id of the user.
      * @return The UserType.
      * @throws SQLException Database error.
@@ -38,7 +39,7 @@ public class UserTypeRepo {
         try (ResultSet rs = database.executeQuery(query, parameters, Database.QueryType.QUERY)) {
             while (rs.next()) {
                 String userTypeName = rs.getString(1);
-                UserType.Permission permission  = UserType.Permission.valueOf(rs.getString(2));
+                UserType.Permission permission = UserType.Permission.valueOf(rs.getString(2));
 
                 if (userType != null) {
                     userType.addPermission(permission);

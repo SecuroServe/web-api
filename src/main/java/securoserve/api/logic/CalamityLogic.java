@@ -1,18 +1,15 @@
 package securoserve.api.logic;
 
-import securoserve.api.interfaces.ConfirmationMessage;
 import securoserve.api.datarepo.CalamityRepo;
 import securoserve.api.datarepo.Database;
 import securoserve.api.datarepo.UserRepo;
+import securoserve.api.interfaces.ConfirmationMessage;
 import securoserve.library.Calamity;
 import securoserve.library.Location;
 import securoserve.library.User;
 import securoserve.library.UserType;
 
-import java.security.NoSuchAlgorithmException;
 import java.util.Date;
-import java.sql.SQLException;
-import java.text.ParseException;
 
 /**
  * Created by yannic on 20/03/2017.
@@ -30,18 +27,18 @@ public class CalamityLogic {
 
     /**
      * Updates an exsisting Calamity into the database.
-     * @param token The authentication token.
-     * @param id The id of the calamity.
-     * @param name The name of the calamity.
+     *
+     * @param token       The authentication token.
+     * @param id          The id of the calamity.
+     * @param name        The name of the calamity.
      * @param description The description of the calamity.
-     * @param location The location of the calamity.
+     * @param location    The location of the calamity.
      * @param isConfirmed The confirmation state of the calamity.
-     * @param isClosed Whether or not the calamity is closed.
+     * @param isClosed    Whether or not the calamity is closed.
      * @return ConfirmationMessage with feedback.
      */
     public ConfirmationMessage updateCalamity(String token, int id, String name, String description, Location location,
                                               boolean isConfirmed, boolean isClosed) {
-
 
 
         try {
@@ -67,7 +64,8 @@ public class CalamityLogic {
 
     /**
      * Gets a calamity b id.
-     * @param token The authentication token.
+     *
+     * @param token      The authentication token.
      * @param calamityId The id of the calamity.
      * @return ConfirmationMessage with feedback.
      */
@@ -90,12 +88,13 @@ public class CalamityLogic {
 
     /**
      * Adds new calamity.
-     * @param token The authentication token.
-     * @param name The name of the calamity.
+     *
+     * @param token       The authentication token.
+     * @param name        The name of the calamity.
      * @param description The description of the calamity.
-     * @param location The location of the calamity.
+     * @param location    The location of the calamity.
      * @param isConfirmed The confirmation state of the calamity.
-     * @param isClosed Whether or not the calamity is closed.
+     * @param isClosed    Whether or not the calamity is closed.
      * @return ConfirmationMessage with feedback.
      */
     public ConfirmationMessage addCalamity(String token, String name, String description, Location location, boolean isConfirmed, boolean isClosed) {
@@ -117,7 +116,7 @@ public class CalamityLogic {
         }
     }
 
-    public ConfirmationMessage deleteCalamity(String token, int calamityId){
+    public ConfirmationMessage deleteCalamity(String token, int calamityId) {
         try {
             if (!userRepo.getUser(token).getUserType().containsPermission(UserType.Permission.CALAMITY_DELETE)) {
                 return new ConfirmationMessage(
@@ -132,12 +131,13 @@ public class CalamityLogic {
             return new ConfirmationMessage(ConfirmationMessage.StatusType.ERROR, "Delete calamity failed!", null);
         }
     }
-  
+
     /**
      * Adds a calamity assignee.
-     * @param token The authentication token.
+     *
+     * @param token      The authentication token.
      * @param calamityId The id of the calamity.
-     * @param userId The id of the user (assignee).
+     * @param userId     The id of the user (assignee).
      * @return ConfirmationMessage with feedback.
      */
     public ConfirmationMessage addCalamityAssignee(String token, int calamityId, int userId) {
@@ -162,9 +162,10 @@ public class CalamityLogic {
 
     /**
      * Deletes a assignee.
-     * @param token The authentication token.
+     *
+     * @param token      The authentication token.
      * @param calamityId The id of the calamity.
-     * @param userId The id of the user.
+     * @param userId     The id of the user.
      * @return ConfirmationMessage with feedback.
      */
     public ConfirmationMessage deleteCalamityAssignee(String token, int calamityId, int userId) {
@@ -189,9 +190,10 @@ public class CalamityLogic {
 
     /**
      * Get all existing calamities from the Database
+     *
      * @return ConfirmationMessage with feedback
      */
-    public ConfirmationMessage allCalamity(){
+    public ConfirmationMessage allCalamity() {
         try {
             return new ConfirmationMessage(ConfirmationMessage.StatusType.SUCCES, "Get all calamities", calamityRepo.allCalamity());
         } catch (Exception e) {

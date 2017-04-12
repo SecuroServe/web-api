@@ -1,6 +1,7 @@
 package securoserve.api.datarepo;
 
 import securoserve.library.Location;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ public class LocationRepo {
 
     /**
      * Add a Location into the database
+     *
      * @param location the Location to insert into the database
      * @return the updated Location with ID
      * @throws SQLException exception when an SQL Error occurs
@@ -39,6 +41,7 @@ public class LocationRepo {
 
     /**
      * Update an existing Location into the database
+     *
      * @param location the updated Location with the correct ID
      * @return the updated Location
      * @throws SQLException exception when an SQL Error occurs
@@ -60,6 +63,7 @@ public class LocationRepo {
 
     /**
      * Delete an existing Location from the database
+     *
      * @param id the id of the Location to delete
      * @throws SQLException exception when an SQL Error occurs
      */
@@ -74,6 +78,7 @@ public class LocationRepo {
 
     /**
      * Get a Location by an ID
+     *
      * @param id the ID of a Location
      * @return the Location with the given ID
      * @throws SQLException exception when an SQL Error occurs
