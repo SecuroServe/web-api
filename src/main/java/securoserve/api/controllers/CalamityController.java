@@ -27,7 +27,7 @@ public class CalamityController implements ICalamity {
      */
     @Override
     public List<Calamity> allCalamity() {
-        return null;
+        return (List<Calamity>) calamityLogic.allCalamity().getReturnObject();
     }
 
     /**
