@@ -1,6 +1,5 @@
 package securoserve.library;
 
-import securoserve.api.enums.BuildingType;
 
 public class Building {
 
@@ -158,5 +157,12 @@ public class Building {
         this.type = type;
     }
 
+    public enum BuildingType {
 
+        CONTROL_ROOM,
+        FIRE_DEPARTMENT,
+        POLICE_DEPARTMENT,
+        HOSPITAL
+
+    }
 }

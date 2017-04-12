@@ -1,11 +1,12 @@
 package securoserve.api.logic;
 
-import securoserve.api.interfaces.ConfirmationMessage;
 import securoserve.api.controllers.LoginController;
 import securoserve.api.controllers.UserController;
 import securoserve.api.datarepo.Database;
 import securoserve.api.datarepo.UserRepo;
+import securoserve.api.interfaces.ConfirmationMessage;
 import securoserve.library.User;
+import securoserve.library.UserType;
 
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
@@ -18,9 +19,11 @@ import java.util.logging.Logger;
  */
 public class UserLogic {
     private Database database;
+    private UserRepo userRepo;
 
     public UserLogic() {
         database = new Database();
+        userRepo = new UserRepo(database);
     }
 
     public String login(String username, String password) {
@@ -38,11 +41,16 @@ public class UserLogic {
                                        String username, String password, String email, String city, String token) {
 
         try {
-            User user = new UserRepo(database).register(userTypeId, buildingId, username, password, email, city);
+            if (!userRepo.getUser(token).getUserType().containsPermission(UserType.Permission.USER_REGISTER)) {
+                return new ConfirmationMessage(
+                        ConfirmationMessage.StatusType.ERROR, "No permission", null);
+            }
+
+            User user = userRepo.register(userTypeId, buildingId, username, password, email, city);
 
             return new ConfirmationMessage(ConfirmationMessage.StatusType.SUCCES, "User added!", user);
 
-        } catch (NoSuchAlgorithmException | SQLException e) {
+        } catch (NoSuchAlgorithmException | SQLException | ParseException e) {
             Logger.getLogger(UserController.class.getName()).log(Level.SEVERE,
                     "User addition failed!", e);
         }
@@ -53,10 +61,15 @@ public class UserLogic {
 
     public ConfirmationMessage deleteUser(String token, int id) {
         try {
-            new UserRepo(database).deleteUser(id);
+            if (!userRepo.getUser(token).getUserType().containsPermission(UserType.Permission.USER_DELETE)) {
+                return new ConfirmationMessage(
+                        ConfirmationMessage.StatusType.ERROR, "No permission", null);
+            }
+
+            userRepo.deleteUser(id);
 
             return new ConfirmationMessage(ConfirmationMessage.StatusType.SUCCES, "User deleted!", null);
-        } catch (SQLException e) {
+        } catch (SQLException | ParseException | NoSuchAlgorithmException e) {
             Logger.getLogger(UserController.class.getName()).log(Level.SEVERE,
                     "User deletion failed!", e);
         }
@@ -68,7 +81,7 @@ public class UserLogic {
     public User getUser(String token) throws NoSuchAlgorithmException, ParseException {
         try {
 
-            return new UserRepo(database).getUser(token);
+            return userRepo.getUser(token);
         } catch (SQLException e) {
             Logger.getLogger(UserController.class.getName()).log(Level.SEVERE,
                     "Failed to retrieve user!", e);

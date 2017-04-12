@@ -1,6 +1,5 @@
 package securoserve.api.datarepo;
 
-import securoserve.api.enums.QueryType;
 import securoserve.library.Calamity;
 import securoserve.library.Location;
 import securoserve.library.User;
@@ -27,6 +26,7 @@ public class CalamityRepo {
 
     /**
      * Add a new Calamity to the database
+     *
      * @param calamity the Calamity to add into the database
      * @return the updated Calamity with the correct ID
      * @throws SQLException exception when an SQL Error occurs
@@ -47,7 +47,7 @@ public class CalamityRepo {
         parameters.add(calamity.getTitle());
         parameters.add(calamity.getMessage());
 
-        try (ResultSet rs = database.executeQuery(query, parameters, QueryType.INSERT)) {
+        try (ResultSet rs = database.executeQuery(query, parameters, Database.QueryType.INSERT)) {
             if (rs.next()) {
                 calamity.setId(rs.getInt(1));
             }
@@ -56,6 +56,7 @@ public class CalamityRepo {
 
     /**
      * Update an existing Calamity into the database
+     *
      * @param calamity the updated Calamity with the correct ID
      * @throws SQLException exception when an SQL Error occurs
      */
@@ -75,15 +76,16 @@ public class CalamityRepo {
         parameters.add(calamity.getMessage());
         parameters.add(calamity.getId());
 
-        database.executeQuery(query, parameters, QueryType.NON_QUERY);
+        database.executeQuery(query, parameters, Database.QueryType.NON_QUERY);
     }
 
     /**
      * Get a Calamity by an ID
+     *
      * @param id the ID of a calamity
      * @return the Calamity with the given ID
-     * @throws SQLException exception when an SQL Error occurs
-     * @throws ParseException exception when an Parse Error occurs
+     * @throws SQLException             exception when an SQL Error occurs
+     * @throws ParseException           exception when an Parse Error occurs
      * @throws NoSuchAlgorithmException exception when Algorithm is not found
      */
     public Calamity getCalamity(int id) throws SQLException, ParseException, NoSuchAlgorithmException {
@@ -99,7 +101,7 @@ public class CalamityRepo {
         List<Object> parameters = new ArrayList<>();
         parameters.add(id);
 
-        try (ResultSet rs = database.executeQuery(query, parameters, QueryType.QUERY)) {
+        try (ResultSet rs = database.executeQuery(query, parameters, Database.QueryType.QUERY)) {
             if (rs.next()) {
                 int locationId = rs.getInt(1);
                 int createdByUserId = rs.getInt(2);
@@ -125,9 +127,10 @@ public class CalamityRepo {
 
     /**
      * Delete an existing Calamity from the Database
+     *
      * @param id the id of a Calamity
-     * @throws SQLException exception when an SQL Error occurs
-     * @throws ParseException exception when an Parse Error occurs
+     * @throws SQLException             exception when an SQL Error occurs
+     * @throws ParseException           exception when an Parse Error occurs
      * @throws NoSuchAlgorithmException exception when Algorithm is not found
      */
     public void deleteCalamity(int id) throws ParseException, NoSuchAlgorithmException, SQLException {
@@ -136,7 +139,7 @@ public class CalamityRepo {
         List<Object> parameters = new ArrayList<>();
         parameters.add(id);
 
-        database.executeQuery(query, parameters, QueryType.NON_QUERY);
+        database.executeQuery(query, parameters, Database.QueryType.NON_QUERY);
 
     }
 
@@ -152,8 +155,8 @@ public class CalamityRepo {
 
         List<Object> parameters = new ArrayList<>();
 
-        try (ResultSet rs = database.executeQuery(query, parameters, QueryType.QUERY)) {
-            if(rs.next()){
+        try (ResultSet rs = database.executeQuery(query, parameters, Database.QueryType.QUERY)) {
+            if (rs.next()) {
                 int id = rs.getInt(1);
                 int locationId = rs.getInt(2);
                 int createdByUserId = rs.getInt(3);
@@ -173,22 +176,24 @@ public class CalamityRepo {
 
     /**
      * Adds a calamity assignee to the database.
+     *
      * @param calamityId The id of the calamity.
-     * @param userId The id of the user (assignee).
+     * @param userId     The id of the user (assignee).
      * @throws SQLException Database error.
      */
-    public void addCalamityAssignee(int  calamityId, int userId) throws SQLException {
+    public void addCalamityAssignee(int calamityId, int userId) throws SQLException {
         String query = "INSERT INTO `securoserve`.`CalamityAssignee` (`CalamityID`, `AssigneeID`) VALUES (?, ?)";
 
         List<Object> parameters = new ArrayList<>();
         parameters.add(calamityId);
         parameters.add(userId);
 
-        database.executeQuery(query, parameters, QueryType.NON_QUERY);
+        database.executeQuery(query, parameters, Database.QueryType.NON_QUERY);
     }
 
     /**
      * Gets list of assignees for a calamity.
+     *
      * @param calamityId The id of the calamity.
      * @return List of assignees.
      * @throws SQLException Database error.
@@ -197,14 +202,14 @@ public class CalamityRepo {
         List<User> assignees = new ArrayList<>();
 
         String query = "SELECT u.`ID`, u.`UserTypeID`, u.`BuildingID`, u.`Username`, u.`Email`, u.`City` " +
-                        "FROM `securoserve`.`CalamityAssignee` ca " +
-                        "INNER JOIN `securoserve`.`User` u ON ca.AssigneeID = u.ID " +
-                        "WHERE `CalamityID` = ?";
+                "FROM `securoserve`.`CalamityAssignee` ca " +
+                "INNER JOIN `securoserve`.`User` u ON ca.AssigneeID = u.ID " +
+                "WHERE `CalamityID` = ?";
 
         List<Object> parameters = new ArrayList<>();
         parameters.add(calamityId);
 
-        try (ResultSet rs = database.executeQuery(query, parameters, QueryType.QUERY)) {
+        try (ResultSet rs = database.executeQuery(query, parameters, Database.QueryType.QUERY)) {
             while (rs.next()) {
                 int id = rs.getInt(1);
                 int userTypeId = rs.getInt(2);
@@ -222,8 +227,9 @@ public class CalamityRepo {
 
     /**
      * Deletes a assignee from the database.
+     *
      * @param calamityId The id of the calamity.
-     * @param userId The id of the user.
+     * @param userId     The id of the user.
      * @throws SQLException Database error.
      */
     public void deleteCalamityAssignee(int calamityId, int userId) throws SQLException {
@@ -233,6 +239,6 @@ public class CalamityRepo {
         parameters.add(calamityId);
         parameters.add(userId);
 
-        database.executeQuery(query, parameters, QueryType.NON_QUERY);
+        database.executeQuery(query, parameters, Database.QueryType.NON_QUERY);
     }
 }

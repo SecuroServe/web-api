@@ -1,8 +1,8 @@
 package securoserve.api.datarepo;
 
-import securoserve.api.enums.QueryType;
 import securoserve.api.utils.HashUtil;
 import securoserve.library.User;
+import securoserve.library.UserType;
 
 import java.security.NoSuchAlgorithmException;
 import java.sql.ResultSet;
@@ -64,7 +64,7 @@ public class UserRepo {
         parameters.add(username);
         parameters.add(password);
 
-        try (ResultSet rs = database.executeQuery(query, parameters, QueryType.QUERY)) {
+        try (ResultSet rs = database.executeQuery(query, parameters, Database.QueryType.QUERY)) {
             if (rs != null && rs.next()) {
                 token = rs.getString(2);
                 tokenExpiration = rs.getString(3);
@@ -124,7 +124,7 @@ public class UserRepo {
         parameters.add(tokenExpiration);
         parameters.add(authToken);
 
-        database.executeQuery(query, parameters, QueryType.NON_QUERY);
+        database.executeQuery(query, parameters, Database.QueryType.NON_QUERY);
 
         return token;
     }
@@ -144,7 +144,7 @@ public class UserRepo {
 
         String salt = null;
 
-        try (ResultSet rs = database.executeQuery(query, parameters, QueryType.QUERY)) {
+        try (ResultSet rs = database.executeQuery(query, parameters, Database.QueryType.QUERY)) {
             if (rs != null && rs.next()) {
                 salt = rs.getString(1);
             }
@@ -168,7 +168,7 @@ public class UserRepo {
      */
     public User register(int userTypeId, int buildingId, String username,
                          String password, String email, String city)
-            throws NoSuchAlgorithmException, SQLException {
+            throws NoSuchAlgorithmException, SQLException, ParseException {
         User user = null;
 
         Calendar date = Calendar.getInstance();
@@ -194,7 +194,7 @@ public class UserRepo {
         parameters.add(token);
         parameters.add(tokenExpiration);
 
-        try (ResultSet rs = database.executeQuery(query, parameters, QueryType.INSERT)) {
+        try (ResultSet rs = database.executeQuery(query, parameters, Database.QueryType.INSERT)) {
             if (rs.next()) {
                 int id = rs.getInt(1);
 
@@ -203,7 +203,7 @@ public class UserRepo {
             }
         }
 
-        return user;
+        return getUserById(user.getId());
     }
 
     /**
@@ -217,7 +217,7 @@ public class UserRepo {
         List<Object> parameters = new ArrayList<>();
         parameters.add(userId);
 
-        database.executeQuery(query, parameters, QueryType.NON_QUERY);
+        database.executeQuery(query, parameters, Database.QueryType.NON_QUERY);
     }
 
     public User getUser(String token) throws SQLException, NoSuchAlgorithmException, ParseException {
@@ -228,10 +228,9 @@ public class UserRepo {
         List<Object> parameters = new ArrayList<>();
         parameters.add(token);
 
-        try (ResultSet rs = database.executeQuery(query, parameters, QueryType.QUERY)) {
+        try (ResultSet rs = database.executeQuery(query, parameters, Database.QueryType.QUERY)) {
             if (rs.next()) {
                 int id = rs.getInt(1);
-                int userTypeId = rs.getInt(2);
                 int buildingId = rs.getInt(3);
                 String username = rs.getString(4);
                 String email = rs.getString(5);
@@ -241,7 +240,9 @@ public class UserRepo {
                     return null;
                 }
 
-                user = new User(id, null, null, null, username, email, city, token);
+                UserType userType = new UserTypeRepo(database).getUserTypeOfUser(id);
+
+                user = new User(id, userType, null, null, username, email, city, token);
             }
         }
 
@@ -255,20 +256,22 @@ public class UserRepo {
     public User getUserById(int id) throws SQLException, NoSuchAlgorithmException, ParseException {
         User user = null;
         String query = "SELECT `UserTypeID`, `BuildingID`, `Username`, " +
-                "`Email`, `City` FROM `securoserve`.`User` WHERE `ID` = ?";
+                "`Email`, `City`, `Token` FROM `securoserve`.`User` WHERE `ID` = ?";
 
         List<Object> parameters = new ArrayList<>();
         parameters.add(id);
 
-        try (ResultSet rs = database.executeQuery(query, parameters, QueryType.QUERY)) {
+        try (ResultSet rs = database.executeQuery(query, parameters, Database.QueryType.QUERY)) {
             if (rs.next()) {
-                int userTypeId = rs.getInt(1);
                 int buildingId = rs.getInt(2);
                 String username = rs.getString(3);
                 String email = rs.getString(4);
                 String city = rs.getString(5);
+                String token = rs.getString(6);
 
-                user = new User(id, null, null, null, username, email, city, null);
+                UserType userType = new UserTypeRepo(database).getUserTypeOfUser(id);
+
+                user = new User(id, userType, null, null, username, email, city, token);
             }
         }
 

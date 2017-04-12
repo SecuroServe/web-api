@@ -2,6 +2,7 @@ package securoserve.api.controllers;
 
 import org.junit.Assert;
 import org.junit.Test;
+import securoserve.api.TestUtil;
 import securoserve.api.interfaces.ConfirmationMessage;
 import securoserve.library.Calamity;
 import securoserve.library.Location;
@@ -13,16 +14,12 @@ import java.util.List;
  * Created by Jandie on 10-Apr-17.
  */
 public class CalamityControllerTest {
-    private final String USERNAME = "testuser789987";
-    private final String PASSWORD = "testpwd*()1223";
-    private final String EMAIL = "testuser789987@test123weqr456.nl";
-    private final String CITY = "Amsterdam";
 
     @Test
     public void allCalamity() throws Exception {
         CalamityController cc = new CalamityController();
         UserController uc = new UserController();
-        User user = createTempUser();
+        User user = TestUtil.createTempUser();
 
         Location location = new Location(-1, 5, 51, 1);
 
@@ -49,14 +46,14 @@ public class CalamityControllerTest {
         ConfirmationMessage.StatusType status = cc.deleteCalamity(user.getToken(), c1.getId()).getStatus();
         Assert.assertEquals(ConfirmationMessage.StatusType.SUCCES, status);
 
-        deleteTempUser(user);
+        TestUtil.deleteTempUser(user);
     }
 
     @Test
     public void addCalamityAssignee() throws Exception {
         CalamityController cc = new CalamityController();
         UserController uc = new UserController();
-        User user = createTempUser();
+        User user = TestUtil.createTempUser();
 
         Location location = new Location(-1, 5, 51, 1);
 
@@ -77,31 +74,10 @@ public class CalamityControllerTest {
 
         cc.deleteCalamity(user.getToken(), c1.getId());
 
-        deleteTempUser(user);
+        TestUtil.deleteTempUser(user);
     }
 
-    private User createTempUser() {
-        UserController uc = new UserController();
-        User user = (User) uc.addUser(-1, -1,
-                USERNAME, PASSWORD, EMAIL, CITY, "").getReturnObject();
 
-        user = uc.getUser(user.getToken());
-        Assert.assertEquals(USERNAME, user.getUsername());
-        Assert.assertEquals(EMAIL, user.getEmail());
-        Assert.assertEquals(CITY, user.getCity());
-
-        return user;
-    }
-
-    private void deleteTempUser(User user) {
-        UserController uc = new UserController();
-        LoginController lc = new LoginController();
-
-        uc.deleteUser(user.getToken(), user.getId());
-
-        String token = lc.login(USERNAME, PASSWORD);
-        Assert.assertEquals(null, token);
-    }
 
     private boolean isAssigned(User user, Calamity calamity) {
         for (User u : calamity.getAssignees()) {
@@ -112,5 +88,6 @@ public class CalamityControllerTest {
 
         return false;
     }
+
 
 }
