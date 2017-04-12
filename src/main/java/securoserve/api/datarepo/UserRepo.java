@@ -168,7 +168,7 @@ public class UserRepo {
      */
     public User register(int userTypeId, int buildingId, String username,
                          String password, String email, String city)
-            throws NoSuchAlgorithmException, SQLException {
+            throws NoSuchAlgorithmException, SQLException, ParseException {
         User user = null;
 
         Calendar date = Calendar.getInstance();
@@ -203,7 +203,7 @@ public class UserRepo {
             }
         }
 
-        return user;
+        return getUserById(user.getId());
     }
 
     /**
@@ -256,7 +256,7 @@ public class UserRepo {
     public User getUserById(int id) throws SQLException, NoSuchAlgorithmException, ParseException {
         User user = null;
         String query = "SELECT `UserTypeID`, `BuildingID`, `Username`, " +
-                "`Email`, `City` FROM `securoserve`.`User` WHERE `ID` = ?";
+                "`Email`, `City`, `Token` FROM `securoserve`.`User` WHERE `ID` = ?";
 
         List<Object> parameters = new ArrayList<>();
         parameters.add(id);
@@ -267,10 +267,11 @@ public class UserRepo {
                 String username = rs.getString(3);
                 String email = rs.getString(4);
                 String city = rs.getString(5);
+                String token = rs.getString(6);
 
                 UserType userType = new UserTypeRepo(database).getUserTypeOfUser(id);
 
-                user = new User(id, userType, null, null, username, email, city, null);
+                user = new User(id, userType, null, null, username, email, city, token);
             }
         }
 

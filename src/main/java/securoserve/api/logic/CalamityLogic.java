@@ -7,6 +7,7 @@ import securoserve.api.datarepo.UserRepo;
 import securoserve.library.Calamity;
 import securoserve.library.Location;
 import securoserve.library.User;
+import securoserve.library.UserType;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
@@ -38,9 +39,17 @@ public class CalamityLogic {
      * @param isClosed Whether or not the calamity is closed.
      * @return ConfirmationMessage with feedback.
      */
-    public ConfirmationMessage updateCalamity(String token, int id, String name, String description, Location location, boolean isConfirmed, boolean isClosed) {
-        //check token
+    public ConfirmationMessage updateCalamity(String token, int id, String name, String description, Location location,
+                                              boolean isConfirmed, boolean isClosed) {
+
+
+
         try {
+            if (!userRepo.getUser(token).getUserType().containsPermission(UserType.Permission.CALAMITY_UPDATE)) {
+                return new ConfirmationMessage(
+                        ConfirmationMessage.StatusType.ERROR, "No permission", null);
+            }
+
             Calamity calamity = calamityRepo.getCalamity(id);
             calamity.setTitle(name);
             calamity.setMessage(description);
@@ -48,9 +57,11 @@ public class CalamityLogic {
             calamity.setConfirmed(isConfirmed);
             calamity.setClosed(isClosed);
             calamityRepo.updateCalamity(calamity);
+
             return new ConfirmationMessage(ConfirmationMessage.StatusType.ERROR, "updated calamity", calamity);
         } catch (Exception e) {
-            return new ConfirmationMessage(ConfirmationMessage.StatusType.ERROR, "Error while updating calamity", null);
+            return new ConfirmationMessage(
+                    ConfirmationMessage.StatusType.ERROR, "Error while updating calamity", null);
         }
     }
 
@@ -61,13 +72,19 @@ public class CalamityLogic {
      * @return ConfirmationMessage with feedback.
      */
     public ConfirmationMessage getCalamity(String token, int calamityId) {
-        //check token
-        Calamity returnCal = null;
+
         try {
-            returnCal = calamityRepo.getCalamity(calamityId);
+            if (!userRepo.getUser(token).getUserType().containsPermission(UserType.Permission.CALAMITY_GET)) {
+                return new ConfirmationMessage(
+                        ConfirmationMessage.StatusType.ERROR, "No permission", null);
+            }
+
+            Calamity returnCal = calamityRepo.getCalamity(calamityId);
+
             return new ConfirmationMessage(ConfirmationMessage.StatusType.SUCCES, "got calamity", returnCal);
         } catch (Exception e) {
-            return new ConfirmationMessage(ConfirmationMessage.StatusType.ERROR, "Error while loading calamity", null);
+            return new ConfirmationMessage(ConfirmationMessage.StatusType.ERROR, "Error while loading calamity",
+                    null);
         }
     }
 
@@ -82,11 +99,18 @@ public class CalamityLogic {
      * @return ConfirmationMessage with feedback.
      */
     public ConfirmationMessage addCalamity(String token, String name, String description, Location location, boolean isConfirmed, boolean isClosed) {
-        //check token
+
         try {
             User user = userRepo.getUser(token);
+
+            if (!user.getUserType().containsPermission(UserType.Permission.CALAMITY_ADD)) {
+                return new ConfirmationMessage(
+                        ConfirmationMessage.StatusType.ERROR, "No permission", null);
+            }
+
             Calamity calamity = new Calamity(-1, location, user, isConfirmed, isClosed, new Date(), name, description);
             calamityRepo.addCalamity(calamity);
+
             return new ConfirmationMessage(ConfirmationMessage.StatusType.SUCCES, "Added calamity", calamity);
         } catch (Exception e) {
             return new ConfirmationMessage(ConfirmationMessage.StatusType.ERROR, "Error while adding a calamity", null);
@@ -95,6 +119,11 @@ public class CalamityLogic {
 
     public ConfirmationMessage deleteCalamity(String token, int calamityId){
         try {
+            if (!userRepo.getUser(token).getUserType().containsPermission(UserType.Permission.CALAMITY_DELETE)) {
+                return new ConfirmationMessage(
+                        ConfirmationMessage.StatusType.ERROR, "No permission", null);
+            }
+
             userRepo.getUser(token);
             calamityRepo.deleteCalamity(calamityId);
 
@@ -112,9 +141,13 @@ public class CalamityLogic {
      * @return ConfirmationMessage with feedback.
      */
     public ConfirmationMessage addCalamityAssignee(String token, int calamityId, int userId) {
-        // check token
 
         try {
+            if (!userRepo.getUser(token).getUserType().containsPermission(UserType.Permission.CALAMITY_ADD_ASSIGNEE)) {
+                return new ConfirmationMessage(
+                        ConfirmationMessage.StatusType.ERROR, "No permission", null);
+            }
+
             calamityRepo.addCalamityAssignee(calamityId, userId);
 
             return new ConfirmationMessage(ConfirmationMessage.StatusType.SUCCES,
@@ -135,9 +168,13 @@ public class CalamityLogic {
      * @return ConfirmationMessage with feedback.
      */
     public ConfirmationMessage deleteCalamityAssignee(String token, int calamityId, int userId) {
-        // check token
 
         try {
+            if (!userRepo.getUser(token).getUserType().containsPermission(UserType.Permission.CALAMITY_DELETE_ASSIGNEE)) {
+                return new ConfirmationMessage(
+                        ConfirmationMessage.StatusType.ERROR, "No permission", null);
+            }
+
             calamityRepo.deleteCalamityAssignee(calamityId, userId);
 
             return new ConfirmationMessage(ConfirmationMessage.StatusType.SUCCES,

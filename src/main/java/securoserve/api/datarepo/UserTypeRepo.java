@@ -44,6 +44,7 @@ public class UserTypeRepo {
                     userType.addPermission(permission);
                 } else {
                     userType = new UserType(userTypeName);
+                    userType.addPermission(permission);
                 }
             }
         }
