@@ -1,5 +1,6 @@
 package securoserve.library;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -73,6 +74,8 @@ public class Calamity {
         this.title = title;
         this.message = message;
         this.state = updateStatus();
+
+        assignees = new ArrayList<>();
     }
 
     /**
