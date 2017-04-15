@@ -134,13 +134,16 @@ public class CalamityRepo {
      * @throws NoSuchAlgorithmException exception when Algorithm is not found
      */
     public void deleteCalamity(int id) throws ParseException, NoSuchAlgorithmException, SQLException {
+        String query = "DELETE FROM securoserve.Location WHERE ID = (SELECT LocationId FROM securoserve.Calamity WHERE ID = ?)";
 
-        String query = "DELETE c, l FROM Calamity c INNER JOIN Location l ON l.id = c.locationID WHERE c.id = ?";
         List<Object> parameters = new ArrayList<>();
         parameters.add(id);
 
         database.executeQuery(query, parameters, Database.QueryType.NON_QUERY);
 
+        query = "DELETE FROM securoserve.Calamity WHERE ID = ?";
+
+        database.executeQuery(query, parameters, Database.QueryType.NON_QUERY);
     }
 
     public List<Calamity> allCalamity() throws SQLException, ParseException, NoSuchAlgorithmException {
