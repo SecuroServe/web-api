@@ -16,7 +16,7 @@ public class LoginControllerTest {
         LoginController lc = new LoginController();
         TestUtil.createTempUser();
 
-        String token = lc.login(TestUtil.USERNAME, TestUtil.PASSWORD);
+        String token = (String) lc.login(TestUtil.USERNAME, TestUtil.PASSWORD).getReturnObject();
 
         Assert.assertEquals(true, token.length() > 5);
 

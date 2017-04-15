@@ -13,6 +13,6 @@ public interface ILogin {
      * @param password The password of the user.
      * @return The token of the user.
      */
-    String login(String username,
+    ConfirmationMessage login(String username,
                  String password);
 }

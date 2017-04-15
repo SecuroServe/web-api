@@ -5,7 +5,9 @@ import securoserve.api.controllers.LoginController;
 import securoserve.api.controllers.UserController;
 import securoserve.api.datarepo.Database;
 import securoserve.api.datarepo.UserRepo;
+import securoserve.api.interfaces.ConfirmationMessage;
 import securoserve.library.User;
+import securoserve.library.exceptions.WrongUsernameOrPasswordException;
 
 /**
  * Created by Jandie on 12-Apr-17.
@@ -23,8 +25,10 @@ public class TestUtil {
 
         userRepo.deleteUser(user.getId());
 
-        String token = lc.login(USERNAME, PASSWORD);
-        Assert.assertEquals(null, token);
+        ConfirmationMessage cm = lc.login(USERNAME, PASSWORD);
+        Assert.assertEquals(ConfirmationMessage.StatusType.ERROR, cm.getStatus());
+        Assert.assertEquals(true,
+                cm.getReturnObject() instanceof WrongUsernameOrPasswordException);
     }
 
     public static User createTempUser() throws Exception {

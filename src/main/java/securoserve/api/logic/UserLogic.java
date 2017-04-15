@@ -7,6 +7,7 @@ import securoserve.api.datarepo.UserRepo;
 import securoserve.api.interfaces.ConfirmationMessage;
 import securoserve.library.User;
 import securoserve.library.UserType;
+import securoserve.library.exceptions.WrongUsernameOrPasswordException;
 
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
@@ -26,14 +27,22 @@ public class UserLogic {
         userRepo = new UserRepo(database);
     }
 
-    public String login(String username, String password) {
+    public ConfirmationMessage login(String username, String password) {
         try {
-            return new UserRepo(database).login(username, password);
+            String token = userRepo.login(username, password);
+
+            return new ConfirmationMessage(ConfirmationMessage.StatusType.SUCCES,
+                    "Login successful!", token);
         } catch (SQLException | ParseException | NoSuchAlgorithmException e) {
             Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE,
                     "Login failed!", e);
 
             return null;
+        } catch (WrongUsernameOrPasswordException e) {
+            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE,
+                    "Login failed!", e);
+
+            return new ConfirmationMessage(ConfirmationMessage.StatusType.ERROR, e.getMessage(), e);
         }
     }
 

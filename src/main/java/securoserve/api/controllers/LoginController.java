@@ -3,6 +3,7 @@ package securoserve.api.controllers;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import securoserve.api.interfaces.ConfirmationMessage;
 import securoserve.api.interfaces.ILogin;
 import securoserve.api.logic.UserLogic;
 
@@ -28,8 +29,8 @@ public class LoginController implements ILogin {
      * @return The token of the user.
      */
     @RequestMapping("/login")
-    public String login(@RequestParam(value = "username", defaultValue = "") String username,
-                        @RequestParam(value = "password", defaultValue = "") String password) {
+    public ConfirmationMessage login(@RequestParam(value = "username", defaultValue = "") String username,
+                                     @RequestParam(value = "password", defaultValue = "") String password) {
         return userLogic.login(username, password);
     }
 }
