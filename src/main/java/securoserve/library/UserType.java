@@ -1,5 +1,7 @@
 package securoserve.library;
 
+import securoserve.library.exceptions.NoPermissionException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,14 +27,14 @@ public class UserType {
         permissions.add(permission);
     }
 
-    public boolean containsPermission(Permission permission) {
+    public void containsPermission(Permission permission) throws NoPermissionException {
         for (Permission p : permissions) {
             if (permission.equals(p)) {
-                return true;
+                return;
             }
         }
 
-        return false;
+        throw new NoPermissionException("No permission!");
     }
 
     public enum Permission {

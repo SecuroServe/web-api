@@ -39,7 +39,7 @@ public class TestUtil {
         User user = userRepo.register(1, -1,
                 USERNAME, PASSWORD, EMAIL, CITY);
 
-        user = uc.getUser(user.getToken());
+        user = (User) uc.getUser(user.getToken()).getReturnObject();
         Assert.assertEquals(USERNAME, user.getUsername());
         Assert.assertEquals(EMAIL, user.getEmail());
         Assert.assertEquals(CITY, user.getCity());

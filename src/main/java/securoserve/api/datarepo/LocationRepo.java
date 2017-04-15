@@ -7,6 +7,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Manages Location in the database.
+ */
 public class LocationRepo {
 
     private Database database;

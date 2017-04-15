@@ -17,7 +17,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Manager user in the database.
+ * Manages user in the database.
  * <p>
  * Created by Jandie on 20-3-2017.
  */
