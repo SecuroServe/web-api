@@ -6,11 +6,9 @@ import org.springframework.web.bind.annotation.RestController;
 import securoserve.api.interfaces.ConfirmationMessage;
 import securoserve.api.interfaces.IUser;
 import securoserve.api.logic.UserLogic;
-import securoserve.library.User;
 
 import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
-import java.util.List;
 
 /**
  * Created by Jandie on 20-3-2017.
@@ -33,7 +31,7 @@ public class UserController implements IUser {
      */
     @Override
     @RequestMapping("/allusers")
-    public List<User> allusers(@RequestParam(value = "token") String token) {
+    public ConfirmationMessage allusers(@RequestParam(value = "token") String token) {
         return null;
     }
 
@@ -45,7 +43,7 @@ public class UserController implements IUser {
      */
     @Override
     @RequestMapping("/getuser")
-    public User getUser(@RequestParam(value = "usertoken") String userToken) {
+    public ConfirmationMessage getUser(@RequestParam(value = "usertoken") String userToken) {
 
         try {
             return userLogic.getUser(userToken);

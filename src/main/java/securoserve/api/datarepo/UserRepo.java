@@ -3,6 +3,7 @@ package securoserve.api.datarepo;
 import securoserve.api.utils.HashUtil;
 import securoserve.library.User;
 import securoserve.library.UserType;
+import securoserve.library.exceptions.WrongUsernameOrPasswordException;
 
 import java.security.NoSuchAlgorithmException;
 import java.sql.ResultSet;
@@ -16,7 +17,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Manager user in the database.
+ * Manages user in the database.
  * <p>
  * Created by Jandie on 20-3-2017.
  */
@@ -50,11 +51,10 @@ public class UserRepo {
      * @throws NoSuchAlgorithmException
      */
     public String login(String username, String password) throws SQLException,
-            ParseException, NoSuchAlgorithmException {
+            ParseException, NoSuchAlgorithmException, WrongUsernameOrPasswordException {
 
         String salt = getUserSalt(username);
         password = HashUtil.hashPassword(password, salt, "SHA-256", "UTF-8");
-        int userId;
         String tokenExpiration;
         String token = null;
 
@@ -69,6 +69,8 @@ public class UserRepo {
                 token = rs.getString(2);
                 tokenExpiration = rs.getString(3);
                 token = getToken(token, tokenExpiration);
+            } else {
+                throw new WrongUsernameOrPasswordException("Wrong username or password!");
             }
         }
 

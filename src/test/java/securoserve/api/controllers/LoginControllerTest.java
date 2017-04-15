@@ -10,17 +10,22 @@ import securoserve.library.User;
  */
 public class LoginControllerTest {
 
+    /**
+     * Tests the login method in LoginController.
+     *
+     * @throws Exception
+     */
     @Test
     public void login() throws Exception {
         UserController uc = new UserController();
         LoginController lc = new LoginController();
         TestUtil.createTempUser();
 
-        String token = lc.login(TestUtil.USERNAME, TestUtil.PASSWORD);
+        String token = (String) lc.login(TestUtil.USERNAME, TestUtil.PASSWORD).getReturnObject();
 
         Assert.assertEquals(true, token.length() > 5);
 
-        User user = uc.getUser(token);
+        User user = (User) uc.getUser(token).getReturnObject();
         Assert.assertEquals(TestUtil.USERNAME, user.getUsername());
         Assert.assertEquals(TestUtil.EMAIL, user.getEmail());
         Assert.assertEquals(TestUtil.CITY, user.getCity());

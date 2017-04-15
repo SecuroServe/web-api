@@ -15,6 +15,11 @@ import java.util.List;
  */
 public class CalamityControllerTest {
 
+    /**
+     * Tests the allCalamity method in CalamityController.
+     *
+     * @throws Exception
+     */
     @Test
     public void allCalamity() throws Exception {
         CalamityController cc = new CalamityController();
@@ -49,6 +54,11 @@ public class CalamityControllerTest {
         TestUtil.deleteTempUser(user);
     }
 
+    /**
+     * Tests the addCalamityAssignee method in CalamityController.
+     *
+     * @throws Exception
+     */
     @Test
     public void addCalamityAssignee() throws Exception {
         CalamityController cc = new CalamityController();
@@ -78,7 +88,13 @@ public class CalamityControllerTest {
     }
 
 
-
+    /**
+     * Checks if a user is assigned to a calamity.
+     *
+     * @param user     The user.
+     * @param calamity The calamity.
+     * @return Whether or not the user is assigned to the calamity.
+     */
     private boolean isAssigned(User user, Calamity calamity) {
         for (User u : calamity.getAssignees()) {
             if (u.getId() == user.getId()) {

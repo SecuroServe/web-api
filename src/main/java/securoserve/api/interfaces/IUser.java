@@ -1,9 +1,5 @@
 package securoserve.api.interfaces;
 
-import securoserve.library.User;
-
-import java.util.List;
-
 /**
  * Created by Jandie on 13-3-2017.
  */
@@ -15,7 +11,7 @@ public interface IUser {
      * @param token The authentication token.
      * @return A list of exsisting users.
      */
-    List<User> allusers(String token);
+    ConfirmationMessage allusers(String token);
 
     /**
      * Gets a user by token.
@@ -23,7 +19,7 @@ public interface IUser {
      * @param userToken The token of the user.
      * @return The user.
      */
-    User getUser(String userToken);
+    ConfirmationMessage getUser(String userToken);
 
     /**
      * Inserts a new user to the database.
