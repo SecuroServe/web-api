@@ -3,8 +3,8 @@ package securoserve.api;
 import org.junit.Assert;
 import securoserve.api.controllers.LoginController;
 import securoserve.api.controllers.UserController;
-import securoserve.api.datarepo.Database;
 import securoserve.api.datarepo.UserRepo;
+import securoserve.api.datarepo.database.Database;
 import securoserve.api.interfaces.ConfirmationMessage;
 import securoserve.library.User;
 import securoserve.library.exceptions.WrongUsernameOrPasswordException;
@@ -17,6 +17,11 @@ public class TestUtil {
     public static final String PASSWORD = "testpwd*()1223";
     public static final String EMAIL = "testuser789987@test123weqr456.nl";
     public static final String CITY = "Amsterdam";
+    public static final String TEST_DB_PROPERTIES = "/properties/test_db.properties";
+
+    public static void cleanAndBuildTestDatabase() {
+
+    }
 
     public static void deleteTempUser(User user) throws Exception {
         LoginController lc = new LoginController();

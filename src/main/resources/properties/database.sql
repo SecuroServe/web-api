@@ -205,26 +205,26 @@ CREATE TABLE UserTypePermission
   PermissionID INT NOT NULL
 );
 
-INSERT INTO securoserve.UserType (Naam) VALUES ('Administrator');
+INSERT INTO UserType (Naam) VALUES ('Administrator');
 
-INSERT INTO securoserve.Permission (Node, Description) VALUES ('CALAMITY_ADD', 'Permissions to add a Calamity');
-INSERT INTO securoserve.Permission (Node, Description) VALUES ('CALAMITY_UPDATE', 'Permissions to update a Calamity');
-INSERT INTO securoserve.Permission (Node, Description) VALUES ('CALAMITY_GET', 'Permissions to get a Calamity');
-INSERT INTO securoserve.Permission (Node, Description) VALUES ('CALAMITY_DELETE', 'Permissions to delete a Calamity');
-INSERT INTO securoserve.Permission (Node, Description) VALUES ('USER_REGISTER', 'Permissions to register an User');
-INSERT INTO securoserve.Permission (Node, Description) VALUES ('USER_DELETE', 'Permissions to delete an User');
-INSERT INTO securoserve.Permission (Node, Description) VALUES ('USER_UPDATE', 'Permissions to update an User');
-INSERT INTO securoserve.Permission (Node, Description)
+INSERT INTO Permission (Node, Description) VALUES ('CALAMITY_ADD', 'Permissions to add a Calamity');
+INSERT INTO Permission (Node, Description) VALUES ('CALAMITY_UPDATE', 'Permissions to update a Calamity');
+INSERT INTO Permission (Node, Description) VALUES ('CALAMITY_GET', 'Permissions to get a Calamity');
+INSERT INTO Permission (Node, Description) VALUES ('CALAMITY_DELETE', 'Permissions to delete a Calamity');
+INSERT INTO Permission (Node, Description) VALUES ('USER_REGISTER', 'Permissions to register an User');
+INSERT INTO Permission (Node, Description) VALUES ('USER_DELETE', 'Permissions to delete an User');
+INSERT INTO Permission (Node, Description) VALUES ('USER_UPDATE', 'Permissions to update an User');
+INSERT INTO Permission (Node, Description)
 VALUES ('CALAMITY_ADD_ASSIGNEE', 'Permissions to add an Assignee to a Calamity');
-INSERT INTO securoserve.Permission (Node, Description)
+INSERT INTO Permission (Node, Description)
 VALUES ('CALAMITY_DELETE_ASSIGNEE', 'Permissions to remove an Assignee to a Calamity');
 
-INSERT INTO securoserve.UserTypePermission (UserTypeID, PermissionID) VALUES (1, 1);
-INSERT INTO securoserve.UserTypePermission (UserTypeID, PermissionID) VALUES (1, 2);
-INSERT INTO securoserve.UserTypePermission (UserTypeID, PermissionID) VALUES (1, 3);
-INSERT INTO securoserve.UserTypePermission (UserTypeID, PermissionID) VALUES (1, 4);
-INSERT INTO securoserve.UserTypePermission (UserTypeID, PermissionID) VALUES (1, 5);
-INSERT INTO securoserve.UserTypePermission (UserTypeID, PermissionID) VALUES (1, 6);
-INSERT INTO securoserve.UserTypePermission (UserTypeID, PermissionID) VALUES (1, 7);
-INSERT INTO securoserve.UserTypePermission (UserTypeID, PermissionID) VALUES (1, 8);
-INSERT INTO securoserve.UserTypePermission (UserTypeID, PermissionID) VALUES (1, 9);
+INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (1, 1);
+INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (1, 2);
+INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (1, 3);
+INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (1, 4);
+INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (1, 5);
+INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (1, 6);
+INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (1, 7);
+INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (1, 8);
+INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (1, 9);
