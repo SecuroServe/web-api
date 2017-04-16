@@ -42,14 +42,20 @@ public final class Database implements AutoCloseable {
     /**
      * Constructor for the database class which creates a new instance of the
      * Database.
+     *
+     * @param dbProperties The path to the properties file.
      */
     public Database(String dbProperties) {
-        if (dbProperties == null) {
-            initProps(DB_PROPERTIES);
-        } else {
-            initProps(dbProperties);
-        }
+        initProps(dbProperties);
+        init(dbUrl, dbUser, dbPass);
+    }
 
+    /**
+     * Constructor for the database class which creates a new instance of the
+     * Database.
+     */
+    public Database() {
+        initProps(DB_PROPERTIES);
         init(dbUrl, dbUser, dbPass);
     }
 
