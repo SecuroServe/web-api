@@ -43,36 +43,14 @@ public final class Database implements AutoCloseable {
      * Constructor for the database class which creates a new instance of the
      * Database.
      */
-    public Database() {
-        initProps(DB_PROPERTIES);
-        init(dbUrl, dbUser, dbPass);
-    }
-
-    /**
-     * Alternative constructor for the database class which creates a new
-     * instance of the Database. This constructor is only to be used in
-     * unit tests.
-     *
-     * @param url  The url of the database for jdbc.
-     * @param user The database user.
-     * @param pass The database password.
-     */
-    public Database(String url, String user, String pass) {
-        init(url, user, pass);
-    }
-
-    /**
-     * Gets the instance or creates a new one depending whether or not the
-     * instance is already instantiated.
-     *
-     * @return The instance of Database.
-     */
-    public static Database getInstance() {
-        if (instance == null) {
-            instance = new Database();
+    public Database(String dbProperties) {
+        if (dbProperties == null) {
+            initProps(DB_PROPERTIES);
+        } else {
+            initProps(dbProperties);
         }
 
-        return instance;
+        init(dbUrl, dbUser, dbPass);
     }
 
     /**
@@ -88,15 +66,6 @@ public final class Database implements AutoCloseable {
         } catch (Exception e) {
             Logger.getLogger(Database.class.getName()).log(Level.SEVERE, "Connection Failed! Cause:", e);
         }
-    }
-
-    /**
-     * Gets the connection state of the database.
-     *
-     * @return Connection to see the state of the connection with the database.
-     */
-    public Connection getConnection() {
-        return conn;
     }
 
     /**
