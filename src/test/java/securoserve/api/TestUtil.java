@@ -5,6 +5,7 @@ import securoserve.api.controllers.LoginController;
 import securoserve.api.controllers.UserController;
 import securoserve.api.datarepo.UserRepo;
 import securoserve.api.datarepo.database.Database;
+import securoserve.api.datarepo.database.MySqlParser;
 import securoserve.api.interfaces.ConfirmationMessage;
 import securoserve.library.User;
 import securoserve.library.exceptions.WrongUsernameOrPasswordException;
@@ -20,8 +21,13 @@ public class TestUtil {
     public static final String TEST_DB_PROPERTIES = "/properties/test_db.properties";
     public static final String TEST_DB_SCRIPT = "./src/main/resources/properties/database.sql";
 
-    public static void cleanAndBuildTestDatabase() {
+    public static void cleanAndBuildTestDatabase() throws Exception {
+        Database database = new Database(TestUtil.TEST_DB_PROPERTIES);
+        System.out.println("Working Directory = " +
+                System.getProperty("user.dir"));
+        MySqlParser mySqlParser = new MySqlParser(database, TestUtil.TEST_DB_SCRIPT);
 
+        mySqlParser.execute();
     }
 
     public static void deleteTempUser(User user) throws Exception {

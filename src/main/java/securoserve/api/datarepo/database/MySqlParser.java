@@ -26,25 +26,6 @@ public class MySqlParser {
         this.path = path;
     }
 
-    public void Execute() throws Exception {
-        queries = parseQueries(this.path);
-
-        for (String query : queries) {
-            try {
-                database.executeQuery(query, new ArrayList<>(), Database.QueryType.NON_QUERY);
-            } catch (Exception e) {
-
-            }
-        }
-    }
-
-    private List<String> parseQueries(String path) throws Exception {
-        String lines = readFile(path, StandardCharsets.UTF_8);
-        lines = lines.replaceAll("[\r\n]", "");
-
-        return Arrays.asList(lines.split(DELIMITER));
-    }
-
     static String readFile(String path, Charset encoding)
             throws Exception {
 
@@ -62,5 +43,20 @@ public class MySqlParser {
 
         byte[] encoded = buffer.toByteArray();
         return new String(encoded, encoding);
+    }
+
+    public void execute() throws Exception {
+        queries = parseQueries(this.path);
+
+        for (String query : queries) {
+            database.executeQuery(query, new ArrayList<>(), Database.QueryType.NON_QUERY);
+        }
+    }
+
+    private List<String> parseQueries(String path) throws Exception {
+        String lines = readFile(path, StandardCharsets.UTF_8);
+        lines = lines.replaceAll("[\r\n]", "");
+
+        return Arrays.asList(lines.split(DELIMITER));
     }
 }

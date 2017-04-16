@@ -9,11 +9,6 @@ import securoserve.api.TestUtil;
 public class MySqlParserTest {
     @Test
     public void testParser() throws Exception {
-        Database database = new Database(TestUtil.TEST_DB_PROPERTIES);
-        System.out.println("Working Directory = " +
-                System.getProperty("user.dir"));
-        MySqlParser mySqlParser = new MySqlParser(database, TestUtil.TEST_DB_SCRIPT);
-
-        mySqlParser.Execute();
+        TestUtil.cleanAndBuildTestDatabase();
     }
 }
