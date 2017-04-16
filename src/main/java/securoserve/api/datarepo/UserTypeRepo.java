@@ -1,5 +1,6 @@
 package securoserve.api.datarepo;
 
+import securoserve.api.datarepo.database.Database;
 import securoserve.library.UserType;
 
 import java.sql.ResultSet;
@@ -29,10 +30,10 @@ public class UserTypeRepo {
     public UserType getUserTypeOfUser(int userId) throws SQLException {
         UserType userType = null;
 
-        String query = "SELECT ut.Naam, p.`Node` FROM `securoserve`.`Permission` p " +
-                "INNER JOIN `securoserve`.`UserTypePermission` utp ON utp.PermissionID = p.ID " +
-                "INNER JOIN `securoserve`.`UserType` ut ON ut.ID = utp.UserTypeID " +
-                "INNER JOIN `securoserve`.`User` u ON u.UserTypeID = ut.ID " +
+        String query = "SELECT ut.Naam, p.`Node` FROM `Permission` p " +
+                "INNER JOIN `UserTypePermission` utp ON utp.PermissionID = p.ID " +
+                "INNER JOIN `UserType` ut ON ut.ID = utp.UserTypeID " +
+                "INNER JOIN `User` u ON u.UserTypeID = ut.ID " +
                 "WHERE u.ID = ?";
 
         List<Object> parameters = new ArrayList<>();

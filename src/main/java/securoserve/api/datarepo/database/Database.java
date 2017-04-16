@@ -1,4 +1,4 @@
-package securoserve.api.datarepo;
+package securoserve.api.datarepo.database;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -17,7 +17,7 @@ public final class Database implements AutoCloseable {
     /**
      * String that contains the name of the database properties file.
      */
-    private static final String DB_PROPERTIES = "/properties/database.properties";
+    private static final String DB_PROPERTIES = "/properties/db.properties";
     /**
      * Instance of the database.
      */
@@ -42,37 +42,21 @@ public final class Database implements AutoCloseable {
     /**
      * Constructor for the database class which creates a new instance of the
      * Database.
+     *
+     * @param dbProperties The path to the properties file.
      */
-    public Database() {
-        initProps(DB_PROPERTIES);
+    public Database(String dbProperties) {
+        initProps(dbProperties);
         init(dbUrl, dbUser, dbPass);
     }
 
     /**
-     * Alternative constructor for the database class which creates a new
-     * instance of the Database. This constructor is only to be used in
-     * unit tests.
-     *
-     * @param url  The url of the database for jdbc.
-     * @param user The database user.
-     * @param pass The database password.
+     * Constructor for the database class which creates a new instance of the
+     * Database.
      */
-    public Database(String url, String user, String pass) {
-        init(url, user, pass);
-    }
-
-    /**
-     * Gets the instance or creates a new one depending whether or not the
-     * instance is already instantiated.
-     *
-     * @return The instance of Database.
-     */
-    public static Database getInstance() {
-        if (instance == null) {
-            instance = new Database();
-        }
-
-        return instance;
+    public Database() {
+        initProps(DB_PROPERTIES);
+        init(dbUrl, dbUser, dbPass);
     }
 
     /**
@@ -88,15 +72,6 @@ public final class Database implements AutoCloseable {
         } catch (Exception e) {
             Logger.getLogger(Database.class.getName()).log(Level.SEVERE, "Connection Failed! Cause:", e);
         }
-    }
-
-    /**
-     * Gets the connection state of the database.
-     *
-     * @return Connection to see the state of the connection with the database.
-     */
-    public Connection getConnection() {
-        return conn;
     }
 
     /**
@@ -169,7 +144,7 @@ public final class Database implements AutoCloseable {
         Properties prop = new Properties();
 
         try {
-            prop.load(getClass().getResourceAsStream("/properties/db.properties"));
+            prop.load(getClass().getResourceAsStream(properties));
         } catch (Exception e) {
             Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, e);
         }

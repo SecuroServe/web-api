@@ -1,8 +1,11 @@
 package securoserve.api.controllers;
 
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import securoserve.api.TestUtil;
+import securoserve.api.datarepo.database.Database;
 import securoserve.api.interfaces.ConfirmationMessage;
 import securoserve.library.Calamity;
 import securoserve.library.Location;
@@ -14,6 +17,18 @@ import java.util.List;
  * Created by Jandie on 10-Apr-17.
  */
 public class CalamityControllerTest {
+    private Database database;
+    private CalamityController cc;
+    private UserController uc;
+    private User user;
+
+    @Before
+    public void setUp() throws Exception {
+        database = TestUtil.cleanAndBuildTestDatabase();
+        cc = new CalamityController(database);
+        uc = new UserController(database);
+        user = TestUtil.createTempUser(database);
+    }
 
     /**
      * Tests the allCalamity method in CalamityController.
@@ -22,10 +37,6 @@ public class CalamityControllerTest {
      */
     @Test
     public void allCalamity() throws Exception {
-        CalamityController cc = new CalamityController();
-        UserController uc = new UserController();
-        User user = TestUtil.createTempUser();
-
         Location location = new Location(-1, 5, 51, 1);
 
         Calamity c1 = (Calamity) cc.addCalamity(user.getToken(), "nine-eleven-test",
@@ -50,8 +61,6 @@ public class CalamityControllerTest {
 
         ConfirmationMessage.StatusType status = cc.deleteCalamity(user.getToken(), c1.getId()).getStatus();
         Assert.assertEquals(ConfirmationMessage.StatusType.SUCCES, status);
-
-        TestUtil.deleteTempUser(user);
     }
 
     /**
@@ -61,10 +70,6 @@ public class CalamityControllerTest {
      */
     @Test
     public void addCalamityAssignee() throws Exception {
-        CalamityController cc = new CalamityController();
-        UserController uc = new UserController();
-        User user = TestUtil.createTempUser();
-
         Location location = new Location(-1, 5, 51, 1);
 
         Calamity c1 = (Calamity) cc.addCalamity(user.getToken(), "nine-eleven-test",
@@ -83,8 +88,11 @@ public class CalamityControllerTest {
         Assert.assertEquals(false, isAssigned(user, c1));
 
         cc.deleteCalamity(user.getToken(), c1.getId());
+    }
 
-        TestUtil.deleteTempUser(user);
+    @After
+    public void tearDown() throws Exception {
+        TestUtil.deleteTempUser(user, database);
     }
 
 

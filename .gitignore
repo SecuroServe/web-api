@@ -94,3 +94,4 @@ fabric.properties
 /gradlew
 /gradlew.bat
 /web-api.ipr
+/src/main/resources/properties/test_db.properties

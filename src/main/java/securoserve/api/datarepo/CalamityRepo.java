@@ -1,5 +1,6 @@
 package securoserve.api.datarepo;
 
+import securoserve.api.datarepo.database.Database;
 import securoserve.library.Calamity;
 import securoserve.library.Location;
 import securoserve.library.User;
@@ -34,7 +35,7 @@ public class CalamityRepo {
     public void addCalamity(Calamity calamity) throws SQLException {
         new LocationRepo(database).addLocation(calamity.getLocation());
 
-        String query = "INSERT INTO `securoserve`.`Calamity` " +
+        String query = "INSERT INTO `Calamity` " +
                 "(`LocationID`, `CreatedByUserID`, `isConfirmed`, `isClosed`, `Time`, `Title`, `Message`) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
@@ -64,7 +65,7 @@ public class CalamityRepo {
 
         Location location = new LocationRepo(database).updateLocation(calamity.getLocation());
 
-        String query = "UPDATE `securoserve`.`Calamity` SET `LocationID` = ?, `CreatedByUserID` = ?, `isConfirmed` = ?, `isClosed` = ?, `Time` = ?, `Title` = ?, `Message` = ? WHERE `id` = ?";
+        String query = "UPDATE `Calamity` SET `LocationID` = ?, `CreatedByUserID` = ?, `isConfirmed` = ?, `isClosed` = ?, `Time` = ?, `Title` = ?, `Message` = ? WHERE `id` = ?";
 
         List<Object> parameters = new ArrayList<>();
         parameters.add(location.getId());
@@ -95,7 +96,7 @@ public class CalamityRepo {
 
         String query = "SELECT `LocationID`, `CreatedByUserID`, `isConfirmed`, " +
                 "`isClosed`, `Time`, `Title`, `Message` " +
-                "FROM `securoserve`.`Calamity` " +
+                "FROM `Calamity` " +
                 "WHERE `ID` = ?";
 
         List<Object> parameters = new ArrayList<>();
@@ -134,14 +135,14 @@ public class CalamityRepo {
      * @throws NoSuchAlgorithmException exception when Algorithm is not found
      */
     public void deleteCalamity(int id) throws ParseException, NoSuchAlgorithmException, SQLException {
-        String query = "DELETE FROM securoserve.Location WHERE ID = (SELECT LocationId FROM securoserve.Calamity WHERE ID = ?)";
+        String query = "DELETE FROM Location WHERE ID = (SELECT LocationId FROM Calamity WHERE ID = ?)";
 
         List<Object> parameters = new ArrayList<>();
         parameters.add(id);
 
         database.executeQuery(query, parameters, Database.QueryType.NON_QUERY);
 
-        query = "DELETE FROM securoserve.Calamity WHERE ID = ?";
+        query = "DELETE FROM Calamity WHERE ID = ?";
 
         database.executeQuery(query, parameters, Database.QueryType.NON_QUERY);
     }
@@ -154,7 +155,7 @@ public class CalamityRepo {
 
         String query = "SELECT `ID`, `LocationID`, `CreatedByUserID`, `isConfirmed`, " +
                 "`isClosed`, `Time`, `Title`, `Message` " +
-                "FROM `securoserve`.`Calamity`";
+                "FROM `Calamity`";
 
         List<Object> parameters = new ArrayList<>();
 
@@ -185,7 +186,7 @@ public class CalamityRepo {
      * @throws SQLException Database error.
      */
     public void addCalamityAssignee(int calamityId, int userId) throws SQLException {
-        String query = "INSERT INTO `securoserve`.`CalamityAssignee` (`CalamityID`, `AssigneeID`) VALUES (?, ?)";
+        String query = "INSERT INTO `CalamityAssignee` (`CalamityID`, `AssigneeID`) VALUES (?, ?)";
 
         List<Object> parameters = new ArrayList<>();
         parameters.add(calamityId);
@@ -205,8 +206,8 @@ public class CalamityRepo {
         List<User> assignees = new ArrayList<>();
 
         String query = "SELECT u.`ID`, u.`UserTypeID`, u.`BuildingID`, u.`Username`, u.`Email`, u.`City` " +
-                "FROM `securoserve`.`CalamityAssignee` ca " +
-                "INNER JOIN `securoserve`.`User` u ON ca.AssigneeID = u.ID " +
+                "FROM `CalamityAssignee` ca " +
+                "INNER JOIN `User` u ON ca.AssigneeID = u.ID " +
                 "WHERE `CalamityID` = ?";
 
         List<Object> parameters = new ArrayList<>();
@@ -236,7 +237,7 @@ public class CalamityRepo {
      * @throws SQLException Database error.
      */
     public void deleteCalamityAssignee(int calamityId, int userId) throws SQLException {
-        String query = "DELETE FROM `securoserve`.`CalamityAssignee` WHERE `CalamityID` = ? AND `AssigneeID` = ?";
+        String query = "DELETE FROM `CalamityAssignee` WHERE `CalamityID` = ? AND `AssigneeID` = ?";
 
         List<Object> parameters = new ArrayList<>();
         parameters.add(calamityId);

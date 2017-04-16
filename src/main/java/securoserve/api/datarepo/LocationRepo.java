@@ -1,5 +1,6 @@
 package securoserve.api.datarepo;
 
+import securoserve.api.datarepo.database.Database;
 import securoserve.library.Location;
 
 import java.sql.ResultSet;
@@ -26,7 +27,7 @@ public class LocationRepo {
      * @throws SQLException exception when an SQL Error occurs
      */
     public void addLocation(Location location) throws SQLException {
-        String query = "INSERT INTO `securoserve`.`Location` " +
+        String query = "INSERT INTO `Location` " +
                 "(`Latitude`, `Longitude`, `Radius`) " +
                 "VALUES (?, ?, ?)";
 
@@ -51,7 +52,7 @@ public class LocationRepo {
      */
     public Location updateLocation(Location location) throws SQLException {
 
-        String query = "UPDATE `securoserve`.`Location` SET `Latitude` = ?, `Longitude` = ?, `Radius` = ? WHERE `id` = ?";
+        String query = "UPDATE `Location` SET `Latitude` = ?, `Longitude` = ?, `Radius` = ? WHERE `id` = ?";
 
         List<Object> parameters = new ArrayList<>();
         parameters.add(location.getLatitude());
@@ -71,7 +72,7 @@ public class LocationRepo {
      * @throws SQLException exception when an SQL Error occurs
      */
     public void deleteLocation(int id) throws SQLException {
-        String query = "DELETE FROM `securoserve`.`Location` WHERE `id` = ?";
+        String query = "DELETE FROM `Location` WHERE `id` = ?";
 
         List<Object> parameters = new ArrayList<>();
         parameters.add(id);
@@ -89,7 +90,7 @@ public class LocationRepo {
     public Location getLocation(int id) throws SQLException {
         Location location = null;
 
-        String query = "SELECT `ID`, `Latitude`, `Longitude`, `Radius` FROM `securoserve`.`Location` WHERE `ID` = ?";
+        String query = "SELECT `ID`, `Latitude`, `Longitude`, `Radius` FROM `Location` WHERE `ID` = ?";
 
         List<Object> parameters = new ArrayList<>();
         parameters.add(id);
