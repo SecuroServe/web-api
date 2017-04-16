@@ -21,19 +21,20 @@ public class TestUtil {
     public static final String TEST_DB_PROPERTIES = "/properties/test_db.properties";
     public static final String TEST_DB_SCRIPT = "./src/main/resources/properties/database.sql";
 
-    public static void cleanAndBuildTestDatabase() throws Exception {
+    public static Database cleanAndBuildTestDatabase() throws Exception {
         Database database = new Database(TestUtil.TEST_DB_PROPERTIES);
         System.out.println("Working Directory = " +
                 System.getProperty("user.dir"));
         MySqlParser mySqlParser = new MySqlParser(database, TestUtil.TEST_DB_SCRIPT);
 
         mySqlParser.execute();
+
+        return database;
     }
 
-    public static void deleteTempUser(User user) throws Exception {
-        LoginController lc = new LoginController();
-        Database db = new Database();
-        UserRepo userRepo = new UserRepo(db);
+    public static void deleteTempUser(User user, Database database) throws Exception {
+        LoginController lc = new LoginController(database);
+        UserRepo userRepo = new UserRepo(database);
 
         userRepo.deleteUser(user.getId());
 
@@ -43,10 +44,9 @@ public class TestUtil {
                 cm.getReturnObject() instanceof WrongUsernameOrPasswordException);
     }
 
-    public static User createTempUser() throws Exception {
-        UserController uc = new UserController();
-        Database db = new Database();
-        UserRepo userRepo = new UserRepo(db);
+    public static User createTempUser(Database database) throws Exception {
+        UserController uc = new UserController(database);
+        UserRepo userRepo = new UserRepo(database);
 
         User user = userRepo.register(1, -1,
                 USERNAME, PASSWORD, EMAIL, CITY);

@@ -1,14 +1,22 @@
 package securoserve.api.controllers;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import securoserve.api.TestUtil;
+import securoserve.api.datarepo.database.Database;
 import securoserve.library.User;
 
 /**
  * Created by Jandie on 4/3/2017.
  */
 public class LoginControllerTest {
+    private Database database;
+
+    @Before
+    public void setUp() throws Exception {
+        this.database = TestUtil.cleanAndBuildTestDatabase();
+    }
 
     /**
      * Tests the login method in LoginController.
@@ -17,9 +25,9 @@ public class LoginControllerTest {
      */
     @Test
     public void login() throws Exception {
-        UserController uc = new UserController();
-        LoginController lc = new LoginController();
-        TestUtil.createTempUser();
+        UserController uc = new UserController(database);
+        LoginController lc = new LoginController(database);
+        TestUtil.createTempUser(database);
 
         String token = (String) lc.login(TestUtil.USERNAME, TestUtil.PASSWORD).getReturnObject();
 
@@ -31,7 +39,7 @@ public class LoginControllerTest {
         Assert.assertEquals(TestUtil.CITY, user.getCity());
         Assert.assertNotEquals(null, user.getUserType());
 
-        TestUtil.deleteTempUser(user);
+        TestUtil.deleteTempUser(user, database);
     }
 
 }
