@@ -12,7 +12,7 @@ public class MySqlParserTest {
         Database database = new Database(TestUtil.TEST_DB_PROPERTIES);
         System.out.println("Working Directory = " +
                 System.getProperty("user.dir"));
-        MySqlParser mySqlParser = new MySqlParser(database, "./src/main/resources/properties/database.sql");
+        MySqlParser mySqlParser = new MySqlParser(database, TestUtil.TEST_DB_SCRIPT);
 
         mySqlParser.Execute();
     }

@@ -18,6 +18,7 @@ public class TestUtil {
     public static final String EMAIL = "testuser789987@test123weqr456.nl";
     public static final String CITY = "Amsterdam";
     public static final String TEST_DB_PROPERTIES = "/properties/test_db.properties";
+    public static final String TEST_DB_SCRIPT = "./src/main/resources/properties/database.sql";
 
     public static void cleanAndBuildTestDatabase() {
 
