@@ -1,7 +1,7 @@
 package securoserve.api.logic;
 
-import securoserve.api.datarepo.Database;
 import securoserve.api.datarepo.UserRepo;
+import securoserve.api.datarepo.database.Database;
 import securoserve.api.interfaces.ConfirmationMessage;
 import securoserve.library.User;
 import securoserve.library.UserType;
@@ -25,6 +25,11 @@ public class UserLogic {
 
     public UserLogic() {
         database = new Database();
+        userRepo = new UserRepo(database);
+    }
+
+    public UserLogic(Database database) {
+        database = database;
         userRepo = new UserRepo(database);
     }
 

@@ -3,6 +3,7 @@ package securoserve.api.controllers;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import securoserve.api.datarepo.database.Database;
 import securoserve.api.interfaces.ConfirmationMessage;
 import securoserve.api.interfaces.ILogin;
 import securoserve.api.logic.UserLogic;
@@ -18,6 +19,10 @@ public class LoginController implements ILogin {
 
     public LoginController() {
         this.userLogic = new UserLogic();
+    }
+
+    public LoginController(Database database) {
+        this.userLogic = new UserLogic(database);
     }
 
     /**

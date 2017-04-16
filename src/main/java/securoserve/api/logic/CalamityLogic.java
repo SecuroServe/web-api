@@ -1,8 +1,8 @@
 package securoserve.api.logic;
 
 import securoserve.api.datarepo.CalamityRepo;
-import securoserve.api.datarepo.Database;
 import securoserve.api.datarepo.UserRepo;
+import securoserve.api.datarepo.database.Database;
 import securoserve.api.interfaces.ConfirmationMessage;
 import securoserve.library.Calamity;
 import securoserve.library.Location;
@@ -29,6 +29,12 @@ public class CalamityLogic {
 
     public CalamityLogic() {
         this.database = new Database();
+        calamityRepo = new CalamityRepo(database);
+        userRepo = new UserRepo(database);
+    }
+
+    public CalamityLogic(Database database) {
+        this.database = database;
         calamityRepo = new CalamityRepo(database);
         userRepo = new UserRepo(database);
     }

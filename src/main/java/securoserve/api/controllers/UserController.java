@@ -3,6 +3,7 @@ package securoserve.api.controllers;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import securoserve.api.datarepo.database.Database;
 import securoserve.api.interfaces.ConfirmationMessage;
 import securoserve.api.interfaces.IUser;
 import securoserve.api.logic.UserLogic;
@@ -19,8 +20,11 @@ public class UserController implements IUser {
     private UserLogic userLogic;
 
     public UserController() {
-
         this.userLogic = new UserLogic();
+    }
+
+    public UserController(Database database) {
+        this.userLogic = new UserLogic(database);
     }
 
     /**

@@ -1,6 +1,7 @@
 package securoserve.api.controllers;
 
 import org.springframework.web.bind.annotation.RequestParam;
+import securoserve.api.datarepo.database.Database;
 import securoserve.api.interfaces.ConfirmationMessage;
 import securoserve.api.interfaces.ICalamity;
 import securoserve.api.logic.CalamityLogic;
@@ -18,6 +19,10 @@ public class CalamityController implements ICalamity {
 
     public CalamityController() {
         this.calamityLogic = new CalamityLogic();
+    }
+
+    public CalamityController(Database database) {
+        this.calamityLogic = new CalamityLogic(database);
     }
 
     /**
