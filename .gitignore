@@ -87,3 +87,8 @@ com_crashlytics_export_strings.xml
 crashlytics.properties
 crashlytics-build.properties
 fabric.properties
+/gradlew
+/gradlew.bat
+/src/main/resources/properties/db.properties
+/src/main/resources/properties/test_db.properties
+/gradle/
