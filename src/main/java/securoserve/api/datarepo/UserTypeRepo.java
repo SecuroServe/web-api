@@ -1,5 +1,6 @@
 package securoserve.api.datarepo;
 
+import securoserve.api.datarepo.database.Database;
 import securoserve.library.UserType;
 
 import java.sql.ResultSet;

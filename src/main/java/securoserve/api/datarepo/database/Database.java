@@ -1,4 +1,4 @@
-package securoserve.api.datarepo;
+package securoserve.api.datarepo.database;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -17,7 +17,7 @@ public final class Database implements AutoCloseable {
     /**
      * String that contains the name of the database properties file.
      */
-    private static final String DB_PROPERTIES = "/properties/database.properties";
+    private static final String DB_PROPERTIES = "/properties/db.properties";
     /**
      * Instance of the database.
      */
@@ -144,7 +144,7 @@ public final class Database implements AutoCloseable {
         Properties prop = new Properties();
 
         try {
-            prop.load(getClass().getResourceAsStream("/properties/db.properties"));
+            prop.load(getClass().getResourceAsStream(properties));
         } catch (Exception e) {
             Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, e);
         }

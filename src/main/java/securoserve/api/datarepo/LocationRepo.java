@@ -1,5 +1,6 @@
 package securoserve.api.datarepo;
 
+import securoserve.api.datarepo.database.Database;
 import securoserve.library.Location;
 
 import java.sql.ResultSet;

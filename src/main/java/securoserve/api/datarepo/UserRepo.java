@@ -1,5 +1,6 @@
 package securoserve.api.datarepo;
 
+import securoserve.api.datarepo.database.Database;
 import securoserve.api.utils.HashUtil;
 import securoserve.library.User;
 import securoserve.library.UserType;
