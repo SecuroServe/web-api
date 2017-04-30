@@ -2,12 +2,14 @@ package securoserve.library;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.io.Serializable;
+
 /**
  * This class contains location information.
  * Created by Jandie on 13-3-2017.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Location {
+public class Location implements Serializable {
     private double longitude;
     private double latitude;
     private double radius;
@@ -70,5 +72,10 @@ public class Location {
 
     public int getId() {
         return this.id;
+    }
+
+    @Override
+    public String toString() {
+        return "lon: " + this.longitude + " lat: " + this.latitude;
     }
 }

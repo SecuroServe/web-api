@@ -3,6 +3,7 @@ package securoserve.library;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import securoserve.library.exceptions.NoPermissionException;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +11,7 @@ import java.util.List;
  * Created by Jandie on 13-3-2017.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class UserType {
+public class UserType implements Serializable{
 
     private String name;
     private List<Permission> permissions;

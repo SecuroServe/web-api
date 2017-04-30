@@ -2,8 +2,10 @@ package securoserve.library;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.io.Serializable;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Building {
+public class Building implements Serializable {
 
     /**
      * The id of the Building

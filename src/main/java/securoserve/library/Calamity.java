@@ -2,12 +2,13 @@ package securoserve.library;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Calamity {
+public class Calamity implements Serializable{
 
     /**
      * The id of the Calamity

@@ -2,11 +2,13 @@ package securoserve.library;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.io.Serializable;
+
 /**
  * Created by Jandie on 13-3-2017.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class User {
+public class User implements Serializable{
 
     /**
      * The id of the user.
@@ -177,5 +179,10 @@ public class User {
      */
     public String getToken() {
         return token;
+    }
+
+    @Override
+    public String toString() {
+        return this.getUsername() + " (" + this.getCity() + ")";
     }
 }
