@@ -1,9 +1,12 @@
 package securoserve.library;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Calamity {
 
     /**
@@ -76,6 +79,28 @@ public class Calamity {
         this.state = updateStatus();
 
         assignees = new ArrayList<>();
+    }
+
+    public Calamity() { }
+
+    public boolean isConfirmed() {
+        return isConfirmed;
+    }
+
+    public boolean isClosed() {
+        return isClosed;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public void setState(CalamityState state) {
+        this.state = state;
+    }
+
+    public void setAssignees(List<User> assignees) {
+        this.assignees = assignees;
     }
 
     /**

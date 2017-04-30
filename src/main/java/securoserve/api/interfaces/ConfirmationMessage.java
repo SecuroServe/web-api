@@ -1,10 +1,13 @@
 package securoserve.api.interfaces;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 /**
  * Used for feedback in the web API.
  * <p>
  * Created by Jandie on 13-3-2017.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ConfirmationMessage {
     /**
      * The status of the action.
@@ -34,6 +37,10 @@ public class ConfirmationMessage {
         this.returnObject = returnObject;
     }
 
+    public ConfirmationMessage() {
+
+    }
+
     /**
      * Gets the status.
      *
@@ -59,6 +66,18 @@ public class ConfirmationMessage {
      */
     public Object getReturnObject() {
         return returnObject;
+    }
+
+    public void setStatus(StatusType status) {
+        this.status = status;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public void setReturnObject(Object returnObject) {
+        this.returnObject = returnObject;
     }
 
     public enum StatusType {

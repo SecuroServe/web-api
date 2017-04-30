@@ -1,9 +1,12 @@
 package securoserve.library;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 /**
  * This class contains location information.
  * Created by Jandie on 13-3-2017.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Location {
     private double longitude;
     private double latitude;
@@ -21,6 +24,20 @@ public class Location {
         this.latitude = latitude;
         this.radius = radius;
         this.id = id;
+    }
+
+    public Location() { }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public void setRadius(double radius) {
+        this.radius = radius;
     }
 
     public double getLongitude() {

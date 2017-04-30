@@ -1,8 +1,11 @@
 package securoserve.library;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 /**
  * Created by Jandie on 13-3-2017.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class User {
 
     /**
@@ -67,6 +70,40 @@ public class User {
         this.username = username;
         this.email = email;
         this.city = city;
+        this.token = token;
+    }
+
+    public User() { }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setUserType(UserType userType) {
+        this.userType = userType;
+    }
+
+    public void setAssignedCalamity(Calamity assignedCalamity) {
+        this.assignedCalamity = assignedCalamity;
+    }
+
+    public void setBuilding(Building building) {
+        this.building = building;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public void setToken(String token) {
         this.token = token;
     }
 

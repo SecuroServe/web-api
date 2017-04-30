@@ -1,6 +1,7 @@
 package securoserve.api.controllers;
 
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import securoserve.api.datarepo.database.Database;
 import securoserve.api.interfaces.ConfirmationMessage;
 import securoserve.api.interfaces.ICalamity;
@@ -13,6 +14,7 @@ import java.util.List;
 /**
  * Created by yannic on 20/03/2017.
  */
+@RestController
 public class CalamityController implements ICalamity {
 
     private CalamityLogic calamityLogic;

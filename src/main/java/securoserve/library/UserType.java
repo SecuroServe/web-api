@@ -1,5 +1,6 @@
 package securoserve.library;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import securoserve.library.exceptions.NoPermissionException;
 
 import java.util.ArrayList;
@@ -8,6 +9,7 @@ import java.util.List;
 /**
  * Created by Jandie on 13-3-2017.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class UserType {
 
     private String name;
@@ -15,8 +17,21 @@ public class UserType {
 
     public UserType(String name) {
         this.name = name;
-
         permissions = new ArrayList<>();
+    }
+
+    public UserType() { }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<Permission> getPermissions() {
+        return permissions;
+    }
+
+    public void setPermissions(List<Permission> permissions) {
+        this.permissions = permissions;
     }
 
     public String getName() {

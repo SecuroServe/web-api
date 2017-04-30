@@ -1,6 +1,8 @@
 package securoserve.library;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Building {
 
     /**
@@ -74,6 +76,28 @@ public class Building {
         this.description = description;
 
         //TODO GET LOCATION
+    }
+
+    public Building() { }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
+    }
+
+    public void setNumber(int number) {
+        this.number = number;
+    }
+
+    public void setNumberAddition(String numberAddition) {
+        this.numberAddition = numberAddition;
     }
 
     /**
