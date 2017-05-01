@@ -1,0 +1,59 @@
+package securoserve.api.logic;
+
+import net.aksingh.owmjapis.CurrentWeather;
+import net.aksingh.owmjapis.DailyForecast;
+import net.aksingh.owmjapis.HourlyForecast;
+import net.aksingh.owmjapis.OpenWeatherMap;
+import securoserve.api.datarepo.UserRepo;
+import securoserve.api.datarepo.database.Database;
+import securoserve.api.interfaces.ConfirmationMessage;
+import securoserve.library.UserType;
+
+/**
+ * Created by Michel on 1-5-2017.
+ */
+public class WeatherLogic {
+
+    private Database database;
+    private UserRepo userRepo;
+
+    private OpenWeatherMap omw;
+
+    public WeatherLogic() {
+        database = new Database();
+        userRepo = new UserRepo(database);
+        this.omw = new OpenWeatherMap(OpenWeatherMap.Units.METRIC, "98d0f150f25d72ef30ec69301ef50f89");
+    }
+
+    public ConfirmationMessage getCurrentWeather(String token, float longitude, float latitude) {
+
+        try {
+            userRepo.getUser(token).getUserType().containsPermission(UserType.Permission.CALAMITY_GET);
+            CurrentWeather cw = omw.currentWeatherByCoordinates(latitude, longitude);
+            return new ConfirmationMessage(ConfirmationMessage.StatusType.SUCCES, "Current Weather", cw);
+        } catch (Exception e) {
+            return new ConfirmationMessage(ConfirmationMessage.StatusType.ERROR, "Failed to obtain current weather", e);
+        }
+    }
+
+    public ConfirmationMessage getHourlyForecast(String token, float longitude, float latitude) {
+        try {
+            userRepo.getUser(token).getUserType().containsPermission(UserType.Permission.CALAMITY_GET);
+            HourlyForecast hf = omw.hourlyForecastByCoordinates(latitude, longitude);
+            return new ConfirmationMessage(ConfirmationMessage.StatusType.SUCCES, "Hourly Forecast", hf);
+        } catch (Exception e) {
+            return new ConfirmationMessage(ConfirmationMessage.StatusType.ERROR, "Failed to obtain hourly forecast", e);
+        }
+    }
+
+    public ConfirmationMessage getDailyForecast(String token, float longitude, float latitude, byte count) {
+        try {
+            userRepo.getUser(token).getUserType().containsPermission(UserType.Permission.CALAMITY_GET);
+            DailyForecast df = omw.dailyForecastByCoordinates(latitude, longitude, count);
+            return new ConfirmationMessage(ConfirmationMessage.StatusType.SUCCES, "Daily Forecast", df);
+        } catch (Exception e) {
+            return new ConfirmationMessage(ConfirmationMessage.StatusType.ERROR, "Failed to obtain daily forecast", e);
+        }
+    }
+
+}
