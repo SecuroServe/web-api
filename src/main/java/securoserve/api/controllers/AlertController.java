@@ -1,13 +1,24 @@
-package securoserve.api.interfaces;
+package securoserve.api.controllers;
 
-import securoserve.library.Alert;
-
-import java.util.List;
+import securoserve.api.datarepo.database.Database;
+import securoserve.api.interfaces.ConfirmationMessage;
+import securoserve.api.interfaces.IAlert;
+import securoserve.api.logic.AlertLogic;
 
 /**
- * Created by Jandie on 13-3-2017.
+ * Created by Jandie on 2017-05-01.
  */
-public interface IAlert {
+public class AlertController implements IAlert {
+
+    private AlertLogic alertLogic;
+
+    public AlertController() {
+        this.alertLogic = new AlertLogic();
+    }
+
+    public AlertController(Database database) {
+        this.alertLogic = new AlertLogic(database);
+    }
 
     /**
      * Returns a list with current alerts.
@@ -15,7 +26,10 @@ public interface IAlert {
      * @param token The authentication token.
      * @return A list with current alerts.
      */
-    ConfirmationMessage getAllAlerts(String token);
+    @Override
+    public ConfirmationMessage getAllAlerts(String token) {
+        return null;
+    }
 
     /**
      * Returns a single alert that matches the id.
@@ -24,8 +38,10 @@ public interface IAlert {
      * @param id    The id of the alert.
      * @return A single alert that matches the id.
      */
-    ConfirmationMessage getAlert(String token,
-                int id);
+    @Override
+    public ConfirmationMessage getAlert(String token, int id) {
+        return null;
+    }
 
     /**
      * Adds a new alert.
@@ -39,12 +55,10 @@ public interface IAlert {
      * @return Confirmation message with feedback about the addition
      * also containing the new alert.
      */
-    ConfirmationMessage addAlert(String token,
-                              String name,
-                              String description,
-                              long lat,
-                              long lon,
-                              long radius);
+    @Override
+    public ConfirmationMessage addAlert(String token, String name, String description, long lat, long lon, long radius) {
+        return null;
+    }
 
     /**
      * Updates an alert.
@@ -58,20 +72,20 @@ public interface IAlert {
      * @param radius      The radius of the alert's location.
      * @return Confirmation message with feedback about the update.
      */
-    ConfirmationMessage updateAlert(String token,
-                              int id,
-                              String name,
-                              String description,
-                              long lat,
-                              long lon,
-                              long radius);
+    @Override
+    public ConfirmationMessage updateAlert(String token, int id, String name, String description, long lat, long lon, long radius) {
+        return null;
+    }
 
     /**
      * Deletes an alert.
      *
      * @param token The authentication token.
-     * @param id The id of the token.
+     * @param id    The id of the token.
      * @return Confirmation message with feedback about the deletion.
      */
-    ConfirmationMessage removeAlert(String token, int id);
+    @Override
+    public ConfirmationMessage removeAlert(String token, int id) {
+        return null;
+    }
 }

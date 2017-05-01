@@ -9,6 +9,25 @@ import java.io.Serializable;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Alert implements Serializable{
+    private String name;
+    private String description;
+    private Location location;
 
-    public Alert(){ }
+    public Alert(String name, String description, Location location) {
+        this.name = name;
+        this.description = description;
+        this.location = location;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
 }
