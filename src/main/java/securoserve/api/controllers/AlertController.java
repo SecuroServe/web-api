@@ -1,12 +1,25 @@
 package securoserve.api.controllers;
 
+import securoserve.api.datarepo.database.Database;
 import securoserve.api.interfaces.ConfirmationMessage;
 import securoserve.api.interfaces.IAlert;
+import securoserve.api.logic.AlertLogic;
 
 /**
  * Created by Jandie on 2017-05-01.
  */
 public class AlertController implements IAlert {
+
+    private AlertLogic alertLogic;
+
+    public AlertController() {
+        this.alertLogic = new AlertLogic();
+    }
+
+    public AlertController(Database database) {
+        this.alertLogic = new AlertLogic(database);
+    }
+
     /**
      * Returns a list with current alerts.
      *
