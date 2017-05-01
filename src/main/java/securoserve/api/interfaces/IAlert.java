@@ -15,7 +15,7 @@ public interface IAlert {
      * @param token The authentication token.
      * @return A list with current alerts.
      */
-    List<Alert> alert(String token);
+    ConfirmationMessage getAllAlerts(String token);
 
     /**
      * Returns a single alert that matches the id.
@@ -24,7 +24,7 @@ public interface IAlert {
      * @param id    The id of the alert.
      * @return A single alert that matches the id.
      */
-    Alert alert(String token,
+    ConfirmationMessage getAlert(String token,
                 int id);
 
     /**
@@ -39,7 +39,7 @@ public interface IAlert {
      * @return Confirmation message with feedback about the addition
      * also containing the new alert.
      */
-    ConfirmationMessage alert(String token,
+    ConfirmationMessage addAlert(String token,
                               String name,
                               String description,
                               long lat,
@@ -58,11 +58,20 @@ public interface IAlert {
      * @param radius      The radius of the alert's location.
      * @return Confirmation message with feedback about the update.
      */
-    ConfirmationMessage alert(String token,
+    ConfirmationMessage updateAlert(String token,
                               int id,
                               String name,
                               String description,
                               long lat,
                               long lon,
                               long radius);
+
+    /**
+     * Deletes an alert.
+     *
+     * @param token The authentication token.
+     * @param id The id of the token.
+     * @return Confirmation message with feedback about the deletion.
+     */
+    ConfirmationMessage removeAlert(String token, int id);
 }
