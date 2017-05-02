@@ -30,5 +30,6 @@ dependencies {
     testCompile('com.jayway.jsonpath:json-path')
     compile ('mysql:mysql-connector-java:5.1.39')
     compile ('org.springframework.restdocs:spring-restdocs-mockmvc:1.1.2.RELEASE')
+    compile 'net.aksingh:owm-japis:2.5.0.3'
 }
 
