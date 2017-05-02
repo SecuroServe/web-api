@@ -83,7 +83,7 @@ public class AlertControllerTest {
 
         int size = ((List<Calamity>) cc.allCalamity().getReturnObject()).size();
 
-        assertEquals(0, size);
+        assertEquals(1, size);
     }
 
     @After
