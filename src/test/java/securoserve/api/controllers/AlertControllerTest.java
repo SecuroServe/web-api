@@ -31,7 +31,7 @@ public class AlertControllerTest {
     }
 
     @Test
-    public void addAlert() throws Exception {
+    public void addAlertTest() throws Exception {
         Alert alert = (Alert) ac.addAlert(user.getToken(), "testAlert", "testDescription",
                 55, 56, 1).getReturnObject();
 
@@ -51,7 +51,7 @@ public class AlertControllerTest {
     }
 
     @Test
-    public void removeAlert() throws Exception {
+    public void removeAlertTest() throws Exception {
         Alert alert1 = (Alert) ac.addAlert(user.getToken(), "testAlert", "testDescription",
                 55, 56, 1).getReturnObject();
 
@@ -67,7 +67,7 @@ public class AlertControllerTest {
     }
 
     @Test
-    public void proposeCalamity() throws Exception {
+    public void proposeCalamityTest() throws Exception {
         Alert alert1 = (Alert) ac.addAlert(user.getToken(), "testAlert", "testDescription",
                 52.369040, 9.748287, 0).getReturnObject();
         Alert alert2 = (Alert) ac.addAlert(user.getToken(), "testAlert", "testDescription",
@@ -84,6 +84,23 @@ public class AlertControllerTest {
         int size = ((List<Calamity>) cc.allCalamity().getReturnObject()).size();
 
         assertEquals(1, size);
+    }
+
+    @Test
+    public void updateAlertTest() throws Exception {
+        Alert alert = (Alert) ac.addAlert(user.getToken(), "testAlert", "testDescription",
+                52.369040, 9.748287, 0).getReturnObject();
+
+        ac.updateAlert(user.getToken(), alert.getId(), "updateAlert", "updateDescription",
+                55, 56, 1);
+
+        Alert updatedAlert = (Alert) ac.getAlert(user.getToken(), alert.getId()).getReturnObject();
+
+        assertEquals("updateAlert", updatedAlert.getName());
+        assertEquals("updateDescription", updatedAlert.getDescription());
+        assertEquals(55, updatedAlert.getLocation().getLatitude(), 0.01);
+        assertEquals(56, updatedAlert.getLocation().getLongitude(), 0.01);
+        assertEquals(1, updatedAlert.getLocation().getRadius(), 0.01);
     }
 
     @After
