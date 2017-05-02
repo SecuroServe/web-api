@@ -1,9 +1,5 @@
 package securoserve.api.interfaces;
 
-import securoserve.library.Alert;
-
-import java.util.List;
-
 /**
  * Created by Jandie on 13-3-2017.
  */
@@ -40,11 +36,11 @@ public interface IAlert {
      * also containing the new alert.
      */
     ConfirmationMessage addAlert(String token,
-                              String name,
-                              String description,
-                              long lat,
-                              long lon,
-                              long radius);
+                                 String name,
+                                 String description,
+                                 double lat,
+                                 double lon,
+                                 double radius);
 
     /**
      * Updates an alert.
@@ -59,12 +55,12 @@ public interface IAlert {
      * @return Confirmation message with feedback about the update.
      */
     ConfirmationMessage updateAlert(String token,
-                              int id,
-                              String name,
-                              String description,
-                              long lat,
-                              long lon,
-                              long radius);
+                                    int id,
+                                    String name,
+                                    String description,
+                                    double lat,
+                                    double lon,
+                                    double radius);
 
     /**
      * Deletes an alert.
