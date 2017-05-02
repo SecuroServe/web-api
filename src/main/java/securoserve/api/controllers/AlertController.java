@@ -1,5 +1,6 @@
 package securoserve.api.controllers;
 
+import org.springframework.web.bind.annotation.RequestMapping;
 import securoserve.api.datarepo.database.Database;
 import securoserve.api.interfaces.ConfirmationMessage;
 import securoserve.api.interfaces.IAlert;
@@ -27,6 +28,7 @@ public class AlertController implements IAlert {
      * @return A list with current alerts.
      */
     @Override
+    @RequestMapping("/getallalerts")
     public ConfirmationMessage getAllAlerts(String token) {
         return null;
     }
@@ -39,6 +41,7 @@ public class AlertController implements IAlert {
      * @return A single alert that matches the id.
      */
     @Override
+    @RequestMapping("/getalert")
     public ConfirmationMessage getAlert(String token, int id) {
         return null;
     }
@@ -56,6 +59,8 @@ public class AlertController implements IAlert {
      * also containing the new alert.
      */
     @Override
+
+    @RequestMapping("/addalert")
     public ConfirmationMessage addAlert(String token, String name, String description, double lat, double lon, double radius) {
         return null;
     }
@@ -73,7 +78,10 @@ public class AlertController implements IAlert {
      * @return Confirmation message with feedback about the update.
      */
     @Override
+
+    @RequestMapping("/updatealert")
     public ConfirmationMessage updateAlert(String token, int id, String name, String description, double lat, double lon, double radius) {
+
         return null;
     }
 
@@ -85,6 +93,7 @@ public class AlertController implements IAlert {
      * @return Confirmation message with feedback about the deletion.
      */
     @Override
+    @RequestMapping("/removealert")
     public ConfirmationMessage removeAlert(String token, int id) {
         return null;
     }
