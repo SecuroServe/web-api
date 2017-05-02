@@ -42,7 +42,7 @@ public class CalamityControllerTest {
         Calamity c1 = (Calamity) cc.addCalamity(user.getToken(), "nine-eleven-test",
                 "test of 911", location, false, true).getReturnObject();
 
-        List<Calamity> calamities = cc.allCalamity();
+        List<Calamity> calamities = (List<Calamity>) cc.allCalamity().getReturnObject();
         Assert.assertEquals(true, calamities.size() > 0);
 
         boolean check = false;
@@ -77,13 +77,13 @@ public class CalamityControllerTest {
 
         cc.addCalamityAssignee(user.getToken(), c1.getId(), user.getId());
 
-        c1 = cc.calamityById(user.getToken(), c1.getId());
+        c1 = (Calamity) cc.calamityById(user.getToken(), c1.getId()).getReturnObject();
 
         Assert.assertEquals(true, isAssigned(user, c1));
 
         cc.deleteCalamityAssignee(user.getToken(), c1.getId(), user.getId());
 
-        c1 = cc.calamityById(user.getToken(), c1.getId());
+        c1 = (Calamity) cc.calamityById(user.getToken(), c1.getId()).getReturnObject();
 
         Assert.assertEquals(false, isAssigned(user, c1));
 

@@ -7,10 +7,7 @@ import securoserve.api.datarepo.database.Database;
 import securoserve.api.interfaces.ConfirmationMessage;
 import securoserve.api.interfaces.ICalamity;
 import securoserve.api.logic.CalamityLogic;
-import securoserve.library.Calamity;
 import securoserve.library.Location;
-
-import java.util.List;
 
 /**
  * Created by yannic on 20/03/2017.
@@ -34,9 +31,10 @@ public class CalamityController implements ICalamity {
      * @return A list with all current calamities.
      */
     @Override
+
     @RequestMapping("/allcalamity")
-    public List<Calamity> allCalamity() {
-        return (List<Calamity>) calamityLogic.allCalamity().getReturnObject();
+    public ConfirmationMessage allCalamity() {
+        return calamityLogic.allCalamity();
     }
 
     /**
@@ -47,10 +45,11 @@ public class CalamityController implements ICalamity {
      * @return A single calamity by id.
      */
     @Override
+
     @RequestMapping("/calamitybyid")
-    public Calamity calamityById(@RequestParam(value = "token") String token,
-                                 @RequestParam(value = "id") int id) {
-        return (Calamity) calamityLogic.getCalamity(token, id).getReturnObject();
+    public ConfirmationMessage calamityById(@RequestParam(value = "token") String token,
+                                            @RequestParam(value = "id") int id) {
+        return calamityLogic.getCalamity(token, id);
     }
 
     /**
