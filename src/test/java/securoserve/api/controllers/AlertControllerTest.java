@@ -47,6 +47,22 @@ public class AlertControllerTest {
         assertEquals(1, alert.getLocation().getRadius(), 0.01);
     }
 
+    @Test
+    public void removeAlert() {
+        Alert alert1 = (Alert) ac.addAlert(user.getToken(), "testAlert", "testDescription",
+                55, 56, 1).getReturnObject();
+
+        Alert alert2 = (Alert) ac.addAlert(user.getToken(), "testAlert", "testDescription",
+                55, 56, 1).getReturnObject();
+
+        ac.removeAlert(user.getToken(), alert1.getId());
+        ac.removeAlert(user.getToken(), alert2.getId());
+
+        int size = ((List<Alert>) ac.getAllAlerts(user.getToken()).getReturnObject()).size();
+
+        assertEquals(0, size);
+    }
+
     @After
     public void tearDown() throws Exception {
         TestUtil.deleteTempUser(user, database);
