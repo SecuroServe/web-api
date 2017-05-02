@@ -56,7 +56,7 @@ public class AlertController implements IAlert {
      * also containing the new alert.
      */
     @Override
-    public ConfirmationMessage addAlert(String token, String name, String description, long lat, long lon, long radius) {
+    public ConfirmationMessage addAlert(String token, String name, String description, double lat, double lon, double radius) {
         return null;
     }
 
@@ -73,7 +73,7 @@ public class AlertController implements IAlert {
      * @return Confirmation message with feedback about the update.
      */
     @Override
-    public ConfirmationMessage updateAlert(String token, int id, String name, String description, long lat, long lon, long radius) {
+    public ConfirmationMessage updateAlert(String token, int id, String name, String description, double lat, double lon, double radius) {
         return null;
     }
 

@@ -1,9 +1,6 @@
 package securoserve.api.interfaces;
 
-import securoserve.library.Calamity;
 import securoserve.library.Location;
-
-import java.util.List;
 
 /**
  * Created by Jandie on 13-3-2017.
@@ -15,7 +12,7 @@ public interface ICalamity {
      *
      * @return A list with all current calamities.
      */
-    List<Calamity> allCalamity();
+    ConfirmationMessage allCalamity();
 
     /**
      * Returns a single calamity by id.
@@ -25,8 +22,8 @@ public interface ICalamity {
      * @return A single calamity by id.
      */
 
-    Calamity calamityById(String token,
-                          int id);
+    ConfirmationMessage calamityById(String token,
+                                     int id);
 
     /**
      * Adds a new calamity.
