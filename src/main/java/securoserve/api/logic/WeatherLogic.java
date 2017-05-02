@@ -25,6 +25,13 @@ public class WeatherLogic {
         this.omw = new OpenWeatherMap(OpenWeatherMap.Units.METRIC, "98d0f150f25d72ef30ec69301ef50f89");
     }
 
+    /**
+     * Get current weather from the OpenWeatherMap API
+     * @param token Token to validate the user
+     * @param longitude
+     * @param latitude
+     * @return ConfirmationMessage with the raw data of the API
+     */
     public ConfirmationMessage getCurrentWeather(String token, float longitude, float latitude) {
 
         try {
@@ -36,6 +43,13 @@ public class WeatherLogic {
         }
     }
 
+    /**
+     * Get hourly forecast from the OpenWeatherMap API
+     * @param token Token to validate the user
+     * @param longitude
+     * @param latitude
+     * @return ConfirmationMessage with the raw data of the API
+     */
     public ConfirmationMessage getHourlyForecast(String token, float longitude, float latitude) {
         try {
             userRepo.getUser(token).getUserType().containsPermission(UserType.Permission.CALAMITY_GET);
@@ -46,6 +60,14 @@ public class WeatherLogic {
         }
     }
 
+    /**
+     * Get daily forecast from the OpenWeatherMap API
+     * @param token Token to validate the user
+     * @param longitude
+     * @param latitude
+     * @param count Amount of days to get the forecast of.
+     * @return ConfirmationMessage with the raw data of the API
+     */
     public ConfirmationMessage getDailyForecast(String token, float longitude, float latitude, byte count) {
         try {
             userRepo.getUser(token).getUserType().containsPermission(UserType.Permission.CALAMITY_GET);
