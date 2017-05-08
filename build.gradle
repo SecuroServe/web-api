@@ -1,5 +1,5 @@
 allprojects{
-    group = 'org.poolstats'
+    group = 'org.securoserve'
     version = '0.0.1'
 }
 

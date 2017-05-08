@@ -1,4 +1,4 @@
-rootProject.name = "WebApi"
+rootProject.name = "Securoserve"
 
 include(':library')
 include(':api')
