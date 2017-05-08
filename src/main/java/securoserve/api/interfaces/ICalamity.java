@@ -28,10 +28,12 @@ public interface ICalamity {
     /**
      * Adds a new calamity.
      *
-     * @param token    The authentication token.
-     * @param title    The name of the calamity.
-     * @param message  The description of the calamity.
-     * @param location The location object of the new calamity.
+     * @param token     The authentication token.
+     * @param title     The name of the calamity.
+     * @param message   The description of the calamity.
+     * @param latitude  The latitude of the new calamity.
+     * @param longitude The longitude of the new calamity.
+     * @param radius    The radius of the new calamity.
      * @return Confirmation message with feedback about the addition
      * also containing the new calamity.
      */
@@ -39,7 +41,9 @@ public interface ICalamity {
     ConfirmationMessage addCalamity(String token,
                                     String title,
                                     String message,
-                                    Location location, boolean isConfirmed, boolean isClosed);
+                                    double latitude,
+                                    double longitude,
+                                    double radius , boolean isConfirmed, boolean isClosed);
 
     /**
      * Updates a calamity.

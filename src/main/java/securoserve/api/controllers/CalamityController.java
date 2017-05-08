@@ -58,7 +58,9 @@ public class CalamityController implements ICalamity {
      * @param token    The authentication token.
      * @param title    The name of the calamity.
      * @param message  The description of the calamity.
-     * @param location The location object of the new calamity.
+     * @param latitude  The latitude of the new calamity.
+     * @param longitude The longitude of the new calamity.
+     * @param radius    The radius of the new calamity.
      * @return Confirmation message with feedback about the addition
      * also containing the new calamity.
      */
@@ -67,10 +69,12 @@ public class CalamityController implements ICalamity {
     public ConfirmationMessage addCalamity(@RequestParam(value = "token") String token,
                                            @RequestParam(value = "title") String title,
                                            @RequestParam(value = "message") String message,
-                                           @RequestParam(value = "location") Location location,
+                                           @RequestParam(value = "latitude") double latitude,
+                                           @RequestParam(value = "longitude") double longitude,
+                                           @RequestParam(value = "radius") double radius,
                                            @RequestParam(value = "confirmed") boolean isConfirmed,
                                            @RequestParam(value = "status") boolean isClosed) {
-        return calamityLogic.addCalamity(token, title, message, location, isConfirmed, isClosed);
+        return calamityLogic.addCalamity(token, title, message, new Location(1, latitude, longitude, radius), isConfirmed, isClosed);
     }
 
     /**
