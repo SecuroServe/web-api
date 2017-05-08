@@ -7,6 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableView;
+import javafx.stage.Stage;
 import library.User;
 import ui.Main;
 
@@ -38,11 +39,9 @@ public class SendRescuerController implements Initializable {
     private Label selectedCalamityLabel;
 
     private User user;
-    private Main main;
 
-    public SendRescuerController(User user, Main main) {
+    public SendRescuerController(User user) {
         this.user = user;
-        this.main = main;
 
     }
 
@@ -111,10 +110,7 @@ public class SendRescuerController implements Initializable {
      * @param actionEvent
      */
     private void handleBackAction(ActionEvent actionEvent) {
-        try {
-            main.loadDashBoard(this.user);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Stage stage = (Stage) backButton.getScene().getWindow();
+        stage.close();
     }
 }
