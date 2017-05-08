@@ -2,3 +2,4 @@ rootProject.name = "WebApi"
 
 include(':library')
 include(':api')
+include(':ui')

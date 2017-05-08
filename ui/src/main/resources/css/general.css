@@ -1,0 +1,86 @@
+@font-face {
+    font-family: 'Roboto Regular';
+    src: url('../fonts/roboto/Roboto-Regular.ttf');
+}
+
+@font-face {
+    font-family: 'Roboto Light';
+    src: url('../fonts/roboto/Roboto-Light.ttf');
+}
+
+/*.root, .label {*/
+/*-fx-font-family: Tahoma, Geneva, sans-serif;*/
+/*}*/
+
+.logo-text {
+    -fx-font-family: 'Roboto Light', Helvetica, sans-serif;
+    -fx-font-size: 30;
+}
+
+.calamity-list {
+    -fx-font-size: 14;
+    -fx-font-style: normal;
+}
+
+.table-view .column-header {
+    -fx-background-color: rgb(237.0, 68.0, 37.0);
+}
+
+.calamity-list .column-header.foo .label {
+    -fx-text-fill: white;
+    -fx-font-weight: bolder;
+}
+
+.title {
+    -fx-font-size: 30;
+}
+
+.text-area {
+    -fx-background-color: #ff8080;
+    -fx-font-size: 12;
+}
+
+.creatorlabel {
+    -fx-font-size: 20;
+}
+
+.datelabel {
+    -fx-font-size: 14;
+}
+
+.dashboard-button {
+    -fx-background-insets: 0.0;
+    -fx-background-radius: 5.0;
+    -fx-padding: 0.7em;
+    -fx-border-width: 1.0;
+    -fx-border-color: white;
+    -fx-text-fill: black;
+}
+
+/*.button {*/
+/*!*-fx-background-radius: 12;*!*/
+/*-fx-padding: 10;*/
+/*-fx-shadow-highlight-color: f0f0f0;*/
+/*-fx-body-color: linear-gradient(from 0em 0em to 0em 2.083333em, white, #D7D7D7, white);*/
+/*}*/
+
+/*.login-button {*/
+/*-fx-background-color: linear-gradient(from 0em 0em to 0em 2.083333em, #49a0ff, #1e64e8, #227cff);*/
+/*-fx-border-width: 0;*/
+/*-fx-text-fill: #ffffff;*/
+/*-fx-font-weight: bold;*/
+/*}*/
+
+/*.close-button {*/
+/*-fx-background-color: #f44;*/
+/*-fx-background-radius: 15;*/
+/*-fx-padding: 5 10;*/
+/*}*/
+
+/*.close-button:hover {*/
+/*-fx-background-color: #ff8080;*/
+/*}*/
+
+/*.text-field, .password-field {*/
+/*-fx-padding: 10;*/
+/*}*/
