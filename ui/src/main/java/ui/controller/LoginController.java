@@ -1,15 +1,18 @@
 package ui.controller;
 
+import interfaces.ConfirmationMessage;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import library.Building;
+import library.Calamity;
+import library.User;
+import library.UserType;
 import requests.LoginRequest;
 import requests.UserRequest;
-import securoserve.api.interfaces.ConfirmationMessage;
-import securoserve.library.*;
 import ui.Main;
 
 import java.io.IOException;
