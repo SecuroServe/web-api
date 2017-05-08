@@ -1,13 +1,25 @@
 package controllers;
 
+import datarepo.database.Database;
 import interfaces.ConfirmationMessage;
 import interfaces.IMedia;
 import library.Media;
+import logic.MediaLogic;
 
 /**
  * Created by Jandie on 2017-05-08.
  */
 public class MediaController implements IMedia {
+    private MediaLogic mediaLogic;
+
+    public MediaController() {
+        this.mediaLogic = new MediaLogic();
+    }
+
+    public MediaController(Database database) {
+        this.mediaLogic = new MediaLogic(database);
+    }
+
     /**
      * Gets Media object by id.
      *
