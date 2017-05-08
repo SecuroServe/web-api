@@ -15,29 +15,41 @@ public class CalamityRequest implements ICalamity {
 
     private static final String REQUEST_PREFIX = "http://localhost:8080";
 
-    private static final String GET_ALL = "/allcalamities";
-    private static final String GET_CALAMITY_BY_ID = "/calamitybyid?token={token}&id={id}";
+    private static final String GET_ALL = REQUEST_PREFIX +
+            "/allcalamities";
+    private static final String GET_CALAMITY_BY_ID = REQUEST_PREFIX +
+            "/calamitybyid?token={token}&id={id}";
 
-    private static final String POST_ADD_CALAMITY_ASSIGNEE = "/addcalamityassignee?token={token}&" +
+    private static final String POST_ADD_CALAMITY_ASSIGNEE = REQUEST_PREFIX +
+            "/addcalamityassignee?token={token}&" +
             "calamityid={calamityid}&" +
             "userid={userid}";
-    private static final String POST_ADD_CALAMITY = "/addcalamity?token={token}&" +
+    private static final String POST_ADD_CALAMITY = REQUEST_PREFIX +
+            "/addcalamity?token={token}&" +
             "title={title}&" +
             "message={message}&" +
             "latitude={latitude}&" +
             "longitude={longitude}&" +
+            "radius={radius}&" +
+            "confirmed={confirmed}&" +
+            "closed={closed}";
+
+    private static final String UPDATE_CALAMITY = REQUEST_PREFIX +
+            "/updatecalamity?token={token}&" +
+            "id={id}&" +
+            "title={title}&" +
+            "message={message}&" +
+            "locationid={locId}&" +
+            "latitude={latitude}&" +
+            "longitude={longitude}&" +
             "radius={location}&" +
             "confirmed={confirmed}&" +
-            "status={status}";
+            "closed={closed}";
 
-    private static final String UPDATE_CALAMITY = "/updatecalamity?token={token}&" +
-            "id={id}&" +
-            "name={name}&" +
-            "description={description}&" +
-            "location={location}";
-
-    private static final String DELETE_CALAMITY = "/deletecalamity?token={token}&id={id}";
-    private static final String DELETE_CALAMITY_ASSIGNEE = "/deletecalamityassignee?token={token}&" +
+    private static final String DELETE_CALAMITY = REQUEST_PREFIX +
+            "/deletecalamity?token={token}&id={id}";
+    private static final String DELETE_CALAMITY_ASSIGNEE = REQUEST_PREFIX +
+            "/deletecalamityassignee?token={token}&" +
             "calamityid={calamityid}&" +
             "userid={userid}";
 
@@ -52,7 +64,7 @@ public class CalamityRequest implements ICalamity {
     @Override
     public ConfirmationMessage allCalamity() {
         MultiValueMap<String, Object> parameters = new LinkedMultiValueMap<>();
-        return restClient.request(REQUEST_PREFIX + GET_ALL, RestClient.RequestType.GET, parameters);
+        return restClient.request(GET_ALL, RestClient.RequestType.GET, parameters);
     }
 
     @Override
@@ -60,14 +72,14 @@ public class CalamityRequest implements ICalamity {
         MultiValueMap<String, Object> parameters = new LinkedMultiValueMap<>();
         parameters.add("token", token);
         parameters.add("id", id);
-        return restClient.request(REQUEST_PREFIX + GET_CALAMITY_BY_ID, RestClient.RequestType.GET, parameters);
+        return restClient.request(GET_CALAMITY_BY_ID, RestClient.RequestType.GET, parameters);
     }
 
     @Override
     public ConfirmationMessage addCalamity(String token, String title, String message,
                                            double latitude,
                                            double longitude,
-                                           double radius, boolean confirmed, boolean status) {
+                                           double radius, boolean confirmed, boolean closed) {
         MultiValueMap<String, Object> parameters = new LinkedMultiValueMap<>();
         parameters.add("token", token);
         parameters.add("title", title);
@@ -76,13 +88,29 @@ public class CalamityRequest implements ICalamity {
         parameters.add("longitude", longitude);
         parameters.add("radius", radius);
         parameters.add("confirmed", confirmed);
-        parameters.add("status", status);
-        return restClient.post(REQUEST_PREFIX + GET_CALAMITY_BY_ID, parameters);
+        parameters.add("closed", closed);
+        return restClient.post(POST_ADD_CALAMITY, parameters);
     }
 
     @Override
-    public ConfirmationMessage updateCalamity(String token, int id, String name, String description, Location location, boolean isConfirmed, boolean isClosed) {
-        return null;
+    public ConfirmationMessage updateCalamity(String token, int id, String title, String message,
+                                              int locId,
+                                              double latitude,
+                                              double longitude,
+                                              double radius, boolean confirmed, boolean closed) {
+
+        MultiValueMap<String, Object> parameters = new LinkedMultiValueMap<>();
+        parameters.add("token", token);
+        parameters.add("id", id);
+        parameters.add("title", title);
+        parameters.add("message", message);
+        parameters.add("locationid", locId);
+        parameters.add("latitude", latitude);
+        parameters.add("longitude", longitude);
+        parameters.add("radius", radius);
+        parameters.add("confirmed", confirmed);
+        parameters.add("closed", closed);
+        return restClient.post(UPDATE_CALAMITY, parameters);
     }
 
     @Override
