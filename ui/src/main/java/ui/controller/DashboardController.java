@@ -25,6 +25,8 @@ public class DashboardController implements Initializable {
     public Button logoutBtn;
     @FXML
     public VBox calamityBtn;
+    @FXML
+    public VBox sendRescuerBtn;
 
     public DashboardController(Main main, User user) {
         this.main = main;
@@ -35,11 +37,20 @@ public class DashboardController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         logoutBtn.setOnAction(this::handleLogoutAction);
         calamityBtn.setOnMouseClicked(this::handleCalamityBtnAction);
+        sendRescuerBtn.setOnMouseClicked(this::handleInformRescuerBtnAction);
     }
 
     private void handleCalamityBtnAction(MouseEvent mouseEvent) {
         try {
             main.loadCalamityList(this.user);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void handleInformRescuerBtnAction(MouseEvent mouseEvent){
+        try {
+            main.loadInformRescuer(this.user);
         } catch (IOException e) {
             e.printStackTrace();
         }

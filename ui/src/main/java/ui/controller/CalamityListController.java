@@ -116,11 +116,11 @@ public class CalamityListController implements Initializable {
     }
 
     private void refreshCalamityTable() {
-        CalamityRequest calamityRequest = new CalamityRequest();
-        calamities = (List<Calamity>) calamityRequest.allCalamity().getReturnObject();
-
-        obsList = FXCollections.observableArrayList(calamities);
-        calamityTable.setItems(obsList);
+//        CalamityRequest calamityRequest = new CalamityRequest();
+//        calamities = (List<Calamity>) calamityRequest.allCalamity().getReturnObject();
+//
+//        obsList = FXCollections.observableArrayList(calamities);
+//        calamityTable.setItems(obsList);
     }
 
     class PostRequestTask extends TimerTask {
