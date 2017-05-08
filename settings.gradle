@@ -3,3 +3,4 @@ rootProject.name = "Securoserve"
 include(':library')
 include(':api')
 include(':ui')
+include(':interfaces')
