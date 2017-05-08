@@ -40,7 +40,8 @@ public class CalamityControllerTest {
         Location location = new Location(-1, 5, 51, 1);
 
         Calamity c1 = (Calamity) cc.addCalamity(user.getToken(), "nine-eleven-test",
-                "test of 911", location, false, true).getReturnObject();
+                "test of 911", location.getLatitude(), location.getLongitude(), location.getRadius(),
+                false, true).getReturnObject();
 
         List<Calamity> calamities = (List<Calamity>) cc.allCalamity().getReturnObject();
         Assert.assertEquals(true, calamities.size() > 0);
@@ -73,7 +74,8 @@ public class CalamityControllerTest {
         Location location = new Location(-1, 5, 51, 1);
 
         Calamity c1 = (Calamity) cc.addCalamity(user.getToken(), "nine-eleven-test",
-                "test of 911", location, false, true).getReturnObject();
+                "test of 911", location.getLatitude(), location.getLongitude(), location.getRadius(),
+                false, true).getReturnObject();
 
         cc.addCalamityAssignee(user.getToken(), c1.getId(), user.getId());
 
