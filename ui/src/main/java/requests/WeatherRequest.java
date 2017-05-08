@@ -38,7 +38,7 @@ public class WeatherRequest implements IWeather {
         parameters.add("token", longitude);
         parameters.add("longitude", longitude);
         parameters.add("latitude", latitude);
-        return restClient.post(REQUEST_PREFIX + CURRENT_WEATHER, parameters);
+        return restClient.request(REQUEST_PREFIX + CURRENT_WEATHER, RestClient.RequestType.GET, parameters);
     }
 
     /**
@@ -55,7 +55,7 @@ public class WeatherRequest implements IWeather {
         parameters.add("token", longitude);
         parameters.add("longitude", longitude);
         parameters.add("latitude", latitude);
-        return restClient.post(REQUEST_PREFIX + HOURLY_FORECAST, parameters);
+        return restClient.request(REQUEST_PREFIX + HOURLY_FORECAST, RestClient.RequestType.GET, parameters);
     }
 
     /**
@@ -74,6 +74,6 @@ public class WeatherRequest implements IWeather {
         parameters.add("longitude", longitude);
         parameters.add("latitude", latitude);
         parameters.add("count", count);
-        return restClient.post(REQUEST_PREFIX + DAILY_FORECAST, parameters);
+        return restClient.request(REQUEST_PREFIX + DAILY_FORECAST, RestClient.RequestType.GET, parameters);
     }
 }

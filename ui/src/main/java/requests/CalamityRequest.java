@@ -60,7 +60,7 @@ public class CalamityRequest implements ICalamity {
         parameters.add("radius", radius);
         parameters.add("confirmed", confirmed);
         parameters.add("closed", closed);
-        return restClient.post(REQUEST_PREFIX + POST_ADD_CALAMITY, parameters);
+        return restClient.request(REQUEST_PREFIX + POST_ADD_CALAMITY, RestClient.RequestType.POST, parameters);
     }
 
     @Override
@@ -81,7 +81,7 @@ public class CalamityRequest implements ICalamity {
         parameters.add("radius", radius);
         parameters.add("confirmed", confirmed);
         parameters.add("closed", closed);
-        return restClient.post(REQUEST_PREFIX + UPDATE_CALAMITY, parameters);
+        return restClient.request(REQUEST_PREFIX + UPDATE_CALAMITY, RestClient.RequestType.POST, parameters);
     }
 
     @Override
@@ -89,7 +89,7 @@ public class CalamityRequest implements ICalamity {
         MultiValueMap<String, Object> parameters = new LinkedMultiValueMap<>();
         parameters.add("token", token);
         parameters.add("id", id);
-        return restClient.post(REQUEST_PREFIX + DELETE_CALAMITY, parameters);
+        return restClient.request(REQUEST_PREFIX + DELETE_CALAMITY, RestClient.RequestType.DELETE, parameters);
     }
 
     @Override
@@ -98,7 +98,7 @@ public class CalamityRequest implements ICalamity {
         parameters.add("token", token);
         parameters.add("calamityid", calamityId);
         parameters.add("userid", userId);
-        return restClient.post(REQUEST_PREFIX + POST_ADD_CALAMITY_ASSIGNEE, parameters);
+        return restClient.request(REQUEST_PREFIX + POST_ADD_CALAMITY_ASSIGNEE, RestClient.RequestType.POST, parameters);
     }
 
     @Override
@@ -107,6 +107,6 @@ public class CalamityRequest implements ICalamity {
         parameters.add("token", token);
         parameters.add("calamityid", calamityId);
         parameters.add("userid", userId);
-        return restClient.post(REQUEST_PREFIX + DELETE_CALAMITY_ASSIGNEE, parameters);
+        return restClient.request(REQUEST_PREFIX + DELETE_CALAMITY_ASSIGNEE, RestClient.RequestType.DELETE, parameters);
     }
 }
