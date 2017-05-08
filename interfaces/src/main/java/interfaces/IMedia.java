@@ -1,6 +1,7 @@
 package interfaces;
 
 import library.Media;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * Created by Jandie on 2017-05-08.
@@ -20,21 +21,23 @@ public interface IMedia {
      *
      * @param token   The authentication token.
      * @param media   The media object to add.
+     * @param file    Optional file to add to media, leave null if not necessary.
      * @param alertId The id of the alert where media is stored.
      * @return Confirmation message with feedback about the addition
      * also containing the new media.
      */
-    ConfirmationMessage addMedia(String token, Media media, int alertId);
+    ConfirmationMessage addMedia(String token, Media media, MultipartFile file, int alertId);
 
     /**
      * Updates a media object.
      *
      * @param token The authentication token.
      * @param media The media to update.
+     * @param file Optional file to add to media, leave null if not necessary.
      * @return Confirmation message with feedback about the addition update
      * containing the new update.
      */
-    ConfirmationMessage updateMedia(String token, Media media);
+    ConfirmationMessage updateMedia(String token, Media media, MultipartFile file);
 
     /**
      * Removes media object.
