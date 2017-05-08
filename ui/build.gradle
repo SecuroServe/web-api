@@ -1,0 +1,6 @@
+dependencies {
+    compile('com.fasterxml.jackson.core:jackson-databind')
+    compile('com.guigarage:flatter:0.7')
+    compile project(':library')
+    compile project(':api')
+}
