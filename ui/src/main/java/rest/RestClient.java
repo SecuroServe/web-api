@@ -39,7 +39,8 @@ public class RestClient {
                 throw new NotImplementedException();
 
             case DELETE:
-                throw new NotImplementedException();
+                delete(baseUrl, parameters);
+                return new ConfirmationMessage(ConfirmationMessage.StatusType.SUCCES, "Deleted object", null);
 
             default:
                 return new ConfirmationMessage(ConfirmationMessage.StatusType.ERROR, "Request error.", null);
@@ -86,6 +87,15 @@ public class RestClient {
      */
     public ConfirmationMessage post(String uri, MultiValueMap<String, Object> parameters) {
         return rest.postForObject(uri, parameters, ConfirmationMessage.class);
+    }
+
+    /**
+     * Executes a DELETE request using the Spring REST library.
+     * @param uri           The request URL
+     * @param parameters    A MultiValueMap containing parameters.
+     */
+    public void delete(String uri, MultiValueMap<String, Object> parameters) {
+        rest.delete(uri, parameters);
     }
 
     /**
