@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Handles database connection of library.UserType.
+ * Handles database connection of UserType.
  *
  * Created by Jandie on 12-Apr-17.
  */
@@ -21,10 +21,10 @@ public class UserTypeRepo {
     }
 
     /**
-     * Gets the library.UserType of user.
+     * Gets the UserType of user.
      *
      * @param userId The id of the user.
-     * @return The library.UserType.
+     * @return The UserType.
      * @throws SQLException Database error.
      */
     public UserType getUserTypeOfUser(int userId) throws SQLException {
@@ -32,8 +32,8 @@ public class UserTypeRepo {
 
         String query = "SELECT ut.Naam, p.`Node` FROM `Permission` p " +
                 "INNER JOIN `UserTypePermission` utp ON utp.PermissionID = p.ID " +
-                "INNER JOIN `library.UserType` ut ON ut.ID = utp.UserTypeID " +
-                "INNER JOIN `library.User` u ON u.UserTypeID = ut.ID " +
+                "INNER JOIN `UserType` ut ON ut.ID = utp.UserTypeID " +
+                "INNER JOIN `User` u ON u.UserTypeID = ut.ID " +
                 "WHERE u.ID = ?";
 
         List<Object> parameters = new ArrayList<>();

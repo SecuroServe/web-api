@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Manages library.Location in the database.
+ * Manages Location in the database.
  */
 public class LocationRepo {
 
@@ -20,14 +20,14 @@ public class LocationRepo {
     }
 
     /**
-     * Add a library.Location into the database
+     * Add a Location into the database
      *
-     * @param location the library.Location to insert into the database
-     * @return the updated library.Location with ID
+     * @param location the Location to insert into the database
+     * @return the updated Location with ID
      * @throws SQLException exception when an SQL Error occurs
      */
     public void addLocation(Location location) throws SQLException {
-        String query = "INSERT INTO `library.Location` " +
+        String query = "INSERT INTO `Location` " +
                 "(`Latitude`, `Longitude`, `Radius`) " +
                 "VALUES (?, ?, ?)";
 
@@ -44,15 +44,15 @@ public class LocationRepo {
     }
 
     /**
-     * Update an existing library.Location into the database
+     * Update an existing Location into the database
      *
-     * @param location the updated library.Location with the correct ID
-     * @return the updated library.Location
+     * @param location the updated Location with the correct ID
+     * @return the updated Location
      * @throws SQLException exception when an SQL Error occurs
      */
     public Location updateLocation(Location location) throws SQLException {
 
-        String query = "UPDATE `library.Location` SET `Latitude` = ?, `Longitude` = ?, `Radius` = ? WHERE `id` = ?";
+        String query = "UPDATE `Location` SET `Latitude` = ?, `Longitude` = ?, `Radius` = ? WHERE `id` = ?";
 
         List<Object> parameters = new ArrayList<>();
         parameters.add(location.getLatitude());
@@ -66,13 +66,13 @@ public class LocationRepo {
     }
 
     /**
-     * Delete an existing library.Location from the database
+     * Delete an existing Location from the database
      *
-     * @param id the id of the library.Location to delete
+     * @param id the id of the Location to delete
      * @throws SQLException exception when an SQL Error occurs
      */
     public void deleteLocation(int id) throws SQLException {
-        String query = "DELETE FROM `library.Location` WHERE `id` = ?";
+        String query = "DELETE FROM `Location` WHERE `id` = ?";
 
         List<Object> parameters = new ArrayList<>();
         parameters.add(id);
@@ -81,16 +81,16 @@ public class LocationRepo {
     }
 
     /**
-     * Get a library.Location by an ID
+     * Get a Location by an ID
      *
-     * @param id the ID of a library.Location
-     * @return the library.Location with the given ID
+     * @param id the ID of a Location
+     * @return the Location with the given ID
      * @throws SQLException exception when an SQL Error occurs
      */
     public Location getLocation(int id) throws SQLException {
         Location location = null;
 
-        String query = "SELECT `ID`, `Latitude`, `Longitude`, `Radius` FROM `library.Location` WHERE `ID` = ?";
+        String query = "SELECT `ID`, `Latitude`, `Longitude`, `Radius` FROM `Location` WHERE `ID` = ?";
 
         List<Object> parameters = new ArrayList<>();
         parameters.add(id);

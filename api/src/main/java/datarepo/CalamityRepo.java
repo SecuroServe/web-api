@@ -26,16 +26,16 @@ public class CalamityRepo {
     }
 
     /**
-     * Add a new library.Calamity to the database
+     * Add a new Calamity to the database
      *
-     * @param calamity the library.Calamity to add into the database
-     * @return the updated library.Calamity with the correct ID
+     * @param calamity the Calamity to add into the database
+     * @return the updated Calamity with the correct ID
      * @throws SQLException exception when an SQL Error occurs
      */
     public void addCalamity(Calamity calamity) throws SQLException {
         new LocationRepo(database).addLocation(calamity.getLocation());
 
-        String query = "INSERT INTO `library.Calamity` " +
+        String query = "INSERT INTO `Calamity` " +
                 "(`LocationID`, `CreatedByUserID`, `isConfirmed`, `isClosed`, `Time`, `Title`, `Message`) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
@@ -56,16 +56,16 @@ public class CalamityRepo {
     }
 
     /**
-     * Update an existing library.Calamity into the database
+     * Update an existing Calamity into the database
      *
-     * @param calamity the updated library.Calamity with the correct ID
+     * @param calamity the updated Calamity with the correct ID
      * @throws SQLException exception when an SQL Error occurs
      */
     public void updateCalamity(Calamity calamity) throws SQLException {
 
         Location location = new LocationRepo(database).updateLocation(calamity.getLocation());
 
-        String query = "UPDATE `library.Calamity` SET `LocationID` = ?, `CreatedByUserID` = ?, `isConfirmed` = ?, `isClosed` = ?, `Time` = ?, `Title` = ?, `Message` = ? WHERE `id` = ?";
+        String query = "UPDATE `Calamity` SET `LocationID` = ?, `CreatedByUserID` = ?, `isConfirmed` = ?, `isClosed` = ?, `Time` = ?, `Title` = ?, `Message` = ? WHERE `id` = ?";
 
         List<Object> parameters = new ArrayList<>();
         parameters.add(location.getId());
@@ -81,10 +81,10 @@ public class CalamityRepo {
     }
 
     /**
-     * Get a library.Calamity by an ID
+     * Get a Calamity by an ID
      *
      * @param id the ID of a calamity
-     * @return the library.Calamity with the given ID
+     * @return the Calamity with the given ID
      * @throws SQLException             exception when an SQL Error occurs
      * @throws ParseException           exception when an Parse Error occurs
      * @throws NoSuchAlgorithmException exception when Algorithm is not found
@@ -96,7 +96,7 @@ public class CalamityRepo {
 
         String query = "SELECT `LocationID`, `CreatedByUserID`, `isConfirmed`, " +
                 "`isClosed`, `Time`, `Title`, `Message` " +
-                "FROM `library.Calamity` " +
+                "FROM `Calamity` " +
                 "WHERE `ID` = ?";
 
         List<Object> parameters = new ArrayList<>();
@@ -127,22 +127,22 @@ public class CalamityRepo {
     }
 
     /**
-     * Delete an existing library.Calamity from the Database
+     * Delete an existing Calamity from the Database
      *
-     * @param id the id of a library.Calamity
+     * @param id the id of a Calamity
      * @throws SQLException             exception when an SQL Error occurs
      * @throws ParseException           exception when an Parse Error occurs
      * @throws NoSuchAlgorithmException exception when Algorithm is not found
      */
     public void deleteCalamity(int id) throws ParseException, NoSuchAlgorithmException, SQLException {
-        String query = "DELETE FROM library.Location WHERE ID = (SELECT LocationId FROM library.Calamity WHERE ID = ?)";
+        String query = "DELETE FROM Location WHERE ID = (SELECT LocationId FROM Calamity WHERE ID = ?)";
 
         List<Object> parameters = new ArrayList<>();
         parameters.add(id);
 
         database.executeQuery(query, parameters, Database.QueryType.NON_QUERY);
 
-        query = "DELETE FROM library.Calamity WHERE ID = ?";
+        query = "DELETE FROM Calamity WHERE ID = ?";
 
         database.executeQuery(query, parameters, Database.QueryType.NON_QUERY);
     }
@@ -155,7 +155,7 @@ public class CalamityRepo {
 
         String query = "SELECT `ID`, `LocationID`, `CreatedByUserID`, `isConfirmed`, " +
                 "`isClosed`, `Time`, `Title`, `Message` " +
-                "FROM `library.Calamity`";
+                "FROM `Calamity`";
 
         List<Object> parameters = new ArrayList<>();
 
@@ -207,7 +207,7 @@ public class CalamityRepo {
 
         String query = "SELECT u.`ID`, u.`UserTypeID`, u.`BuildingID`, u.`Username`, u.`Email`, u.`City` " +
                 "FROM `CalamityAssignee` ca " +
-                "INNER JOIN `library.User` u ON ca.AssigneeID = u.ID " +
+                "INNER JOIN `User` u ON ca.AssigneeID = u.ID " +
                 "WHERE `CalamityID` = ?";
 
         List<Object> parameters = new ArrayList<>();

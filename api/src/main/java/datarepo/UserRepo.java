@@ -59,7 +59,7 @@ public class UserRepo {
         String tokenExpiration;
         String token = null;
 
-        String query = "SELECT `id`, `token`, `tokenExpiration` FROM `library.User` WHERE `username` = ? AND `passwordhash` = ?";
+        String query = "SELECT `id`, `token`, `tokenExpiration` FROM `User` WHERE `username` = ? AND `passwordhash` = ?";
 
         List<Object> parameters = new ArrayList<>();
         parameters.add(username);
@@ -120,7 +120,7 @@ public class UserRepo {
         date.add(Calendar.MINUTE, 15);
 
         String tokenExpiration = sdf.format(date.getTime());
-        String query = "UPDATE `library.User` SET `token` = ?, `tokenexpiration` = ? WHERE `token` = ?";
+        String query = "UPDATE `User` SET `token` = ?, `tokenexpiration` = ? WHERE `token` = ?";
 
         List<Object> parameters = new ArrayList<>();
         parameters.add(token);
@@ -140,7 +140,7 @@ public class UserRepo {
      * @throws SQLException
      */
     private String getUserSalt(String username) throws SQLException {
-        String query = "SELECT `Salt` FROM `library.User` WHERE `Username` = ?";
+        String query = "SELECT `Salt` FROM `User` WHERE `Username` = ?";
 
         List<Object> parameters = new ArrayList<>();
         parameters.add(username);
@@ -181,7 +181,7 @@ public class UserRepo {
         password = HashUtil.hashPassword(password, salt, "SHA-256", "UTF-8");
         String token = HashUtil.generateSalt();
         String tokenExpiration = sdf.format(date.getTime());
-        String query = "INSERT INTO `library.User` " +
+        String query = "INSERT INTO `User` " +
                 "(`UserTypeID`, `BuildingID`, `Username`, " +
                 "`PasswordHash`, `Salt`, `Email`, `City`, `Token`, `TokenExpiration`) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -215,7 +215,7 @@ public class UserRepo {
      * @param userId The id of the user to delete.
      */
     public void deleteUser(int userId) throws SQLException {
-        String query = "DELETE FROM `library.User` WHERE `id` = ?";
+        String query = "DELETE FROM `User` WHERE `id` = ?";
 
         List<Object> parameters = new ArrayList<>();
         parameters.add(userId);
@@ -226,7 +226,7 @@ public class UserRepo {
     public User getUser(String token) throws SQLException, NoSuchAlgorithmException, ParseException {
         User user = null;
         String query = "SELECT `ID`, `UserTypeID`, `BuildingID`, `Username`, " +
-                "`Email`,  `City`, `TokenExpiration` FROM `library.User` WHERE `Token` = ?";
+                "`Email`,  `City`, `TokenExpiration` FROM `User` WHERE `Token` = ?";
 
         List<Object> parameters = new ArrayList<>();
         parameters.add(token);
@@ -259,7 +259,7 @@ public class UserRepo {
     public User getUserById(int id) throws SQLException, NoSuchAlgorithmException, ParseException {
         User user = null;
         String query = "SELECT `UserTypeID`, `BuildingID`, `Username`, " +
-                "`Email`, `City`, `Token` FROM `library.User` WHERE `ID` = ?";
+                "`Email`, `City`, `Token` FROM `User` WHERE `ID` = ?";
 
         List<Object> parameters = new ArrayList<>();
         parameters.add(id);
