@@ -11,6 +11,7 @@ import library.Calamity;
 import library.User;
 import ui.controller.DashboardController;
 import ui.controller.LoginController;
+import ui.controller.*;
 
 import java.io.IOException;
 
@@ -34,6 +35,13 @@ public class Main extends Application {
     public void loadDashBoard(User user) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Dashboard.fxml"));
         DashboardController controller = new DashboardController(this, user);
+        fxmlLoader.setController(controller);
+        setStage(fxmlLoader.load());
+    }
+
+    public void loadInformRescuer(User user) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/SendRescuer.fxml"));
+        SendRescuerController controller = new SendRescuerController(user, this);
         fxmlLoader.setController(controller);
         setStage(fxmlLoader.load());
     }
