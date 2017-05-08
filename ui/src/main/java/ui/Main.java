@@ -9,8 +9,6 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import library.Calamity;
 import library.User;
-import ui.controller.CalamityDetailsController;
-import ui.controller.CalamityListController;
 import ui.controller.DashboardController;
 import ui.controller.LoginController;
 
@@ -36,20 +34,6 @@ public class Main extends Application {
     public void loadDashBoard(User user) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Dashboard.fxml"));
         DashboardController controller = new DashboardController(this, user);
-        fxmlLoader.setController(controller);
-        setStage(fxmlLoader.load());
-    }
-
-    public void loadCalamityList(User user) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/CalamityList.fxml"));
-        CalamityListController controller = new CalamityListController(this, user);
-        fxmlLoader.setController(controller);
-        setStage(fxmlLoader.load());
-    }
-
-    public void loadCalamityDetails(User user, Calamity calamity) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/CalamityDetails.fxml"));
-        CalamityDetailsController controller = new CalamityDetailsController(user, calamity, this);
         fxmlLoader.setController(controller);
         setStage(fxmlLoader.load());
     }
