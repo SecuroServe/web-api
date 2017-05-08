@@ -40,10 +40,6 @@ public class Main extends Application {
     }
 
     public void loadInformRescuer(User user) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/SendRescuer.fxml"));
-        SendRescuerController controller = new SendRescuerController(user, this);
-        fxmlLoader.setController(controller);
-        setStage(fxmlLoader.load());
     }
 
     private void setStage(Parent root) {
