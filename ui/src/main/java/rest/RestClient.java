@@ -54,7 +54,7 @@ public class RestClient {
      * @param parameters A MultiValueMap containing parameters
      * @return ConfirmationMessage
      */
-    public String generateUrl(String baseUrl, MultiValueMap<String, Object> parameters) {
+    private String generateUrl(String baseUrl, MultiValueMap<String, Object> parameters) {
 
         StringBuilder sb = new StringBuilder();
         sb.append(baseUrl).append("?");
@@ -74,7 +74,7 @@ public class RestClient {
      * @param uri The request URL
      * @return ConfirmationMessage
      */
-    public ConfirmationMessage get(String uri) {
+    private ConfirmationMessage get(String uri) {
         return rest.getForObject(uri, ConfirmationMessage.class);
     }
 
@@ -85,7 +85,7 @@ public class RestClient {
      * @param parameters A MultiValueMap containing parameters.
      * @return ConfirmationMessage
      */
-    public ConfirmationMessage post(String uri, MultiValueMap<String, Object> parameters) {
+    private ConfirmationMessage post(String uri, MultiValueMap<String, Object> parameters) {
         return rest.postForObject(uri, parameters, ConfirmationMessage.class);
     }
 
@@ -94,7 +94,7 @@ public class RestClient {
      * @param uri           The request URL
      * @param parameters    A MultiValueMap containing parameters.
      */
-    public void delete(String uri, MultiValueMap<String, Object> parameters) {
+    private void delete(String uri, MultiValueMap<String, Object> parameters) {
         rest.delete(uri, parameters);
     }
 
