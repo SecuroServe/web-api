@@ -26,11 +26,9 @@ public class CalamityRequest implements ICalamity {
     private static final String DELETE_CALAMITY = "/deletecalamity";
     private static final String DELETE_CALAMITY_ASSIGNEE = "/deletecalamityassignee";
 
-    RestTemplate restTemplate;
     RestClient restClient;
 
     public CalamityRequest() {
-        restTemplate = new RestTemplate();
         restClient = new RestClient();
     }
 
@@ -87,17 +85,28 @@ public class CalamityRequest implements ICalamity {
     }
 
     @Override
-    public ConfirmationMessage deleteCalamity(String s, int i) {
-        return null;
+    public ConfirmationMessage deleteCalamity(String token, int id) {
+        MultiValueMap<String, Object> parameters = new LinkedMultiValueMap<>();
+        parameters.add("token", token);
+        parameters.add("id", id);
+        return restClient.post(REQUEST_PREFIX + DELETE_CALAMITY, parameters);
     }
 
     @Override
-    public ConfirmationMessage addCalamityAssignee(String s, int i, int i1) {
-        return null;
+    public ConfirmationMessage addCalamityAssignee(String token, int calamityId, int userId) {
+        MultiValueMap<String, Object> parameters = new LinkedMultiValueMap<>();
+        parameters.add("token", token);
+        parameters.add("calamityid", calamityId);
+        parameters.add("userid", userId);
+        return restClient.post(REQUEST_PREFIX + POST_ADD_CALAMITY_ASSIGNEE, parameters);
     }
 
     @Override
-    public ConfirmationMessage deleteCalamityAssignee(String s, int i, int i1) {
-        return null;
+    public ConfirmationMessage deleteCalamityAssignee(String token, int calamityId, int userId) {
+        MultiValueMap<String, Object> parameters = new LinkedMultiValueMap<>();
+        parameters.add("token", token);
+        parameters.add("calamityid", calamityId);
+        parameters.add("userid", userId);
+        return restClient.post(REQUEST_PREFIX + DELETE_CALAMITY_ASSIGNEE, parameters);
     }
 }

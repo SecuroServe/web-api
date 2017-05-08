@@ -106,7 +106,8 @@ public class CalamityController implements ICalamity {
 
     @Override
     @RequestMapping("/deletecalamity")
-    public ConfirmationMessage deleteCalamity(String token, int id) {
+    public ConfirmationMessage deleteCalamity(@RequestParam(value = "token") String token,
+                                              @RequestParam(value = "id") int id) {
         return calamityLogic.deleteCalamity(token, id);
     }
 
@@ -120,7 +121,9 @@ public class CalamityController implements ICalamity {
      */
     @Override
     @RequestMapping("/addcalamityassignee")
-    public ConfirmationMessage addCalamityAssignee(String token, int calamityId, int userId) {
+    public ConfirmationMessage addCalamityAssignee(@RequestParam(value = "token") String token,
+                                                   @RequestParam(value = "calamityid") int calamityId,
+                                                   @RequestParam(value = "userid") int userId) {
         return calamityLogic.addCalamityAssignee(token, calamityId, userId);
     }
 
@@ -134,7 +137,9 @@ public class CalamityController implements ICalamity {
      */
     @Override
     @RequestMapping("/deletecalamityassignee")
-    public ConfirmationMessage deleteCalamityAssignee(String token, int calamityId, int userId) {
+    public ConfirmationMessage deleteCalamityAssignee(@RequestParam(value = "token") String token,
+                                                      @RequestParam(value = "calamityid") int calamityId,
+                                                      @RequestParam(value = "userid") int userId) {
         return calamityLogic.deleteCalamityAssignee(token, calamityId, userId);
     }
 }
