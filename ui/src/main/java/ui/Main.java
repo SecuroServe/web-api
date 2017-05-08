@@ -9,6 +9,8 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import library.Calamity;
 import library.User;
+import ui.controller.DashboardController;
+import ui.controller.LoginController;
 import ui.controller.*;
 
 import java.io.IOException;
@@ -16,10 +18,6 @@ import java.io.IOException;
 public class Main extends Application {
 
     private Stage primaryStage;
-
-    public static void main(String[] args) {
-        launch(args);
-    }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -41,25 +39,7 @@ public class Main extends Application {
         setStage(fxmlLoader.load());
     }
 
-    public void loadCalamityList(User user) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/CalamityList.fxml"));
-        CalamityListController controller = new CalamityListController(this, user);
-        fxmlLoader.setController(controller);
-        setStage(fxmlLoader.load());
-    }
-
-    public void loadCalamityDetails(User user, Calamity calamity) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/CalamityDetails.fxml"));
-        CalamityDetailsController controller = new CalamityDetailsController(user, calamity, this);
-        fxmlLoader.setController(controller);
-        setStage(fxmlLoader.load());
-    }
-
     public void loadInformRescuer(User user) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/SendRescuer.fxml"));
-        SendRescuerController controller = new SendRescuerController(user, this);
-        fxmlLoader.setController(controller);
-        setStage(fxmlLoader.load());
     }
 
     private void setStage(Parent root) {
@@ -74,5 +54,7 @@ public class Main extends Application {
         primaryStage.setY((primScreenBounds.getHeight() - primaryStage.getHeight()) / 2);
     }
 
-
+    public static void main(String[] args) {
+        launch(args);
+    }
 }

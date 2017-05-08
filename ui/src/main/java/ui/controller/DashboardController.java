@@ -2,10 +2,16 @@ package ui.controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Rectangle2D;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import javafx.stage.Screen;
+import javafx.stage.Stage;
 import library.User;
 import ui.Main;
 
@@ -41,16 +47,28 @@ public class DashboardController implements Initializable {
     }
 
     private void handleCalamityBtnAction(MouseEvent mouseEvent) {
+        Stage stage = new Stage();
+
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/CalamityList.fxml"));
+        CalamityListController calamityListController = new CalamityListController(user);
+        fxmlLoader.setController(calamityListController);
+
         try {
-            main.loadCalamityList(this.user);
+            setStage(fxmlLoader.load(), stage);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     private void handleInformRescuerBtnAction(MouseEvent mouseEvent){
+        Stage stage = new Stage();
+
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/SendRescuer.fxml"));
+        SendRescuerController controller = new SendRescuerController(user);
+        fxmlLoader.setController(controller);
+
         try {
-            main.loadInformRescuer(this.user);
+            setStage(fxmlLoader.load(), stage);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -62,5 +80,17 @@ public class DashboardController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void setStage(Parent root, Stage stage) throws IOException {
+        stage.setResizable(false);
+        stage.setTitle("Securoserve");
+        stage.setScene(new Scene(root));
+        stage.show();
+
+        // Center it
+        Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
+        stage.setX((primScreenBounds.getWidth() - stage.getWidth()) / 2);
+        stage.setY((primScreenBounds.getHeight() - stage.getHeight()) / 2);
     }
 }

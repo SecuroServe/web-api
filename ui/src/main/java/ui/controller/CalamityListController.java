@@ -7,9 +7,11 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 import library.Calamity;
 import library.Location;
 import library.User;
@@ -27,14 +29,24 @@ import java.util.*;
  */
 public class CalamityListController implements Initializable {
 
+    /*
+    * Connections to the fxml file, every button, label etc.
+    * that will get filled are in here
+    * */
     @FXML
     public Button refreshButton;
     @FXML
     public Button backBtn;
+
     @FXML
     public TableView<Calamity> calamityTable;
+    @FXML
+    public TableView<User> userTable;
 
-    private Main main;
+    // Calamity
+    @FXML
+    public Label calamityTitle;
+
     private User user;
 
     private List<Calamity> calamities;
@@ -42,25 +54,14 @@ public class CalamityListController implements Initializable {
 
     private Timer timerToRefresh = new Timer();
 
-    public CalamityListController(Main main, User user) {
-        this.main = main;
+    public CalamityListController(User user) {
         this.user = user;
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         refreshButton.setOnAction(this::handleRefreshAction);
-        backBtn.setOnAction(this::handleCloseAction);
-        calamityTable.setOnMouseClicked(new EventHandler<javafx.scene.input.MouseEvent>() {
-            @Override
-            public void handle(javafx.scene.input.MouseEvent event) {
-                try {
-                    main.loadCalamityDetails(user, calamityTable.getSelectionModel().getSelectedItem());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+        backBtn.setOnAction(this::handleBackAction);
 
         initiateTableColumns();
         refreshCalamityTable();
@@ -70,19 +71,12 @@ public class CalamityListController implements Initializable {
     }
 
     private void handleBackAction(ActionEvent actionEvent) {
-        //TODO Go back to dashboard
+        Stage stage = (Stage) backBtn.getScene().getWindow();
+        stage.close();
     }
 
     private void handleRefreshAction(ActionEvent actionEvent) {
         refreshCalamityTable();
-    }
-
-    private void handleCloseAction(ActionEvent actionEvent) {
-        try {
-            main.loadDashBoard(user);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     private void initiateTableColumns() {
