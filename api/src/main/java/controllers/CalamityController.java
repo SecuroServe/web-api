@@ -72,9 +72,9 @@ public class CalamityController implements ICalamity {
                                            @RequestParam(value = "latitude") double latitude,
                                            @RequestParam(value = "longitude") double longitude,
                                            @RequestParam(value = "radius") double radius,
-                                           @RequestParam(value = "confirmed") boolean isConfirmed,
-                                           @RequestParam(value = "status") boolean isClosed) {
-        return calamityLogic.addCalamity(token, title, message, new Location(1, latitude, longitude, radius), isConfirmed, isClosed);
+                                           @RequestParam(value = "confirmed") boolean confirmed,
+                                           @RequestParam(value = "closed") boolean closed) {
+        return calamityLogic.addCalamity(token, title, message, new Location(1, latitude, longitude, radius), confirmed, closed);
     }
 
     /**
@@ -82,26 +82,32 @@ public class CalamityController implements ICalamity {
      *
      * @param token       The authentication token.
      * @param id          The id of the calamity.
-     * @param name        The name of the calamity.
-     * @param description The description of the calamity.
-     * @param location    A location object of the calamity
+     * @param title        The name of the calamity.
+     * @param message The description of the calamity.
+     * @param latitude  The latitude of the new calamity.
+     * @param longitude The longitude of the new calamity.
+     * @param radius    The radius of the new calamity.
      * @return Confirmation message with feedback about the update.
      */
     @Override
     @RequestMapping("/updatecalamity")
     public ConfirmationMessage updateCalamity(@RequestParam(value = "token") String token,
                                               @RequestParam(value = "id") int id,
-                                              @RequestParam(value = "name") String name,
-                                              @RequestParam(value = "description") String description,
-                                              @RequestParam(value = "location") Location location,
-                                              @RequestParam(value = "isConfirmed") boolean isConfirmed,
-                                              @RequestParam(value = "isClosed") boolean isClosed) {
-        return calamityLogic.updateCalamity(token, id, name, description, location, isConfirmed, isClosed);
+                                              @RequestParam(value = "title") String title,
+                                              @RequestParam(value = "message") String message,
+                                              @RequestParam(value = "locationid") int locId,
+                                              @RequestParam(value = "latitude") double latitude,
+                                              @RequestParam(value = "longitude") double longitude,
+                                              @RequestParam(value = "radius") double radius,
+                                              @RequestParam(value = "confirmed") boolean isConfirmed,
+                                              @RequestParam(value = "closed") boolean isClosed) {
+        return calamityLogic.updateCalamity(token, id, title, message, new Location(locId, latitude, longitude, radius), isConfirmed, isClosed);
     }
 
     @Override
     @RequestMapping("/deletecalamity")
-    public ConfirmationMessage deleteCalamity(String token, int id) {
+    public ConfirmationMessage deleteCalamity(@RequestParam(value = "token") String token,
+                                              @RequestParam(value = "id") int id) {
         return calamityLogic.deleteCalamity(token, id);
     }
 
@@ -115,7 +121,9 @@ public class CalamityController implements ICalamity {
      */
     @Override
     @RequestMapping("/addcalamityassignee")
-    public ConfirmationMessage addCalamityAssignee(String token, int calamityId, int userId) {
+    public ConfirmationMessage addCalamityAssignee(@RequestParam(value = "token") String token,
+                                                   @RequestParam(value = "calamityid") int calamityId,
+                                                   @RequestParam(value = "userid") int userId) {
         return calamityLogic.addCalamityAssignee(token, calamityId, userId);
     }
 
@@ -129,7 +137,9 @@ public class CalamityController implements ICalamity {
      */
     @Override
     @RequestMapping("/deletecalamityassignee")
-    public ConfirmationMessage deleteCalamityAssignee(String token, int calamityId, int userId) {
+    public ConfirmationMessage deleteCalamityAssignee(@RequestParam(value = "token") String token,
+                                                      @RequestParam(value = "calamityid") int calamityId,
+                                                      @RequestParam(value = "userid") int userId) {
         return calamityLogic.deleteCalamityAssignee(token, calamityId, userId);
     }
 }
