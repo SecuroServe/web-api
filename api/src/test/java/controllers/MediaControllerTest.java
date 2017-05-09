@@ -32,7 +32,6 @@ public class MediaControllerTest {
         Media media = new Text(-1, "CalamityTestReport", "This is a test!");
 
         media = (Media) mc.addMedia(user.getToken(), media, alert.getId()).getReturnObject();
-
         media = (Media) mc.getMedia(user.getToken(), media.getId()).getReturnObject();
 
         Assert.assertEquals(true, media instanceof Text);
@@ -49,7 +48,6 @@ public class MediaControllerTest {
                 "test.jpeg", MediaFile.FileType.PHOTO);
 
         media = (Media) mc.addMedia(user.getToken(), media, alert.getId()).getReturnObject();
-
         media = (Media) mc.getMedia(user.getToken(), media.getId()).getReturnObject();
 
         Assert.assertEquals(true, media instanceof Text);
@@ -65,7 +63,17 @@ public class MediaControllerTest {
 
     @Test
     public void removeMediaTest() throws Exception {
+        Alert alert = (Alert) ac.addAlert(user.getToken(), "testAlert", "testDescription",
+                55, 56, 0).getReturnObject();
 
+        Media media = new Text(-1, "CalamityTestReport", "This is a test!");
+
+        media = (Media) mc.addMedia(user.getToken(), media, alert.getId()).getReturnObject();
+        media = (Media) mc.getMedia(user.getToken(), media.getId()).getReturnObject();
+        mc.removeMedia(user.getToken(), media.getId());
+        media = (Media) mc.getMedia(user.getToken(), media.getId()).getReturnObject();
+
+        Assert.assertEquals(null, media);
     }
 
 }

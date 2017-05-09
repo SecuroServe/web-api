@@ -52,11 +52,10 @@ public interface IMedia {
      *
      * @param token The authentication token.
      * @param media The media to update.
-     * @param file Optional file to add to media, leave null if not necessary.
      * @return Confirmation message with feedback about the addition update
      * containing the new update.
      */
-    ConfirmationMessage updateMedia(String token, Media media, MultipartFile file);
+    ConfirmationMessage updateMedia(String token, Media media);
 
     /**
      * Removes media object.

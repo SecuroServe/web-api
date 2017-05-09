@@ -78,12 +78,11 @@ public class MediaController implements IMedia {
      *
      * @param token The authentication token.
      * @param media The media to update.
-     * @param file  Optional file to add to media, leave null if not necessary.
      * @return Confirmation message with feedback about the addition update
      * containing the new update.
      */
     @Override
-    public ConfirmationMessage updateMedia(String token, Media media, MultipartFile file) {
+    public ConfirmationMessage updateMedia(String token, Media media) {
         return null;
     }
 
