@@ -34,7 +34,7 @@ public class MediaControllerTest {
 
         Media media = new Text(-1, "CalamityTestReport", "This is a test!");
 
-        media = (Media) mc.addMedia(user.getToken(), media, alert.getId()).getReturnObject();
+        media = (Media) mc.addMedia(user.getToken(), media, null, alert.getId()).getReturnObject();
 
         media = (Media) mc.getMedia(user.getToken(), media.getId()).getReturnObject();
 
