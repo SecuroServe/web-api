@@ -21,12 +21,31 @@ public interface IMedia {
      *
      * @param token   The authentication token.
      * @param media   The media object to add.
-     * @param file    Optional file to add to media, leave null if not necessary.
      * @param alertId The id of the alert where media is stored.
      * @return Confirmation message with feedback about the addition
      * also containing the new media.
      */
-    ConfirmationMessage addMedia(String token, Media media, MultipartFile file, int alertId);
+    ConfirmationMessage addMedia(String token, Media media, int alertId);
+
+    /**
+     * Uploads a new media file. Deletes existing media file if exists.
+     *
+     * @param token   The authentication token.
+     * @param mediaId The id of the media the file belongs to.
+     * @param file    The file to upload in MultipartFile object.
+     * @return Confirmation message with feedback about the upload action
+     */
+    ConfirmationMessage uploadMedia(String token, int mediaId, MultipartFile file);
+
+    /**
+     * Downloads a media file that belongs to a media object.
+     *
+     * @param token   The authentication token.
+     * @param mediaId The id of the media the file belongs to.
+     * @return Confirmation message with feedback about the download action
+     * and also contains the downloaded file.
+     */
+    ConfirmationMessage downloadMedia(String token, int mediaId);
 
     /**
      * Updates a media object.
