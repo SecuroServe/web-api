@@ -1,10 +1,7 @@
 package controllers;
 
 import datarepo.database.Database;
-import library.Alert;
-import library.Media;
-import library.Text;
-import library.User;
+import library.*;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,7 +25,7 @@ public class MediaControllerTest {
     }
 
     @Test
-    public void getMediaTest() throws Exception {
+    public void getMediaTextTest() throws Exception {
         Alert alert = (Alert) ac.addAlert(user.getToken(), "testAlert", "testDescription",
                 55, 56, 0).getReturnObject();
 
@@ -41,6 +38,24 @@ public class MediaControllerTest {
         Assert.assertEquals(true, media instanceof Text);
         Assert.assertEquals("CalamityTestReport", media.getName());
         Assert.assertEquals("testDescription", ((Text) media).getText());
+    }
+
+    @Test
+    public void getMediaFileTest() throws Exception {
+        Alert alert = (Alert) ac.addAlert(user.getToken(), "testAlert", "testDescription",
+                55, 56, 0).getReturnObject();
+
+        Media media = new MediaFile(-1, "TestPhoto",
+                "test.jpeg", MediaFile.FileType.PHOTO);
+
+        media = (Media) mc.addMedia(user.getToken(), media, null, alert.getId()).getReturnObject();
+
+        media = (Media) mc.getMedia(user.getToken(), media.getId()).getReturnObject();
+
+        Assert.assertEquals(true, media instanceof Text);
+        Assert.assertEquals("TestPhoto", media.getName());
+        Assert.assertEquals("test.jpeg", ((MediaFile) media).getFileName());
+        Assert.assertEquals(MediaFile.FileType.PHOTO, ((MediaFile) media).getFileType());
     }
 
     @Test
