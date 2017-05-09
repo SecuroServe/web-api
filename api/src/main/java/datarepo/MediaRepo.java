@@ -224,7 +224,56 @@ public class MediaRepo {
         throw new SQLException("Add media failed!");
     }
 
-    public void removeMedia(int mediaId) {
+    /**
+     * Deletes Media object from database by id.
+     *
+     * @param mediaId The id of the Media object to remove.
+     * @throws SQLException Database error.
+     */
+    public void removeMedia(int mediaId) throws SQLException {
+        if (isText(mediaId)) {
+            removeText(mediaId);
+        }
 
+        if (isMediaFile(mediaId)) {
+            removeMediaFile(mediaId);
+        }
+
+        String query = "DELETE FROM `media` WHERE `ID` = ?";
+
+        List<Object> parameters = new ArrayList<>();
+        parameters.add(mediaId);
+
+        database.executeQuery(query, parameters, Database.QueryType.NON_QUERY);
+    }
+
+    /**
+     * Deletes Text object from database by id.
+     *
+     * @param mediaId The id of the Text object to remove.
+     * @throws SQLException Database error.
+     */
+    private void removeText(int mediaId) throws SQLException {
+        String query = "DELETE FROM `text` WHERE `MediaID` = ?";
+
+        List<Object> parameters = new ArrayList<>();
+        parameters.add(mediaId);
+
+        database.executeQuery(query, parameters, Database.QueryType.NON_QUERY);
+    }
+
+    /**
+     * Deletes MediaFile object from database by id.
+     *
+     * @param mediaId The id of the MediaFile object to remove.
+     * @throws SQLException Database error.
+     */
+    private void removeMediaFile(int mediaId) throws SQLException {
+        String query = "DELETE FROM `file` WHERE `MediaID` = ?";
+
+        List<Object> parameters = new ArrayList<>();
+        parameters.add(mediaId);
+
+        database.executeQuery(query, parameters, Database.QueryType.NON_QUERY);
     }
 }
