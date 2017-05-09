@@ -58,7 +58,25 @@ public class MediaControllerTest {
 
     @Test
     public void updateMediaTest() throws Exception {
+        Alert alert = (Alert) ac.addAlert(user.getToken(), "testAlert", "testDescription",
+                55, 56, 0).getReturnObject();
 
+        Media media = new MediaFile(-1, "1",
+                "2", MediaFile.FileType.VIDEO);
+
+        media = (Media) mc.addMedia(user.getToken(), media, alert.getId()).getReturnObject();
+        media = (Media) mc.getMedia(user.getToken(), media.getId()).getReturnObject();
+
+        ((MediaFile) media).setFileName("test.jpeg");
+        ((MediaFile) media).setFileType(MediaFile.FileType.PHOTO);
+        media.setName("TestPhoto");
+
+        media = (Media) mc.updateMedia(user.getToken(), media).getReturnObject();
+
+        Assert.assertEquals(true, media instanceof Text);
+        Assert.assertEquals("TestPhoto", media.getName());
+        Assert.assertEquals("test.jpeg", ((MediaFile) media).getFileName());
+        Assert.assertEquals(MediaFile.FileType.PHOTO, ((MediaFile) media).getFileType());
     }
 
     @Test
