@@ -59,9 +59,22 @@ public class SendRescuerController implements Initializable {
         selectedUsers = FXCollections.observableArrayList();
 
         CalamityRequest request = new CalamityRequest();
-        allCalamities = (List) request.allCalamity().getReturnObject();//todo check for null
+        Object calamityList = request.allCalamity().getReturnObject();//todo check for null
+        if(calamityList != null){
+            allCalamities = (List) calamityList;
+        } else{
+            //todo display empty list message
+            allCalamities = new ArrayList<>();
+        }
+
         UserRequest userRequest = new UserRequest();
-        availableUsers = (List) userRequest.allusers(user.getToken()).getReturnObject();//todo check for null;
+        Object userList = userRequest.allusers(user.getToken()).getReturnObject();//todo check for null;
+        if(userList != null){
+            availableUsers = (List) userList;
+        } else{
+            //todo display empty list message
+            availableUsers = new ArrayList<>();
+        }
         //todo filter for only available rescuers.
 
         rescuerTableView.setItems(FXCollections.observableArrayList(availableUsers));
