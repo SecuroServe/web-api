@@ -1,10 +1,7 @@
 package controllers;
 
 import datarepo.database.Database;
-import library.Alert;
-import library.Media;
-import library.Text;
-import library.User;
+import library.*;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,14 +25,13 @@ public class MediaControllerTest {
     }
 
     @Test
-    public void getMediaTest() throws Exception {
+    public void getMediaTextTest() throws Exception {
         Alert alert = (Alert) ac.addAlert(user.getToken(), "testAlert", "testDescription",
                 55, 56, 0).getReturnObject();
 
         Media media = new Text(-1, "CalamityTestReport", "This is a test!");
 
         media = (Media) mc.addMedia(user.getToken(), media, alert.getId()).getReturnObject();
-
         media = (Media) mc.getMedia(user.getToken(), media.getId()).getReturnObject();
 
         Assert.assertEquals(true, media instanceof Text);
@@ -44,16 +40,58 @@ public class MediaControllerTest {
     }
 
     @Test
-    public void addMediaTest() throws Exception {
+    public void getMediaFileTest() throws Exception {
+        Alert alert = (Alert) ac.addAlert(user.getToken(), "testAlert", "testDescription",
+                55, 56, 0).getReturnObject();
 
+        Media media = new MediaFile(-1, "TestPhoto",
+                "test.jpeg", MediaFile.FileType.PHOTO);
+
+        media = (Media) mc.addMedia(user.getToken(), media, alert.getId()).getReturnObject();
+        media = (Media) mc.getMedia(user.getToken(), media.getId()).getReturnObject();
+
+        Assert.assertEquals(true, media instanceof Text);
+        Assert.assertEquals("TestPhoto", media.getName());
+        Assert.assertEquals("test.jpeg", ((MediaFile) media).getFileName());
+        Assert.assertEquals(MediaFile.FileType.PHOTO, ((MediaFile) media).getFileType());
     }
 
     @Test
     public void updateMediaTest() throws Exception {
+        Alert alert = (Alert) ac.addAlert(user.getToken(), "testAlert", "testDescription",
+                55, 56, 0).getReturnObject();
+
+        Media media = new MediaFile(-1, "1",
+                "2", MediaFile.FileType.VIDEO);
+
+        media = (Media) mc.addMedia(user.getToken(), media, alert.getId()).getReturnObject();
+        media = (Media) mc.getMedia(user.getToken(), media.getId()).getReturnObject();
+
+        ((MediaFile) media).setFileName("test.jpeg");
+        ((MediaFile) media).setFileType(MediaFile.FileType.PHOTO);
+        media.setName("TestPhoto");
+
+        media = (Media) mc.updateMedia(user.getToken(), media).getReturnObject();
+
+        Assert.assertEquals(true, media instanceof Text);
+        Assert.assertEquals("TestPhoto", media.getName());
+        Assert.assertEquals("test.jpeg", ((MediaFile) media).getFileName());
+        Assert.assertEquals(MediaFile.FileType.PHOTO, ((MediaFile) media).getFileType());
     }
 
     @Test
     public void removeMediaTest() throws Exception {
+        Alert alert = (Alert) ac.addAlert(user.getToken(), "testAlert", "testDescription",
+                55, 56, 0).getReturnObject();
+
+        Media media = new Text(-1, "CalamityTestReport", "This is a test!");
+
+        media = (Media) mc.addMedia(user.getToken(), media, alert.getId()).getReturnObject();
+        media = (Media) mc.getMedia(user.getToken(), media.getId()).getReturnObject();
+        mc.removeMedia(user.getToken(), media.getId());
+        media = (Media) mc.getMedia(user.getToken(), media.getId()).getReturnObject();
+
+        Assert.assertEquals(null, media);
     }
 
 }
