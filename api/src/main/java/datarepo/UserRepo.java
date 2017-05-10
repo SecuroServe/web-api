@@ -280,4 +280,30 @@ public class UserRepo {
 
         return user;
     }
+
+    public List<User> getAllUsers(String token) throws SQLException{
+        //todo return all users in a list
+        List<User> userList = new ArrayList<>();
+        String query = "SELECT `UserTypeID`, `BuildingID`, `Username`, " +
+                "`Email`, `City`, `Token` FROM `User`";
+
+        List<Object> parameters = new ArrayList<>();
+
+        try(ResultSet rs = database.executeQuery(query, parameters, Database.QueryType.QUERY)){
+            while (rs.next()){
+                int userID = rs.getInt(1);
+                String username = rs.getString(3);
+                String email = rs.getString(4);
+                String city = rs.getString(5);
+                String userToken = rs.getString(6);
+
+                UserType userType = new UserTypeRepo(database).getUserTypeOfUser(userID);
+
+                User user = new User(userID, userType, null, null, username, email, city, userToken);
+                userList.add(user);
+            }
+        }
+
+        return userList;
+    }
 }

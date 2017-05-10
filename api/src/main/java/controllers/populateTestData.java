@@ -15,6 +15,7 @@ import java.text.ParseException;
 import java.util.Date;
 
 /**
+ * this class adds entries to the database via the Repo classes.
  * Created by yannic on 08/05/2017.
  */
 public class populateTestData {

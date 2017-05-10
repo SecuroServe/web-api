@@ -12,12 +12,14 @@ public class UserRequest implements IUser {
     private static final String REQUEST_PREFIX = "http://localhost:8080";
 
     private static final String LOGIN = "/getuser?usertoken={usertoken}";
+    private static final String ALL = "/allusers";
 
     RestTemplate restTemplate = new RestTemplate();
 
     @Override
-    public ConfirmationMessage allusers(String token) {
-        return null;
+    public ConfirmationMessage allusers(String userToken) {
+        //todo fix this, gets stuck here
+        return restTemplate.getForObject(REQUEST_PREFIX + ALL, ConfirmationMessage.class);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package ui.controller;
 
+import interfaces.ConfirmationMessage;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -59,20 +60,20 @@ public class SendRescuerController implements Initializable {
         selectedUsers = FXCollections.observableArrayList();
 
         CalamityRequest request = new CalamityRequest();
-        Object calamityList = request.allCalamity().getReturnObject();//todo check for null
-        if(calamityList != null){
-            allCalamities = (List) calamityList;
+        ConfirmationMessage calamityMessage = request.allCalamity();//check for error
+        if(calamityMessage.getStatus() != ConfirmationMessage.StatusType.ERROR){
+            allCalamities = (List) calamityMessage.getReturnObject();
         } else{
-            //todo display empty list message
+            //todo display empty list (error)message
             allCalamities = new ArrayList<>();
         }
 
         UserRequest userRequest = new UserRequest();
-        Object userList = userRequest.allusers(user.getToken()).getReturnObject();//todo check for null;
-        if(userList != null){
-            availableUsers = (List) userList;
+        ConfirmationMessage userMessage = userRequest.allusers(user.getToken());//check for error
+        if(userMessage.getStatus() != ConfirmationMessage.StatusType.ERROR){
+            availableUsers = (List) userMessage.getReturnObject();
         } else{
-            //todo display empty list message
+            //todo display empty list (error)message
             availableUsers = new ArrayList<>();
         }
         //todo filter for only available rescuers.
