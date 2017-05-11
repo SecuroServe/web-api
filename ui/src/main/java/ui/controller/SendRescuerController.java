@@ -90,19 +90,29 @@ public class SendRescuerController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         //set button actions
-        backButton.setOnAction(this::handleBackAction);
-        doneButton.setOnAction(this::finishAction);
-        selectCalamityButton.setOnAction(this::selectCalamity);
-        addRescuerButton.setOnAction(this::addRescuer);
-        removeRescuerButton.setOnAction(this::removeRescuer);
-        //set label text
-        selectedCalamityLabel.setText("no calamity selected");
+        setButtonActions();
+        //init tables
+        initTableViews();
 
+        selectedCalamityLabel.setText("no calamity selected");
+    }
+
+    private void initTableViews() {
+        //set tableView columns
+        //todo set tableview collums
         //set tableView lists
         rescuerTableView.setItems(FXCollections.observableArrayList(availableUsers));
         calamityTableView.setItems(FXCollections.observableArrayList(allCalamities));
         rescuerTableView.setItems(selectedUsers);
 
+    }
+
+    private void setButtonActions() {
+        backButton.setOnAction(this::handleBackAction);
+        doneButton.setOnAction(this::finishAction);
+        selectCalamityButton.setOnAction(this::selectCalamity);
+        addRescuerButton.setOnAction(this::addRescuer);
+        removeRescuerButton.setOnAction(this::removeRescuer);
     }
 
     /***
