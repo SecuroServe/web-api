@@ -13,7 +13,7 @@
           <TableColumn prefWidth="75.0" text="C2" />
         </columns>
       </TableView>
-       <TableView fx:id="availableRescuerTableView" layoutX="571.0" layoutY="104.0" prefHeight="289.0" prefWidth="177.0">
+       <TableView fx:id="rescuerTableView" layoutX="571.0" layoutY="104.0" prefHeight="289.0" prefWidth="177.0">
         <columns>
           <TableColumn prefWidth="75.0" text="C1" />
           <TableColumn prefWidth="75.0" text="C2" />

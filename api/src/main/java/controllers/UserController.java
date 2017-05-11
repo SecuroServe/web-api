@@ -36,6 +36,7 @@ public class UserController implements IUser {
     @Override
     @RequestMapping("/allusers")
     public ConfirmationMessage allusers(@RequestParam(value = "token") String token) {
+
         try {
             return userLogic.getAllUsers(token);
         } catch (NoSuchAlgorithmException | ParseException e) {

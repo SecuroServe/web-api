@@ -281,7 +281,13 @@ public class UserRepo {
         return user;
     }
 
-    public List<User> getAllUsers(String token) throws SQLException{
+    /**
+     * this method creates a list of users from entries from the database.
+     *
+     * @return a List of Users.
+     * @throws SQLException
+     */
+    public List<User> getAllUsers() throws SQLException{
         //todo return all users in a list
         List<User> userList = new ArrayList<>();
         String query = "SELECT `UserTypeID`, `BuildingID`, `Username`, " +

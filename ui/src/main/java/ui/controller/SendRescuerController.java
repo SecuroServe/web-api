@@ -77,12 +77,6 @@ public class SendRescuerController implements Initializable {
             availableUsers = new ArrayList<>();
         }
         //todo filter for only available rescuers.
-
-        rescuerTableView.setItems(FXCollections.observableArrayList(availableUsers));
-        calamityTableView.setItems(FXCollections.observableArrayList(allCalamities));
-
-        rescuerTableView.setItems(selectedUsers);
-
     }
 
     /**
@@ -95,13 +89,19 @@ public class SendRescuerController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        //set button actions
         backButton.setOnAction(this::handleBackAction);
         doneButton.setOnAction(this::finishAction);
         selectCalamityButton.setOnAction(this::selectCalamity);
         addRescuerButton.setOnAction(this::addRescuer);
         removeRescuerButton.setOnAction(this::removeRescuer);
+        //set label text
         selectedCalamityLabel.setText("no calamity selected");
 
+        //set tableView lists
+        rescuerTableView.setItems(FXCollections.observableArrayList(availableUsers));
+        calamityTableView.setItems(FXCollections.observableArrayList(allCalamities));
+        rescuerTableView.setItems(selectedUsers);
 
     }
 
