@@ -7,20 +7,20 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.Pane?>
 
-<Pane prefHeight="461.0" prefWidth="762.0" stylesheets="@../css/flatterfx.css" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1">
+<Pane prefHeight="555.0" prefWidth="1069.0" stylesheets="@../css/flatterfx.css" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-       <TableView fx:id="calamityTableView" layoutX="14.0" layoutY="104.0" prefHeight="289.0" prefWidth="177.0" />
-       <TableView fx:id="rescuerTableView" layoutX="571.0" layoutY="104.0" prefHeight="289.0" prefWidth="177.0" />
-       <ListView fx:id="selectedRescuerListView" layoutX="250.0" layoutY="106.0" prefHeight="289.0" prefWidth="242.0" />
-       <Separator layoutX="201.0" layoutY="1.0" orientation="VERTICAL" prefHeight="434.0" prefWidth="0.0" />
-       <Separator layoutX="556.0" layoutY="1.0" orientation="VERTICAL" prefHeight="434.0" prefWidth="0.0" />
-       <Button fx:id="doneButton" layoutX="343.0" layoutY="400.0" mnemonicParsing="false" text="Inform selected" />
-       <Button fx:id="selectCalamityButton" layoutX="66.0" layoutY="400.0" mnemonicParsing="false" text="Select" />
-       <Button fx:id="addRescuerButton" layoutX="619.0" layoutY="400.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="58.0" text="add" />
-       <Label layoutX="14.0" layoutY="79.0" prefHeight="17.0" prefWidth="177.0" text="Select calimity" textAlignment="CENTER" />
-       <Label layoutX="571.0" layoutY="79.0" prefHeight="17.0" prefWidth="177.0" text="Select Rescuer" textAlignment="CENTER" />
-       <Label fx:id="selectedCalamityLabel" layoutX="250.0" layoutY="79.0" prefHeight="17.0" prefWidth="100.0" text="Selected Calamity" textAlignment="CENTER" />
-       <Button fx:id="removeRescuerButton" layoutX="250.0" layoutY="400.0" mnemonicParsing="false" text="remove" />
-       <Button fx:id="backButton" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" prefHeight="7.0" prefWidth="80.0" text="&lt; Back" />
+       <TableView fx:id="calamityTableView" layoutX="10.0" layoutY="41.0" prefHeight="434.0" prefWidth="329.0" />
+       <TableView fx:id="rescuerTableView" layoutX="733.0" layoutY="41.0" prefHeight="434.0" prefWidth="329.0" />
+       <ListView fx:id="selectedRescuerListView" layoutX="387.0" layoutY="58.0" prefHeight="370.0" prefWidth="296.0" />
+       <Separator layoutX="348.0" orientation="VERTICAL" prefHeight="555.0" prefWidth="6.0" />
+       <Separator layoutX="719.0" orientation="VERTICAL" prefHeight="555.0" prefWidth="6.0" />
+       <Button fx:id="doneButton" layoutX="460.0" layoutY="488.0" mnemonicParsing="false" text="Inform selected" />
+       <Button fx:id="selectCalamityButton" layoutX="250.0" layoutY="488.0" mnemonicParsing="false" text="Select" />
+       <Button fx:id="addRescuerButton" layoutX="748.0" layoutY="488.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="58.0" text="add" />
+       <Label layoutX="86.0" layoutY="14.0" prefHeight="17.0" prefWidth="177.0" text="Select calimity" textAlignment="CENTER" />
+       <Label layoutX="831.0" layoutY="14.0" prefHeight="17.0" prefWidth="177.0" text="Select Rescuer" textAlignment="CENTER" />
+       <Label fx:id="selectedCalamityLabel" layoutX="414.0" layoutY="31.0" prefHeight="17.0" prefWidth="242.0" text="Selected Calamity" textAlignment="CENTER" />
+       <Button fx:id="removeRescuerButton" layoutX="492.0" layoutY="427.0" mnemonicParsing="false" text="remove" />
+       <Button fx:id="backButton" layoutX="14.0" layoutY="488.0" mnemonicParsing="false" prefHeight="7.0" prefWidth="80.0" text="&lt; Back" />
    </children>
 </Pane>

@@ -64,6 +64,7 @@ public class SendRescuerController implements Initializable {
         ConfirmationMessage calamityMessage = request.allCalamity();//check for error
         if(calamityMessage.getStatus() != ConfirmationMessage.StatusType.ERROR){
             Object val = calamityMessage.getReturnObject();
+            //convert list to list of calamities using mapper
             allCalamities = objMapper.convertValue(val, new TypeReference<List<Calamity>>(){});
         } else{
             //todo display empty list (error)message
@@ -74,6 +75,7 @@ public class SendRescuerController implements Initializable {
         ConfirmationMessage userMessage = userRequest.allusers(user.getToken());//check for error
         if(userMessage.getStatus() != ConfirmationMessage.StatusType.ERROR){
             Object val = userMessage.getReturnObject();
+            //convert list to list of users
             availableUsers = objMapper.convertValue(val, new TypeReference<List<User>>(){});
         } else{
             //todo display empty list (error)message
