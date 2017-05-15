@@ -189,12 +189,11 @@ public class MediaRepo {
     public MediaFile addMediaFile(MediaFile mediaFile, int alertId) throws SQLException {
         int mediaId = addMedia(mediaFile.getName(), alertId);
 
-        String query = "INSERT INTO `file` (`MediaID`, `Title`, `FileName`, `FileType`) " +
-                "VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO `file` (`MediaID`, `FileName`, `FileType`) " +
+                "VALUES (?, ?, ?)";
 
         List<Object> parameters = new ArrayList<>();
         parameters.add(mediaId);
-        parameters.add(mediaFile.getName());
         parameters.add(mediaFile.getFileName());
         parameters.add(mediaFile.getFileType().toString());
 

@@ -5,6 +5,8 @@ import datarepo.UserRepo;
 import datarepo.database.Database;
 import interfaces.ConfirmationMessage;
 import library.Media;
+import library.MediaFile;
+import library.Text;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -57,9 +59,15 @@ public class MediaLogic {
      */
     public ConfirmationMessage addMedia(String token, Media media, int alertId) {
         try {
+            if (media instanceof Text) {
+                mediaRepo.addText((Text) media, alertId);
+            } else if (media instanceof MediaFile) {
+                mediaRepo.addMediaFile((MediaFile) media, alertId);
+            }
+
             return new ConfirmationMessage(ConfirmationMessage.StatusType.SUCCES,
                     "Media added",
-                    mediaRepo.addMedia(media.getName(), alertId));
+                    media);
         } catch (Exception e) {
             return new ConfirmationMessage(ConfirmationMessage.StatusType.ERROR,
                     "Add media failed!",
