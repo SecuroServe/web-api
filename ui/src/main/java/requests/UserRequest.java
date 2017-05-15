@@ -29,7 +29,6 @@ public class UserRequest implements IUser {
 
     @Override
     public ConfirmationMessage allusers(String userToken) {
-        //todo fix this, gets stuck here
         MultiValueMap<String, Object> parameters = new LinkedMultiValueMap<>();
         parameters.add("token", userToken);
         return restClient.request(REQUEST_PREFIX+ALL, RestClient.RequestType.GET, parameters);

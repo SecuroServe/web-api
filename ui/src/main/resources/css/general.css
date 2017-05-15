@@ -31,20 +31,22 @@
     -fx-font-weight: bolder;
 }
 
-.title {
+
+/*******************************************************************************
+ *                                                                             *
+ * Calamity                                                                    *
+ *                                                                             *
+ ******************************************************************************/
+
+.calamity-title {
     -fx-font-size: 30;
 }
 
-.text-area {
-    -fx-background-color: #ff8080;
-    -fx-font-size: 12;
-}
-
-.creatorlabel {
+.calamity-creator {
     -fx-font-size: 20;
 }
 
-.datelabel {
+.calamity-date {
     -fx-font-size: 14;
 }
 
