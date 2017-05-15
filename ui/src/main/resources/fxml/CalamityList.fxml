@@ -77,7 +77,14 @@
                   </VBox>
                   <Region layoutX="421.0" layoutY="10.0" prefHeight="633.0" prefWidth="9.0" />
                   <Line endY="625.0" layoutX="421.0" layoutY="11.0" stroke="WHITE" />
-                  <GoogleMapView fx:id="googleMapView" />
+                  <Region layoutX="927.0" layoutY="10.0" prefHeight="633.0" prefWidth="9.0" />
+                  <VBox prefHeight="200.0">
+                     <children>
+                        <GoogleMapView fx:id="googleMapView" prefHeight="370.0" prefWidth="450.0" />
+                        <Region prefHeight="8.0" prefWidth="450.0" />
+                        <Line endX="459.0" startX="10.0" stroke="WHITE" />
+                     </children>
+                  </VBox>
                </children>
             </HBox>
             <HBox prefWidth="200.0">

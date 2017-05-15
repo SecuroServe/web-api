@@ -158,6 +158,10 @@ public class Calamity implements Serializable{
         return this.isConfirmed;
     }
 
+    public boolean getClosed() {
+        return this.isClosed;
+    }
+
     /**
      * Get the title of this library.Calamity
      *
