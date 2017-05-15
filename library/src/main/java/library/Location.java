@@ -21,6 +21,7 @@ public class Location implements Serializable {
      * @param latitude the latutude of the location.
      * @param radius the radius of the location, can be 0.
      */
+
     public Location(int id, double latitude, double longitude, double radius) {
         this.longitude = longitude;
         this.latitude = latitude;
@@ -28,7 +29,11 @@ public class Location implements Serializable {
         this.id = id;
     }
 
-    public Location() { }
+    public Location(){
+
+    }
+
+    public Location(double lat, double lon, double radius) { }
 
     public void setLongitude(double longitude) {
         this.longitude = longitude;

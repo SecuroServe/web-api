@@ -1,17 +1,18 @@
 package ui.controller;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import interfaces.ConfirmationMessage;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import library.Calamity;
+import library.Location;
 import library.User;
 import requests.CalamityRequest;
 import requests.UserRequest;
@@ -55,23 +56,32 @@ public class SendRescuerController implements Initializable {
     private List<Calamity> allCalamities;
     private Calamity selectedCalamity;
 
+    private CalamityRequest calamityRequest;
+    private UserRequest userRequest;
+
     public SendRescuerController(User user) {
         this.user = user;
         selectedUsers = FXCollections.observableArrayList();
+        calamityRequest = new CalamityRequest();
+        userRequest = new UserRequest();
 
-        CalamityRequest request = new CalamityRequest();
-        ConfirmationMessage calamityMessage = request.allCalamity();//check for error
+        ObjectMapper objMapper = new ObjectMapper();
+
+        ConfirmationMessage calamityMessage = calamityRequest.allCalamity();//check for error
         if(calamityMessage.getStatus() != ConfirmationMessage.StatusType.ERROR){
-            allCalamities = (List) calamityMessage.getReturnObject();
+            Object val = calamityMessage.getReturnObject();
+            //convert list to list of calamities using mapper
+            allCalamities = objMapper.convertValue(val, new TypeReference<List<Calamity>>(){});
         } else{
             //todo display empty list (error)message
             allCalamities = new ArrayList<>();
         }
 
-        UserRequest userRequest = new UserRequest();
         ConfirmationMessage userMessage = userRequest.allusers(user.getToken());//check for error
         if(userMessage.getStatus() != ConfirmationMessage.StatusType.ERROR){
-            availableUsers = (List) userMessage.getReturnObject();
+            Object val = userMessage.getReturnObject();
+            //convert list to list of users
+            availableUsers = objMapper.convertValue(val, new TypeReference<List<User>>(){});
         } else{
             //todo display empty list (error)message
             availableUsers = new ArrayList<>();
@@ -100,10 +110,28 @@ public class SendRescuerController implements Initializable {
     private void initTableViews() {
         //set tableView columns
         //todo set tableview collums
+        //rescuerTableView
+        TableColumn rescuerNameCol = new TableColumn("Name");
+        rescuerNameCol.setCellValueFactory(new PropertyValueFactory<User, String>("username"));
+
+        TableColumn rescuerLocationCol = new TableColumn("Location");
+        rescuerLocationCol.setCellValueFactory(new PropertyValueFactory<User, String>("city"));
+
+        rescuerTableView.getColumns().addAll(rescuerNameCol, rescuerLocationCol);
+        //calamityTableView
+        TableColumn calamityTitleCol = new TableColumn("Title");
+        calamityTitleCol.setCellValueFactory(new PropertyValueFactory<Calamity, String>("title"));
+
+        TableColumn calamityLocationCol = new TableColumn("Location");
+        calamityLocationCol.setCellValueFactory(new PropertyValueFactory<Calamity, Location>("location"));
+
+        calamityTableView.getColumns().addAll(calamityTitleCol, calamityLocationCol);
+
         //set tableView lists
         rescuerTableView.setItems(FXCollections.observableArrayList(availableUsers));
         calamityTableView.setItems(FXCollections.observableArrayList(allCalamities));
-        rescuerTableView.setItems(selectedUsers);
+        selectedRescuerListView.setItems(selectedUsers);
+
 
     }
 
@@ -115,6 +143,11 @@ public class SendRescuerController implements Initializable {
         removeRescuerButton.setOnAction(this::removeRescuer);
     }
 
+    private void refreshTableViews(){
+        rescuerTableView.setItems(FXCollections.observableList(availableUsers));
+        calamityTableView.setItems(FXCollections.observableList(allCalamities));
+    }
+
     /***
      * adds a rescuer to respond to the selected calamity
      * updates the listView
@@ -124,10 +157,11 @@ public class SendRescuerController implements Initializable {
         User selUser = rescuerTableView.getSelectionModel().getSelectedItem();
         if(selUser != null){
             selectedUsers.add(selUser);
+            availableUsers.remove(selUser);
         }else{
             //todo popup a message saying what went wrong;
         }
-
+        refreshTableViews();
     }
 
     /***
@@ -139,10 +173,11 @@ public class SendRescuerController implements Initializable {
         User selUser = selectedRescuerListView.getSelectionModel().getSelectedItem();
         if(selUser != null){
             selectedUsers.remove(selUser);
+            availableUsers.add(selUser);
         }else {
             //todo popup another message with what went wrong.
         }
-
+        refreshTableViews();
     }
 
     /***
@@ -158,8 +193,14 @@ public class SendRescuerController implements Initializable {
     }
 
     private void setSelectedCalamity(Calamity calamity) {
+        allCalamities.remove(calamity);
+        if(selectedCalamity != null){
+            allCalamities.add(selectedCalamity);
+        }
         selectedCalamity = calamity;
         selectedCalamityLabel.setText(calamity.getTitle());
+
+        refreshTableViews();
     }
 
     /***
@@ -170,6 +211,24 @@ public class SendRescuerController implements Initializable {
      */
     private void finishAction(ActionEvent actionEvent) {
         //todo check all inputs and send a notification to Rescuers;
+        if(selectedCalamity == null || selectedUsers.size() == 0){
+            //todo show invalid input message
+        }else {
+            for(User u : selectedUsers){
+                selectedCalamity.addAssignee(u);
+            }
+
+            calamityRequest.updateCalamity(user.getToken(),
+                    selectedCalamity.getId(),
+                    selectedCalamity.getTitle(),
+                    selectedCalamity.getMessage(),
+                    selectedCalamity.getLocation().getId(),
+                    selectedCalamity.getLocation().getLatitude(),
+                    selectedCalamity.getLocation().getLongitude(),
+                    selectedCalamity.getLocation().getRadius(),
+                    selectedCalamity.isConfirmed(),
+                    selectedCalamity.isClosed());
+        }
     }
 
     /**
