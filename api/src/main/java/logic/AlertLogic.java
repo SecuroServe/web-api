@@ -8,7 +8,6 @@ import datarepo.database.Database;
 import exceptions.NoPermissionException;
 import interfaces.ConfirmationMessage;
 import library.*;
-import org.eclipse.jetty.io.ssl.ALPNProcessor;
 import utils.GeoUtil;
 
 import java.security.NoSuchAlgorithmException;
@@ -97,14 +96,14 @@ public class AlertLogic {
     /**
      * Updates an alert.
      *
-     * @param token The authentication token.
-     * @param id The ID.
-     * @param name The name.
+     * @param token       The authentication token.
+     * @param id          The ID.
+     * @param name        The name.
      * @param description The description.
-     * @param urgency The urgency.
-     * @param lat The Location latitude.
-     * @param lon The Location longitude.
-     * @param radius The Location radius.
+     * @param urgency     The urgency.
+     * @param lat         The Location latitude.
+     * @param lon         The Location longitude.
+     * @param radius      The Location radius.
      * @return ConfirmationMessage Alert with feedback about the update.
      */
     public ConfirmationMessage updateAlert(String token, int id, String name, String description, int urgency, double lat, double lon, double radius) {
@@ -156,6 +155,12 @@ public class AlertLogic {
         }
     }
 
+    /**
+     * Gets all alerts from the repo.
+     *
+     * @param token The authentication token.
+     * @return ConfirmationMessage with the alert list.
+     */
     public ConfirmationMessage allAlert(String token) {
         try {
             return new ConfirmationMessage(ConfirmationMessage.StatusType.SUCCES,
@@ -183,12 +188,18 @@ public class AlertLogic {
         }
     }
 
-    private Alert getNextAlert(List<Alert> alerts){
+    private Alert getNextAlert(List<Alert> alerts) {
         if (alerts.size() == 0) return null;
 
         return alerts.get(0);
     }
 
+    /**
+     * Creates a calamity for a group of alerts.
+     *
+     * @param alertGroup The group of alerts.
+     * @throws SQLException
+     */
     private void createCalamityForGroup(List<Alert> alertGroup) throws SQLException {
         Calamity calamity = new Calamity(-1, calculateCentreLocation(alertGroup), null,
                 false, false, new Date(), "generated", "generated");
@@ -202,6 +213,12 @@ public class AlertLogic {
         }
     }
 
+    /**
+     * Calculates the average location from a group of alerts.
+     *
+     * @param alertGroup The group to calculate the location from.
+     * @return The centre location of the group.
+     */
     private Location calculateCentreLocation(List<Alert> alertGroup) {
         double latSum = 0;
         double longSum = 0;
@@ -217,6 +234,13 @@ public class AlertLogic {
         return new Location(latAvg, longAvg, 0);
     }
 
+    /**
+     * Finds a list of alerts that are considered a group based on distance between each alert.
+     *
+     * @param alerts      The alert list to compare the distance.
+     * @param alertCentre The alert to start looking from.
+     * @return An alert list that contains a group.
+     */
     private List<Alert> findAlertGroup(List<Alert> alerts, Alert alertCentre) {
         List<Alert> alertGroup = new ArrayList<>();
         List<Alert> newAlertNeighbours = new ArrayList<>();
@@ -241,7 +265,13 @@ public class AlertLogic {
         return alertGroup;
     }
 
-
+    /**
+     * Finds other alerts within a distance of a specific alert.
+     *
+     * @param alert  The alert to look from.
+     * @param alerts The alert list to compare distances.
+     * @return A list with alerts that are within the distance.
+     */
     private List<Alert> findAlertNeighbours(Alert alert, List<Alert> alerts) {
 
         List<Alert> alertGroup = new ArrayList<>();

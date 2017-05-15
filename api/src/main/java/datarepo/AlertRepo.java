@@ -129,6 +129,15 @@ public class AlertRepo {
 
     }
 
+    /**
+     * Returns a list of all alerts.
+     *
+     * @param unassigned Determines whether to retrieve unassigned (not belonging to a calamity) alerts.
+     * @return The list of alerts.
+     * @throws SQLException
+     * @throws ParseException
+     * @throws NoSuchAlgorithmException
+     */
     public List<Alert> allAlert(boolean unassigned) throws SQLException, ParseException, NoSuchAlgorithmException {
         List<Alert> calamities = new ArrayList<>();
 
