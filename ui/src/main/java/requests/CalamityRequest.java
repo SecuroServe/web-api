@@ -52,7 +52,7 @@ public class CalamityRequest implements ICalamity {
     @Override
     public ConfirmationMessage allCalamity() {
         MultiValueMap<String, Object> parameters = new LinkedMultiValueMap<>();
-        return restClient.request(REQUEST_PREFIX + GET_ALL, RestClient.RequestType.GET, parameters);
+        return restClient.request(REQUEST_PREFIX + "/allcalamity", RestClient.RequestType.GET, parameters);
     }
 
     @Override

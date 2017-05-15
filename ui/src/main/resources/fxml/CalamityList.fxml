@@ -5,6 +5,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
@@ -19,7 +20,7 @@
       <children>
             <HBox prefHeight="45.0" prefWidth="800.0">
                <children>
-                  <Button fx:id="backBtn" mnemonicParsing="false" style="-fx-background-color: #555;" text="Dashboard" />
+                  <Button fx:id="backButton" mnemonicParsing="false" style="-fx-background-color: #555;" text="Dashboard" />
                   <Region prefHeight="27.0" prefWidth="172.0" HBox.hgrow="ALWAYS" />
                   <ImageView fitHeight="56.0" fitWidth="57.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -41,7 +42,24 @@
                   <Region prefHeight="100.0" prefWidth="10.0" />
                   <Line endY="625.0" stroke="WHITE" />
                   <Region prefHeight="633.0" prefWidth="9.0" />
-                  <Label fx:id="calamityTitle" text="Label" />
+                  <VBox prefHeight="633.0" prefWidth="497.0">
+                     <children>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Label fx:id="calamityTitle" styleClass="calamity-title" text="Calamity Title" />
+                              <TextField fx:id="titleTextField" visible="false" />
+                           </children>
+                        </HBox>
+                        <Label fx:id="calamityCreator" styleClass="calamity-creator" text="Calamity creator" />
+                        <Label fx:id="calamityDate" styleClass="calamity-date" text="Calamity date" />
+                        <Region prefHeight="53.0" prefWidth="497.0" />
+                        <Label ellipsisString="" styleClass="calamity-creator" text="Information:" />
+                        <Label fx:id="calamityMessage" styleClass="calamity-date" text="Label" />
+                        <Region prefHeight="27.0" prefWidth="497.0" />
+                        <Button fx:id="changeButton" mnemonicParsing="false" text="Change" />
+                     </children>
+                  </VBox>
+                  <Line endY="625.0" layoutX="421.0" layoutY="11.0" stroke="WHITE" />
                </children>
             </HBox>
             <HBox prefWidth="200.0">
