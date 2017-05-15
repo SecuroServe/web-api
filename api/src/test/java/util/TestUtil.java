@@ -19,14 +19,13 @@ public class TestUtil {
     public static final String EMAIL = "testuser789987@test123weqr456.nl";
     public static final String CITY = "Amsterdam";
     public static final String TEST_DB_PROPERTIES = "/properties/test_db.properties";
-    public static final String TEST_DB_SCRIPT = "./src/main/resources/properties/database.sql";
+    public static final String TEST_DB_SCRIPT = "/properties/database.sql";
 
     public static Database cleanAndBuildTestDatabase() throws Exception {
         Database database = new Database(TestUtil.TEST_DB_PROPERTIES);
-        System.out.println("Working Directory = " +
-                System.getProperty("user.dir"));
-        MySqlParser mySqlParser = new MySqlParser(database, TestUtil.TEST_DB_SCRIPT);
+        System.out.println("Working Directory = " + System.getProperty("user.dir"));
 
+        MySqlParser mySqlParser = new MySqlParser(database, Database.class.getResourceAsStream(TestUtil.TEST_DB_SCRIPT));
         mySqlParser.execute();
 
         return database;

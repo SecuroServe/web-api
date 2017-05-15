@@ -54,6 +54,10 @@ public class UserType implements Serializable{
     }
 
     public enum Permission {
+        ALERT_ADD,
+        ALERT_UPDATE,
+        ALERT_GET,
+        ALERT_DELETE,
         CALAMITY_ADD,
         CALAMITY_UPDATE,
         CALAMITY_GET,

@@ -38,6 +38,7 @@ public interface IAlert {
     ConfirmationMessage addAlert(String token,
                                  String name,
                                  String description,
+                                 int urgency,
                                  double lat,
                                  double lon,
                                  double radius);
@@ -58,6 +59,7 @@ public interface IAlert {
                                     int id,
                                     String name,
                                     String description,
+                                    int urgency,
                                     double lat,
                                     double lon,
                                     double radius);
