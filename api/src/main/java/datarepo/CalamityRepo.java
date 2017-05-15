@@ -41,7 +41,7 @@ public class CalamityRepo {
 
         List<Object> parameters = new ArrayList<>();
         parameters.add(calamity.getLocation().getId());
-        parameters.add(calamity.getUser().getId());
+        parameters.add(calamity.getUser() == null ? -1 : calamity.getUser().getId());
         parameters.add(calamity.getConfirmation() ? 1 : 0);
         parameters.add(calamity.getStatus() ? 1 : 0);
         parameters.add(calamity.getDate());
