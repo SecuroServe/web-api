@@ -46,24 +46,12 @@ public class Location implements Serializable {
         return this.longitude;
     }
 
-    public void setLongitude(long longitude) {
-        this.longitude = longitude;
-    }
-
     public double getLatitude() {
         return this.latitude;
     }
 
-    public void setLatitude(long latitude) {
-        this.latitude = latitude;
-    }
-
     public double getRadius() {
         return this.radius;
-    }
-
-    public void setRadius(long radius) {
-        this.radius = radius;
     }
 
     public void setId(int id) {
