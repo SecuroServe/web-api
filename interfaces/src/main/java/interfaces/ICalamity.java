@@ -43,7 +43,7 @@ public interface ICalamity {
                                     String message,
                                     double latitude,
                                     double longitude,
-                                    double radius , boolean isConfirmed, boolean isClosed);
+                                    double radius, boolean confirmed, boolean closed);
 
     /**
      * Updates a calamity.
@@ -51,16 +51,21 @@ public interface ICalamity {
      * @param token       The authentication token.
      * @param id          The id of the calamity.
      * @param name        The name of the calamity.
-     * @param description The description of the calamity.
-     * @param location    A location object of the calamity
+     * @param message     The description of the calamity.
+     * @param latitude  The latitude of the new calamity.
+     * @param longitude The longitude of the new calamity.
+     * @param radius    The radius of the new calamity.
      * @return Confirmation message with feedback about the update.
      */
 
     ConfirmationMessage updateCalamity(String token,
                                        int id,
                                        String name,
-                                       String description,
-                                       Location location, boolean isConfirmed, boolean isClosed);
+                                       String message,
+                                       int locId,
+                                       double latitude,
+                                       double longitude,
+                                       double radius, boolean confirmed, boolean closed);
 
     /**
      * Deletes a calamity.
