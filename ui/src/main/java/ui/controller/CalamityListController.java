@@ -1,6 +1,8 @@
 package ui.controller;
 
 import com.lynden.gmapsfx.GoogleMapView;
+import com.lynden.gmapsfx.javascript.event.GMapMouseEvent;
+import com.lynden.gmapsfx.javascript.event.UIEventType;
 import com.lynden.gmapsfx.javascript.object.*;
 import com.lynden.gmapsfx.shapes.Circle;
 import com.lynden.gmapsfx.shapes.CircleOptions;
@@ -19,6 +21,7 @@ import javafx.stage.Stage;
 import library.Calamity;
 import library.Location;
 import library.User;
+import org.omg.CORBA.MARSHAL;
 import requests.CalamityRequest;
 import requests.UserRequest;
 import java.net.URL;
@@ -95,16 +98,25 @@ public class CalamityListController implements Initializable {
         // Refreshing the table every 10 seconds
         timerToRefresh.schedule(new PostRequestTask(), 10 * 1000);
         googleMapView.addMapInializedListener(() -> mapInitialized());
+        map.addMouseEventHandler(UIEventType.click, (GMapMouseEvent event) -> {
+
+            if(changeButton.getText().equals("Save Changes")) {
+                LatLong latLong = event.getLatLong();
+                this.selectedCalamity.getLocation().setLatitude(latLong.getLatitude());
+                this.selectedCalamity.getLocation().setLongitude(latLong.getLongitude());
+
+                updateMap(selectedCalamity);
+            }
+        });
     }
 
     private void handleChangeAction(ActionEvent actionEvent) {
-
         if(titleTextField.isEditable()){
             titleTextField.setEditable(false);
             informationTextArea.setEditable(false);
             changeButton.setText("Change values");
 
-            if(!selectedCalamity.getTitle().equals(this.titleTextField.getText()) || !selectedCalamity.getMessage().equals(informationTextArea.getText())){
+            if(!selectedCalamity.getTitle().equals(this.titleTextField.getText()) || !selectedCalamity.getMessage().equals(informationTextArea.getText())) {
 
                 this.selectedCalamity.setTitle(titleTextField.getText());
                 this.selectedCalamity.setMessage(informationTextArea.getText());
