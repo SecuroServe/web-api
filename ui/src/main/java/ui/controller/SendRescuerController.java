@@ -56,12 +56,18 @@ public class SendRescuerController implements Initializable {
     private List<Calamity> allCalamities;
     private Calamity selectedCalamity;
 
+    private CalamityRequest calamityRequest;
+    private UserRequest userRequest;
+
     public SendRescuerController(User user) {
         this.user = user;
         selectedUsers = FXCollections.observableArrayList();
+        calamityRequest = new CalamityRequest();
+        userRequest = new UserRequest();
+
         ObjectMapper objMapper = new ObjectMapper();
-        CalamityRequest request = new CalamityRequest();
-        ConfirmationMessage calamityMessage = request.allCalamity();//check for error
+
+        ConfirmationMessage calamityMessage = calamityRequest.allCalamity();//check for error
         if(calamityMessage.getStatus() != ConfirmationMessage.StatusType.ERROR){
             Object val = calamityMessage.getReturnObject();
             //convert list to list of calamities using mapper
@@ -71,7 +77,6 @@ public class SendRescuerController implements Initializable {
             allCalamities = new ArrayList<>();
         }
 
-        UserRequest userRequest = new UserRequest();
         ConfirmationMessage userMessage = userRequest.allusers(user.getToken());//check for error
         if(userMessage.getStatus() != ConfirmationMessage.StatusType.ERROR){
             Object val = userMessage.getReturnObject();
@@ -206,7 +211,24 @@ public class SendRescuerController implements Initializable {
      */
     private void finishAction(ActionEvent actionEvent) {
         //todo check all inputs and send a notification to Rescuers;
+        if(selectedCalamity == null || selectedUsers.size() == 0){
+            //todo show invalid input message
+        }else {
+            for(User u : selectedUsers){
+                selectedCalamity.addAssignee(u);
+            }
 
+            calamityRequest.updateCalamity(user.getToken(),
+                    selectedCalamity.getId(),
+                    selectedCalamity.getTitle(),
+                    selectedCalamity.getMessage(),
+                    selectedCalamity.getLocation().getId(),
+                    selectedCalamity.getLocation().getLatitude(),
+                    selectedCalamity.getLocation().getLongitude(),
+                    selectedCalamity.getLocation().getRadius(),
+                    selectedCalamity.isConfirmed(),
+                    selectedCalamity.isClosed());
+        }
     }
 
     /**
