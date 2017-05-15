@@ -15,7 +15,7 @@ public class CalamityRequest implements ICalamity {
 
     private static final String REQUEST_PREFIX = "http://localhost:8080";
 
-    private static final String GET_ALL = "/allcalamities";
+    private static final String GET_ALL = "/allcalamity";
     private static final String GET_CALAMITY_BY_ID = "/calamitybyid";
 
     private static final String POST_ADD_CALAMITY_ASSIGNEE = "/addcalamityassignee";
@@ -35,7 +35,7 @@ public class CalamityRequest implements ICalamity {
     @Override
     public ConfirmationMessage allCalamity() {
         MultiValueMap<String, Object> parameters = new LinkedMultiValueMap<>();
-        return restClient.request(REQUEST_PREFIX + GET_ALL, RestClient.RequestType.GET, parameters);
+        return restClient.request(REQUEST_PREFIX + "/allcalamity", RestClient.RequestType.GET, parameters);
     }
 
     @Override
