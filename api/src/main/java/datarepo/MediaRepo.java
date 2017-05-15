@@ -17,8 +17,8 @@ import java.util.List;
  * Created by Jandie on 2017-05-08.
  */
 public class MediaRepo {
-    private Database database;
     private final FileSystemStorageService storageService;
+    private Database database;
 
     public MediaRepo(Database database) {
         this.database = database;
