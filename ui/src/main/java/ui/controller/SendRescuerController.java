@@ -127,6 +127,7 @@ public class SendRescuerController implements Initializable {
         calamityTableView.setItems(FXCollections.observableArrayList(allCalamities));
         selectedRescuerListView.setItems(selectedUsers);
 
+
     }
 
     private void setButtonActions() {
@@ -135,6 +136,11 @@ public class SendRescuerController implements Initializable {
         selectCalamityButton.setOnAction(this::selectCalamity);
         addRescuerButton.setOnAction(this::addRescuer);
         removeRescuerButton.setOnAction(this::removeRescuer);
+    }
+
+    private void refreshTableViews(){
+        rescuerTableView.setItems(FXCollections.observableList(availableUsers));
+        calamityTableView.setItems(FXCollections.observableList(allCalamities));
     }
 
     /***
@@ -146,10 +152,11 @@ public class SendRescuerController implements Initializable {
         User selUser = rescuerTableView.getSelectionModel().getSelectedItem();
         if(selUser != null){
             selectedUsers.add(selUser);
+            availableUsers.remove(selUser);
         }else{
             //todo popup a message saying what went wrong;
         }
-
+        refreshTableViews();
     }
 
     /***
@@ -161,10 +168,11 @@ public class SendRescuerController implements Initializable {
         User selUser = selectedRescuerListView.getSelectionModel().getSelectedItem();
         if(selUser != null){
             selectedUsers.remove(selUser);
+            availableUsers.add(selUser);
         }else {
             //todo popup another message with what went wrong.
         }
-
+        refreshTableViews();
     }
 
     /***
@@ -180,8 +188,14 @@ public class SendRescuerController implements Initializable {
     }
 
     private void setSelectedCalamity(Calamity calamity) {
+        allCalamities.remove(calamity);
+        if(selectedCalamity != null){
+            allCalamities.add(selectedCalamity);
+        }
         selectedCalamity = calamity;
         selectedCalamityLabel.setText(calamity.getTitle());
+
+        refreshTableViews();
     }
 
     /***
@@ -192,6 +206,7 @@ public class SendRescuerController implements Initializable {
      */
     private void finishAction(ActionEvent actionEvent) {
         //todo check all inputs and send a notification to Rescuers;
+
     }
 
     /**
