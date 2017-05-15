@@ -59,18 +59,19 @@ public class AlertRequest implements IAlert {
      * @param token       The authentication token.
      * @param name        The name of the alert.
      * @param description The description of the alert.
+     * @param urgency     The urgency of the alert.
      * @param lat         The latitude of the alert's location.
      * @param lon         The lontitude of the alert's location.
-     * @param radius      The radius of the alert's location.
-     * @return Confirmation message with feedback about the addition
-     * also containing the new alert.
+     * @param radius      The radius of the alert's location.    @return Confirmation message with feedback about the addition
+     *                    also containing the new alert.
      */
     @Override
-    public ConfirmationMessage addAlert(String token, String name, String description, double lat, double lon, double radius) {
+    public ConfirmationMessage addAlert(String token, String name, String description, int urgency, double lat, double lon, double radius) {
         MultiValueMap<String, Object> parameters = new LinkedMultiValueMap<>();
         parameters.add("token", token);
         parameters.add("name", name);
         parameters.add("description", description);
+        parameters.add("urgency", urgency);
         parameters.add("lat", lat);
         parameters.add("lon", lon);
         parameters.add("radius", radius);
@@ -85,18 +86,19 @@ public class AlertRequest implements IAlert {
      * @param id          The id of the alert.
      * @param name        The name of the alert.
      * @param description The description of the alert.
+     * @param urgency     The urgency of the alert
      * @param lat         The latitude of the alert's location.
      * @param lon         The lontitude of the alert's location.
-     * @param radius      The radius of the alert's location.
-     * @return Confirmation message with feedback about the update.
+     * @param radius      The radius of the alert's location.    @return Confirmation message with feedback about the update.
      */
     @Override
-    public ConfirmationMessage updateAlert(String token, int id, String name, String description, double lat, double lon, double radius) {
+    public ConfirmationMessage updateAlert(String token, int id, String name, String description, int urgency, double lat, double lon, double radius) {
         MultiValueMap<String, Object> parameters = new LinkedMultiValueMap<>();
         parameters.add("token", token);
         parameters.add("id", id);
         parameters.add("name", name);
         parameters.add("description", description);
+        parameters.add("urgency", urgency);
         parameters.add("lat", lat);
         parameters.add("lon", lon);
         parameters.add("radius", radius);
