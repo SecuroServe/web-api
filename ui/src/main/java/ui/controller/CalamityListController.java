@@ -1,10 +1,10 @@
 package ui.controller;
 
-import interfaces.ConfirmationMessage;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -15,15 +15,9 @@ import javafx.stage.Stage;
 import library.Calamity;
 import library.Location;
 import library.User;
-import library.UserType;
-import requests.CalamityRequest;
 import requests.UserRequest;
-import ui.Main;
-
-import java.io.IOException;
 import java.net.URL;
 import java.util.*;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Created by guillaimejanssen on 20/03/2017.
@@ -50,15 +44,13 @@ public class CalamityListController implements Initializable {
 
     // Calamity
     @FXML
-    private Label calamityTitle;
-    @FXML
     private TextField titleTextField;
     @FXML
-    private Label calamityCreator;
+    private TextField creatorTextField;
     @FXML
-    private Label calamityDate;
+    private TextField dateTextField;
     @FXML
-    private Label calamityMessage;
+    private TextArea informationTextArea;
 
     public User user;
 
@@ -83,7 +75,10 @@ public class CalamityListController implements Initializable {
         });
         changeButton.setOnAction(this::handleChangeAction);
 
-        titleTextField.setVisible(false);
+        titleTextField.setEditable(false);
+        creatorTextField.setEditable(false);
+        dateTextField.setEditable(false);
+        informationTextArea.setEditable(false);
 
         initiateTableColumns();
         initiateUserTable();
@@ -95,9 +90,10 @@ public class CalamityListController implements Initializable {
     }
 
     private void handleChangeAction(ActionEvent actionEvent) {
-        titleTextField.setVisible(true);
-        calamityTitle.setVisible(false);
-        titleTextField.setText(calamityTitle.getText());
+        titleTextField.setEditable(true);
+        creatorTextField.setEditable(true);
+        dateTextField.setEditable(true);
+        informationTextArea.setEditable(true);
     }
 
     private void handleBackAction(ActionEvent actionEvent) {
@@ -107,13 +103,14 @@ public class CalamityListController implements Initializable {
 
     private void handleRefreshAction(ActionEvent actionEvent) {
         refreshCalamityTable();
+        refreshUserTable();
     }
 
     private void fillCalamityDetails(Calamity calamity) throws NullPointerException {
-        calamityTitle.setText(calamity.getTitle());
-        calamityCreator.setText(calamity.getUser().toString());
-        calamityDate.setText(calamity.getDate().toString());
-        calamityMessage.setText(createReadableText(calamity.getMessage()));
+        titleTextField.setText(calamity.getTitle());
+        creatorTextField.setText(calamity.getUser().toString());
+        dateTextField.setText(calamity.getDate().toString());
+        informationTextArea.setText(createReadableText(calamity.getMessage()));
     }
 
     private String createReadableText(String message) {
@@ -124,9 +121,10 @@ public class CalamityListController implements Initializable {
 
         for(int i = 0; i < message.length(); i++) {
             stringBuilder.append(message.charAt(i));
+            String c = Character.toString(message.charAt(i));
             counter++;
 
-            if(counter > 50) {
+            if(counter > 40 && c.equals(" ")) {
                 stringBuilder.append("\n");
                 System.out.println(counter);
                 counter = 0;
@@ -136,9 +134,9 @@ public class CalamityListController implements Initializable {
     }
 
     private void fillDefaultCalamityDetails() {
-        calamityTitle.setText("Calamity title");
-        calamityCreator.setText("Calamity creator");
-        calamityDate.setText("Calamity date");
+        titleTextField.setText("Calamity title");
+        creatorTextField.setText("Calamity creator");
+        dateTextField.setText("Calamity date");
     }
 
     private void initiateTableColumns() {
@@ -194,7 +192,11 @@ public class CalamityListController implements Initializable {
 
     private void refreshUserTable() {
         UserRequest userRequest = new UserRequest();
-        List<User> users = (List<User>) userRequest.allusers(user.getToken()).getReturnObject();
+        Object value = userRequest.allusers(user.getToken()).getReturnObject();
+
+        // Cast object to list of objects
+        ObjectMapper mapper = new ObjectMapper();
+        List<User> users = mapper.convertValue(value, new TypeReference<List<User>>() { });
 
         ObservableList<User> obsList = FXCollections.observableArrayList(users);
         userTable.setItems(obsList);
