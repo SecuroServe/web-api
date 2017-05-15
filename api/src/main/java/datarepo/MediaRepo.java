@@ -1,9 +1,12 @@
 package datarepo;
 
 import datarepo.database.Database;
+import datarepo.storage.FileSystemStorageService;
 import library.Media;
 import library.MediaFile;
 import library.Text;
+import org.springframework.core.io.Resource;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,9 +18,11 @@ import java.util.List;
  */
 public class MediaRepo {
     private Database database;
+    private final FileSystemStorageService storageService;
 
     public MediaRepo(Database database) {
         this.database = database;
+        this.storageService = new FileSystemStorageService();
     }
 
     /**
@@ -319,5 +324,28 @@ public class MediaRepo {
         parameters.add(mediaFile.getId());
 
         database.executeQuery(query, parameters, Database.QueryType.NON_QUERY);
+    }
+
+    /**
+     * Saves a file to the filesystem.
+     *
+     * @param file           The file to save as a MultipartFile.
+     * @param customFileName The custom file name.
+     */
+    public void saveFile(MultipartFile file, String customFileName) {
+        storageService.init();
+        storageService.store(file, customFileName);
+    }
+
+    /**
+     * Loads a file as a resource.
+     *
+     * @param customFileName The name of the file.
+     * @return The file as a Rescource.
+     */
+    public Resource loadFile(String customFileName) {
+        storageService.init();
+
+        return storageService.loadAsResource(customFileName);
     }
 }
