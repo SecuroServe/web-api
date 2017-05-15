@@ -1,10 +1,18 @@
 package ui.controller;
 
+import com.lynden.gmapsfx.GoogleMapView;
+import com.lynden.gmapsfx.javascript.event.GMapMouseEvent;
+import com.lynden.gmapsfx.javascript.event.UIEventType;
+import com.lynden.gmapsfx.javascript.object.*;
+import com.lynden.gmapsfx.shapes.Circle;
+import com.lynden.gmapsfx.shapes.CircleOptions;
+import interfaces.ConfirmationMessage;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -15,9 +23,15 @@ import javafx.stage.Stage;
 import library.Calamity;
 import library.Location;
 import library.User;
+import library.UserType;
+import requests.CalamityRequest;
 import requests.UserRequest;
+import ui.Main;
+
+import java.io.IOException;
 import java.net.URL;
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Created by guillaimejanssen on 20/03/2017.
@@ -51,6 +65,11 @@ public class CalamityListController implements Initializable {
     private TextField dateTextField;
     @FXML
     private TextArea informationTextArea;
+
+    @FXML
+    private GoogleMapView googleMapView;
+
+    private GoogleMap map;
 
     public User user;
 
@@ -87,6 +106,7 @@ public class CalamityListController implements Initializable {
 
         // Refreshing the table every 10 seconds
         timerToRefresh.schedule(new PostRequestTask(), 10 * 1000);
+        googleMapView.addMapInializedListener(() -> mapInitialized());
     }
 
     private void handleChangeAction(ActionEvent actionEvent) {
@@ -111,6 +131,7 @@ public class CalamityListController implements Initializable {
         creatorTextField.setText(calamity.getUser().toString());
         dateTextField.setText(calamity.getDate().toString());
         informationTextArea.setText(createReadableText(calamity.getMessage()));
+        updateMap(calamity.getLocation());
     }
 
     private String createReadableText(String message) {
@@ -207,7 +228,7 @@ public class CalamityListController implements Initializable {
         //calamities = (List<Calamity>) calamityRequest.allCalamity().getReturnObject();
 
         List<Calamity> calamities = new ArrayList<>();
-        calamities.add(new Calamity(1, new Location(1, 20.45345, 20.54375, 1.0),
+        calamities.add(new Calamity(1, new Location(1, 51.4477766, 5.4909617, 250.0),
                 new User(1, null, null, null, "Henk", "henk@gmail.com", "Eindhoven", "abcd"),
                 true, false, new Date(System.currentTimeMillis()), "Aanslag TU", "Lorem Ipsum is slechts een proeftekst uit het drukkerij- en zetterijwezen. Lorem Ipsum is de standaard proeftekst in deze bedrijfstak sinds de 16e eeuw, toen een onbekende drukker een zethaak met letters nam en ze door elkaar husselde om een font-catalogus te maken. Het heeft niet alleen vijf eeuwen overleefd maar is ook, vrijwel onveranderd, overgenomen in elektronische letterzetting. Het is in de jaren '60 populair geworden met de introductie van Letraset vellen met Lorem Ipsum passages en meer recentelijk door desktop publishing software zoals Aldus PageMaker die versies van Lorem Ipsum bevatten."));
 
@@ -220,6 +241,69 @@ public class CalamityListController implements Initializable {
         public void run() {
             refreshCalamityTable();
         }
+    }
+
+    private void updateMap(Location loc){
+        LatLong location = new LatLong(loc.getLatitude(), loc.getLongitude());
+        MapOptions mapOptions = new MapOptions();
+        mapOptions.center(location)
+                .mapType(MapTypeIdEnum.ROADMAP)
+                .overviewMapControl(false)
+                .panControl(false)
+                .rotateControl(false)
+                .scaleControl(false)
+                .streetViewControl(false)
+                .zoomControl(true)
+                .zoom(15);
+
+        map = googleMapView.createMap(mapOptions);
+
+        MarkerOptions markerOptions = new MarkerOptions();
+        markerOptions.position(location);
+
+        Marker marker = new Marker(markerOptions);
+        map.addMarker(marker);
+
+        CircleOptions circleO = new CircleOptions();
+        circleO.center(location);
+        circleO.radius(loc.getRadius());
+
+        Circle circle = new Circle(circleO);
+        map.addMapShape(circle);
+
+        InfoWindowOptions iWO = new InfoWindowOptions();
+        iWO.content("Bericht");
+
+        InfoWindow iw = new InfoWindow(iWO);
+        iw.open(map, marker);
+    }
+
+    public void mapInitialized() {
+        LatLong fontys = new LatLong(51.4520890, 5.4819830);
+
+        //Set the initial properties of the map.
+        MapOptions mapOptions = new MapOptions();
+
+        mapOptions.center(new LatLong(51.4520890, 5.4819830))
+                .mapType(MapTypeIdEnum.ROADMAP)
+                .overviewMapControl(false)
+                .panControl(false)
+                .rotateControl(false)
+                .scaleControl(false)
+                .streetViewControl(false)
+                .zoomControl(true)
+                .zoom(15);
+
+        map = googleMapView.createMap(mapOptions);
+
+        //Add markers to the map
+        MarkerOptions markerOptions1 = new MarkerOptions();
+        markerOptions1.position(fontys);
+
+        Marker fontysM = new Marker(markerOptions1);
+
+        map.addMarker( fontysM );
+
     }
 }
 
