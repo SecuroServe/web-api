@@ -103,7 +103,7 @@ public class AlertLogic {
      * @param location    The location of the alert.
      * @return Confirmation message with feedback about the update.
      */
-    public ConfirmationMessage updateAlert(String token, int id, String name, String description, int urgency, Location location) {
+    public ConfirmationMessage updateAlert(String token, int id, String name, String description, int urgency,  double lat, double lon, double radius){
         try {
             userRepo.getUser(token).getUserType().containsPermission(UserType.Permission.ALERT_UPDATE);
 
@@ -111,7 +111,9 @@ public class AlertLogic {
             alert.setName(name);
             alert.setDescription(description);
             alert.setUrgency(urgency);
-            alert.setLocation(location);
+            alert.getLocation().setLatitude(lat);
+            alert.getLocation().setLongitude(lon);
+            alert.getLocation().setRadius(radius);
 
             alertRepo.updateAlert(alert);
 
