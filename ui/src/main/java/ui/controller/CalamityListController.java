@@ -1,18 +1,14 @@
 package ui.controller;
 
 import com.lynden.gmapsfx.GoogleMapView;
-import com.lynden.gmapsfx.javascript.event.GMapMouseEvent;
-import com.lynden.gmapsfx.javascript.event.UIEventType;
 import com.lynden.gmapsfx.javascript.object.*;
 import com.lynden.gmapsfx.shapes.Circle;
 import com.lynden.gmapsfx.shapes.CircleOptions;
-import interfaces.ConfirmationMessage;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -23,15 +19,10 @@ import javafx.stage.Stage;
 import library.Calamity;
 import library.Location;
 import library.User;
-import library.UserType;
 import requests.CalamityRequest;
 import requests.UserRequest;
-import ui.Main;
-
-import java.io.IOException;
 import java.net.URL;
 import java.util.*;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Created by guillaimejanssen on 20/03/2017.
@@ -50,13 +41,10 @@ public class CalamityListController implements Initializable {
     private Button backButton;
     @FXML
     private Button changeButton;
-
     @FXML
     private TableView<Calamity> calamityTable;
     @FXML
     public TableView<User> userTable;
-
-    // Calamity
     @FXML
     private TextField titleTextField;
     @FXML
@@ -65,12 +53,12 @@ public class CalamityListController implements Initializable {
     private TextField dateTextField;
     @FXML
     private TextArea informationTextArea;
-
     @FXML
     private GoogleMapView googleMapView;
 
     private GoogleMap map;
 
+    private Calamity selectedCalamity;
     public User user;
 
     private Timer timerToRefresh = new Timer();
@@ -110,10 +98,38 @@ public class CalamityListController implements Initializable {
     }
 
     private void handleChangeAction(ActionEvent actionEvent) {
-        titleTextField.setEditable(true);
-        creatorTextField.setEditable(true);
-        dateTextField.setEditable(true);
-        informationTextArea.setEditable(true);
+
+        if(titleTextField.isEditable()){
+            titleTextField.setEditable(false);
+            informationTextArea.setEditable(false);
+            changeButton.setText("Change values");
+
+            if(!selectedCalamity.getTitle().equals(this.titleTextField.getText()) || !selectedCalamity.getMessage().equals(informationTextArea.getText())){
+
+                this.selectedCalamity.setTitle(titleTextField.getText());
+                this.selectedCalamity.setMessage(informationTextArea.getText());
+
+                CalamityRequest calamityRequest = new CalamityRequest();
+                calamityRequest.updateCalamity(user.getToken(),
+                        selectedCalamity.getId(),
+                        selectedCalamity.getTitle(),
+                        selectedCalamity.getMessage(),
+                        selectedCalamity.getLocation().getId(),
+                        selectedCalamity.getLocation().getLatitude(),
+                        selectedCalamity.getLocation().getLongitude(),
+                        selectedCalamity.getLocation().getRadius(),
+                        selectedCalamity.getConfirmation(),
+                        selectedCalamity.getClosed());
+
+            } else {
+
+            }
+
+        } else {
+            titleTextField.setEditable(true);
+            informationTextArea.setEditable(true);
+            changeButton.setText("Save changes");
+        }
     }
 
     private void handleBackAction(ActionEvent actionEvent) {
@@ -127,11 +143,12 @@ public class CalamityListController implements Initializable {
     }
 
     private void fillCalamityDetails(Calamity calamity) throws NullPointerException {
+        this.selectedCalamity = calamity;
         titleTextField.setText(calamity.getTitle());
         creatorTextField.setText(calamity.getUser().toString());
         dateTextField.setText(calamity.getDate().toString());
         informationTextArea.setText(createReadableText(calamity.getMessage()));
-        updateMap(calamity.getLocation());
+        updateMap(calamity);
     }
 
     private String createReadableText(String message) {
@@ -217,20 +234,23 @@ public class CalamityListController implements Initializable {
 
         // Cast object to list of objects
         ObjectMapper mapper = new ObjectMapper();
-        List<User> users = mapper.convertValue(value, new TypeReference<List<User>>() { });
+        List<User> users = mapper.convertValue(value, new TypeReference<List<User>>(){ });
 
         ObservableList<User> obsList = FXCollections.observableArrayList(users);
         userTable.setItems(obsList);
     }
 
     private void refreshCalamityTable() {
-        //CalamityRequest calamityRequest = new CalamityRequest();
-        //calamities = (List<Calamity>) calamityRequest.allCalamity().getReturnObject();
+        CalamityRequest calamityRequest = new CalamityRequest();
+        Object value = calamityRequest.allCalamity().getReturnObject();
 
-        List<Calamity> calamities = new ArrayList<>();
-        calamities.add(new Calamity(1, new Location(1, 51.4477766, 5.4909617, 250.0),
-                new User(1, null, null, null, "Henk", "henk@gmail.com", "Eindhoven", "abcd"),
-                true, false, new Date(System.currentTimeMillis()), "Aanslag TU", "Lorem Ipsum is slechts een proeftekst uit het drukkerij- en zetterijwezen. Lorem Ipsum is de standaard proeftekst in deze bedrijfstak sinds de 16e eeuw, toen een onbekende drukker een zethaak met letters nam en ze door elkaar husselde om een font-catalogus te maken. Het heeft niet alleen vijf eeuwen overleefd maar is ook, vrijwel onveranderd, overgenomen in elektronische letterzetting. Het is in de jaren '60 populair geworden met de introductie van Letraset vellen met Lorem Ipsum passages en meer recentelijk door desktop publishing software zoals Aldus PageMaker die versies van Lorem Ipsum bevatten."));
+        ObjectMapper mapper = new ObjectMapper();
+        List<Calamity> calamities = mapper.convertValue(value, new TypeReference<List<Calamity>>(){ });
+
+        //List<Calamity> calamities = new ArrayList<>();
+        //calamities.add(new Calamity(1, new Location(1, 51.4477766, 5.4909617, 250.0),
+        //       new User(1, null, null, null, "Henk", "henk@gmail.com", "Eindhoven", "abcd"),
+        //       true, false, new Date(System.currentTimeMillis()), "Aanslag TU", "Lorem Ipsum is slechts een proeftekst uit het drukkerij- en zetterijwezen. Lorem Ipsum is de standaard proeftekst in deze bedrijfstak sinds de 16e eeuw, toen een onbekende drukker een zethaak met letters nam en ze door elkaar husselde om een font-catalogus te maken. Het heeft niet alleen vijf eeuwen overleefd maar is ook, vrijwel onveranderd, overgenomen in elektronische letterzetting. Het is in de jaren '60 populair geworden met de introductie van Letraset vellen met Lorem Ipsum passages en meer recentelijk door desktop publishing software zoals Aldus PageMaker die versies van Lorem Ipsum bevatten."));
 
         ObservableList<Calamity> obsList = FXCollections.observableArrayList(calamities);
         calamityTable.setItems(obsList);
@@ -243,8 +263,8 @@ public class CalamityListController implements Initializable {
         }
     }
 
-    private void updateMap(Location loc){
-        LatLong location = new LatLong(loc.getLatitude(), loc.getLongitude());
+    private void updateMap(Calamity calamity){
+        LatLong location = new LatLong(calamity.getLocation().getLatitude(), calamity.getLocation().getLongitude());
         MapOptions mapOptions = new MapOptions();
         mapOptions.center(location)
                 .mapType(MapTypeIdEnum.ROADMAP)
@@ -266,13 +286,13 @@ public class CalamityListController implements Initializable {
 
         CircleOptions circleO = new CircleOptions();
         circleO.center(location);
-        circleO.radius(loc.getRadius());
+        circleO.radius(calamity.getLocation().getRadius());
 
         Circle circle = new Circle(circleO);
         map.addMapShape(circle);
 
         InfoWindowOptions iWO = new InfoWindowOptions();
-        iWO.content("Bericht");
+        iWO.content(calamity.getTitle());
 
         InfoWindow iw = new InfoWindow(iWO);
         iw.open(map, marker);
@@ -284,7 +304,7 @@ public class CalamityListController implements Initializable {
         //Set the initial properties of the map.
         MapOptions mapOptions = new MapOptions();
 
-        mapOptions.center(new LatLong(51.4520890, 5.4819830))
+        mapOptions.center(fontys)
                 .mapType(MapTypeIdEnum.ROADMAP)
                 .overviewMapControl(false)
                 .panControl(false)
