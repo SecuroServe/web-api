@@ -276,4 +276,48 @@ public class MediaRepo {
 
         database.executeQuery(query, parameters, Database.QueryType.NON_QUERY);
     }
+
+    /**
+     * Updates a Media object in the database.
+     *
+     * @param media The media object.
+     */
+    public void updateMedia(Media media) throws SQLException {
+        if (isText(media.getId())) {
+            updateText((Text) media);
+        } else if (isMediaFile(media.getId())) {
+            updateMediaFile((MediaFile) media);
+        }
+    }
+
+    /**
+     * Updates a Text object in the database.
+     *
+     * @param text The text object.
+     */
+    private void updateText(Text text) throws SQLException {
+        String query = "UPDATE `text` SET `Text` = ? WHERE `MediaID` = ?";
+
+        List<Object> parameters = new ArrayList<>();
+        parameters.add(text.getText());
+        parameters.add(text.getId());
+
+        database.executeQuery(query, parameters, Database.QueryType.NON_QUERY);
+    }
+
+    /**
+     * Updates a MediaFile object in the database.
+     *
+     * @param mediaFile The mediaFile object.
+     */
+    private void updateMediaFile(MediaFile mediaFile) throws SQLException {
+        String query = "UPDATE `file` SET `FileName` = ?, `FileType` = ? WHERE `MediaID` = ?";
+
+        List<Object> parameters = new ArrayList<>();
+        parameters.add(mediaFile.getFileName());
+        parameters.add(mediaFile.getFileType().toString());
+        parameters.add(mediaFile.getId());
+
+        database.executeQuery(query, parameters, Database.QueryType.NON_QUERY);
+    }
 }
