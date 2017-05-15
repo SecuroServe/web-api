@@ -24,6 +24,7 @@ CREATE TABLE Alert
   LocationID      INT             NOT NULL,
   CalamityID      INT             NOT NULL,
   Title           VARCHAR(200)    NOT NULL,
+  Time            DATETIME        NOT NULL,
   Description     VARCHAR(1000)   NOT NULL,
   Urgency         INT DEFAULT '5' NOT NULL
 );
@@ -196,6 +197,10 @@ CREATE TABLE UserTypePermission
 
 INSERT INTO UserType (Naam) VALUES ('Administrator');
 
+INSERT INTO Permission (Node, Description) VALUES ('ALERT_ADD', 'Permissions to add a Alert');
+INSERT INTO Permission (Node, Description) VALUES ('ALERT_UPDATE', 'Permissions to update a Alert');
+INSERT INTO Permission (Node, Description) VALUES ('ALERT_GET', 'Permissions to get a Alert');
+INSERT INTO Permission (Node, Description) VALUES ('ALERT_DELETE', 'Permissions to delete a Alert');
 INSERT INTO Permission (Node, Description) VALUES ('CALAMITY_ADD', 'Permissions to add a Calamity');
 INSERT INTO Permission (Node, Description) VALUES ('CALAMITY_UPDATE', 'Permissions to update a Calamity');
 INSERT INTO Permission (Node, Description) VALUES ('CALAMITY_GET', 'Permissions to get a Calamity');
@@ -217,3 +222,7 @@ INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (1, 6);
 INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (1, 7);
 INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (1, 8);
 INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (1, 9);
+INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (1, 10);
+INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (1, 11);
+INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (1, 12);
+INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (1, 13);

@@ -3,6 +3,7 @@ package controllers;
 import datarepo.database.Database;
 import interfaces.ConfirmationMessage;
 import interfaces.IAlert;
+import library.Location;
 import logic.AlertLogic;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -30,7 +31,7 @@ public class AlertController implements IAlert {
     @Override
     @RequestMapping("/getallalerts")
     public ConfirmationMessage getAllAlerts(String token) {
-        return null;
+        return alertLogic.allAlert(token);
     }
 
     /**
@@ -43,7 +44,7 @@ public class AlertController implements IAlert {
     @Override
     @RequestMapping("/getalert")
     public ConfirmationMessage getAlert(String token, int id) {
-        return null;
+        return alertLogic.getAlert(token, id);
     }
 
     /**
@@ -61,8 +62,9 @@ public class AlertController implements IAlert {
     @Override
 
     @RequestMapping("/addalert")
-    public ConfirmationMessage addAlert(String token, String name, String description, double lat, double lon, double radius) {
-        return null;
+    public ConfirmationMessage addAlert(String token, String name, String description, int urgency, double lat, double lon, double radius) {
+        Location location = new Location(-1, lat, lon, radius);
+        return alertLogic.addAlert(token, name, description, location, urgency);
     }
 
     /**
@@ -80,9 +82,9 @@ public class AlertController implements IAlert {
     @Override
 
     @RequestMapping("/updatealert")
-    public ConfirmationMessage updateAlert(String token, int id, String name, String description, double lat, double lon, double radius) {
+    public ConfirmationMessage updateAlert(String token, int id, String name, String description, int urgency, double lat, double lon, double radius) {
 
-        return null;
+        return alertLogic.updateAlert(token, id, name, description, urgency, lat, lon, radius);
     }
 
     /**
@@ -95,6 +97,6 @@ public class AlertController implements IAlert {
     @Override
     @RequestMapping("/removealert")
     public ConfirmationMessage removeAlert(String token, int id) {
-        return null;
+        return alertLogic.removeAlert(token, id);
     }
 }

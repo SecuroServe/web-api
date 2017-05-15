@@ -61,6 +61,11 @@ public class Calamity implements Serializable{
     private List<User> assignees;
 
     /**
+     * The alerts that belong to this calamity.
+     */
+    private List<Alert> alerts;
+
+    /**
      * Creates a new instance of library.Calamity with all fields.
      *
      * @param location the library.Location of the library.Calamity
@@ -79,7 +84,8 @@ public class Calamity implements Serializable{
         this.message = message;
         this.state = updateStatus();
 
-        assignees = new ArrayList<>();
+        this.alerts = new ArrayList<>();
+        this.assignees = new ArrayList<>();
     }
 
     public Calamity() { }
@@ -281,5 +287,29 @@ public class Calamity implements Serializable{
      */
     public List<User> getAssignees() {
         return this.assignees;
+    }
+
+    /**
+     * Get alerts from this calamity.
+     * @return Alert List
+     */
+    public List<Alert> getAlerts() {
+        return alerts;
+    }
+
+    /**
+     * Adds alerts to this calamity.
+     * @param alerts Alert List
+     */
+    public void setAlerts(List<Alert> alerts) {
+        this.alerts = alerts;
+    }
+
+    /**
+     * Adds an alert to this calamity.
+     * @param alert The alert
+     */
+    public void addAlert(Alert alert) {
+        alerts.add(alert);
     }
 }

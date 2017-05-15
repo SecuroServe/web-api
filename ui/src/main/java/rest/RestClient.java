@@ -54,7 +54,7 @@ public class RestClient {
      * @param parameters A MultiValueMap containing parameters
      * @return ConfirmationMessage
      */
-    private String generateUrl(String baseUrl, MultiValueMap<String, Object> parameters) {
+    public String generateUrl(String baseUrl, MultiValueMap<String, Object> parameters) {
 
         StringBuilder sb = new StringBuilder();
         sb.append(baseUrl).append("?");

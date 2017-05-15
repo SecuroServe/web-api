@@ -28,7 +28,7 @@ public class Location implements Serializable {
         this.id = id;
     }
 
-    public Location() { }
+    public Location(double lat, double lon, double radius) { }
 
     public void setLongitude(double longitude) {
         this.longitude = longitude;
