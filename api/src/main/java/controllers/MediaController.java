@@ -30,7 +30,7 @@ public class MediaController implements IMedia {
      */
     @Override
     public ConfirmationMessage getMedia(String token, int id) {
-        return null;
+        return mediaLogic.getMedia(token, id);
     }
 
     /**
@@ -44,7 +44,7 @@ public class MediaController implements IMedia {
      */
     @Override
     public ConfirmationMessage addMedia(String token, Media media, int alertId) {
-        return null;
+        return mediaLogic.addMedia(token, media, alertId);
     }
 
     /**
@@ -57,7 +57,7 @@ public class MediaController implements IMedia {
      */
     @Override
     public ConfirmationMessage uploadMedia(String token, int mediaId, MultipartFile file) {
-        return null;
+        return mediaLogic.uploadMedia(token, mediaId, file);
     }
 
     /**
@@ -70,7 +70,7 @@ public class MediaController implements IMedia {
      */
     @Override
     public ConfirmationMessage downloadMedia(String token, int mediaId) {
-        return null;
+        return mediaLogic.downloadMedia(token, mediaId);
     }
 
     /**
@@ -83,7 +83,7 @@ public class MediaController implements IMedia {
      */
     @Override
     public ConfirmationMessage updateMedia(String token, Media media) {
-        return null;
+        return mediaLogic.updateMedia(token, media);
     }
 
     /**
@@ -95,6 +95,6 @@ public class MediaController implements IMedia {
      */
     @Override
     public ConfirmationMessage removeMedia(String token, int mediaId) {
-        return null;
+        return mediaLogic.removeMedia(token, mediaId);
     }
 }
