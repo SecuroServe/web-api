@@ -32,7 +32,7 @@ public class AlertControllerTest {
 
     @Test
     public void addAlertTest() throws Exception {
-        Alert alert = (Alert) ac.addAlert(user.getToken(), "testAlert", "testDescription",
+        Alert alert = (Alert) ac.addAlert(user.getToken(), "testAlert", "testDescription", 10,
                 55, 56, 1).getReturnObject();
 
         assertEquals("testAlert", alert.getName());
@@ -52,10 +52,10 @@ public class AlertControllerTest {
 
     @Test
     public void removeAlertTest() throws Exception {
-        Alert alert1 = (Alert) ac.addAlert(user.getToken(), "testAlert", "testDescription",
+        Alert alert1 = (Alert) ac.addAlert(user.getToken(), "testAlert", "testDescription", 10,
                 55, 56, 1).getReturnObject();
 
-        Alert alert2 = (Alert) ac.addAlert(user.getToken(), "testAlert", "testDescription",
+        Alert alert2 = (Alert) ac.addAlert(user.getToken(), "testAlert", "testDescription", 10,
                 55, 56, 1).getReturnObject();
 
         ac.removeAlert(user.getToken(), alert1.getId());
@@ -68,17 +68,17 @@ public class AlertControllerTest {
 
     @Test
     public void proposeCalamityTest() throws Exception {
-        Alert alert1 = (Alert) ac.addAlert(user.getToken(), "testAlert", "testDescription",
+        Alert alert1 = (Alert) ac.addAlert(user.getToken(), "testAlert", "testDescription", 10,
                 52.369040, 9.748287, 0).getReturnObject();
-        Alert alert2 = (Alert) ac.addAlert(user.getToken(), "testAlert", "testDescription",
+        Alert alert2 = (Alert) ac.addAlert(user.getToken(), "testAlert", "testDescription", 10,
                 52.369105, 9.748333, 0).getReturnObject();
-        Alert alert3 = (Alert) ac.addAlert(user.getToken(), "testAlert", "testDescription",
+        Alert alert3 = (Alert) ac.addAlert(user.getToken(), "testAlert", "testDescription", 10,
                 52.369258, 9.748698, 0).getReturnObject();
-        Alert alert4 = (Alert) ac.addAlert(user.getToken(), "testAlert", "testDescription",
+        Alert alert4 = (Alert) ac.addAlert(user.getToken(), "testAlert", "testDescription", 10,
                 52.369253, 9.748971, 0).getReturnObject();
-        Alert alert5 = (Alert) ac.addAlert(user.getToken(), "testAlert", "testDescription",
+        Alert alert5 = (Alert) ac.addAlert(user.getToken(), "testAlert", "testDescription", 10,
                 52.368909, 9.748703, 0).getReturnObject();
-        Alert alert6 = (Alert) ac.addAlert(user.getToken(), "testAlert", "testDescription",
+        Alert alert6 = (Alert) ac.addAlert(user.getToken(), "testAlert", "testDescription", 10,
                 52.368914, 9.748370, 0).getReturnObject();
 
         int size = ((List<Calamity>) cc.allCalamity().getReturnObject()).size();
@@ -88,10 +88,10 @@ public class AlertControllerTest {
 
     @Test
     public void updateAlertTest() throws Exception {
-        Alert alert = (Alert) ac.addAlert(user.getToken(), "testAlert", "testDescription",
+        Alert alert = (Alert) ac.addAlert(user.getToken(), "testAlert", "testDescription", 10,
                 52.369040, 9.748287, 0).getReturnObject();
 
-        ac.updateAlert(user.getToken(), alert.getId(), "updateAlert", "updateDescription",
+        ac.updateAlert(user.getToken(), alert.getId(), "updateAlert", "updateDescription", 10,
                 55, 56, 1);
 
         Alert updatedAlert = (Alert) ac.getAlert(user.getToken(), alert.getId()).getReturnObject();

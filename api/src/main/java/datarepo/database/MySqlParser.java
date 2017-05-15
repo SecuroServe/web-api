@@ -1,7 +1,6 @@
 package datarepo.database;
 
 import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -18,24 +17,23 @@ public class MySqlParser {
     private static final String DELIMITER = ";";
 
     private Database database;
-    private String path;
+    private InputStream stream;
     private List<String> queries;
 
-    public MySqlParser(Database database, String path) {
+    public MySqlParser(Database database, InputStream stream) {
         this.database = database;
-        this.path = path;
+        this.stream = stream;
     }
 
-    static String readFile(String path, Charset encoding)
+    static String readFile(InputStream stream, Charset encoding)
             throws Exception {
 
-        InputStream is = new FileInputStream(path);
         ByteArrayOutputStream buffer = new ByteArrayOutputStream();
 
         int nRead;
         byte[] data = new byte[16384];
 
-        while ((nRead = is.read(data, 0, data.length)) != -1) {
+        while ((nRead = stream.read(data, 0, data.length)) != -1) {
             buffer.write(data, 0, nRead);
         }
 
@@ -46,15 +44,15 @@ public class MySqlParser {
     }
 
     public void execute() throws Exception {
-        queries = parseQueries(this.path);
+        queries = parseQueries(this.stream);
 
         for (String query : queries) {
             database.executeQuery(query, new ArrayList<>(), Database.QueryType.NON_QUERY);
         }
     }
 
-    private List<String> parseQueries(String path) throws Exception {
-        String lines = readFile(path, StandardCharsets.UTF_8);
+    private List<String> parseQueries(InputStream stream) throws Exception {
+        String lines = readFile(stream, StandardCharsets.UTF_8);
         lines = lines.replaceAll("[\r\n]", "");
 
         return Arrays.asList(lines.split(DELIMITER));
