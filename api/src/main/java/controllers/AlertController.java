@@ -83,8 +83,8 @@ public class AlertController implements IAlert {
 
     @RequestMapping("/updatealert")
     public ConfirmationMessage updateAlert(String token, int id, String name, String description, int urgency, double lat, double lon, double radius) {
-        Location location = new Location(-1, lat, lon, radius);
-        return alertLogic.updateAlert(token, id, name, description, urgency, location);
+
+        return alertLogic.updateAlert(token, id, name, description, urgency, lat, lon, radius);
     }
 
     /**

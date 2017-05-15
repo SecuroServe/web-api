@@ -69,7 +69,7 @@ public class AlertRepo {
                 "SET `LocationID` = ?," +
                 "`CreatedByUserID` = ?," +
                 "`Time` = ?," +
-                "`Name` = ?," +
+                "`Title` = ?," +
                 "`Description` = ?, " +
                 "`Urgency` = ? " +
                 "WHERE `ID` = ?";
@@ -81,7 +81,6 @@ public class AlertRepo {
         parameters.add(Alert.getName());
         parameters.add(Alert.getDescription());
         parameters.add(Alert.getUrgency());
-        parameters.add(Alert.getLocation().getId());
         parameters.add(Alert.getId());
 
         database.executeQuery(query, parameters, Database.QueryType.NON_QUERY);
