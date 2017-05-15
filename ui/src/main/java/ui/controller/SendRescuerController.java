@@ -1,17 +1,18 @@
 package ui.controller;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import interfaces.ConfirmationMessage;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import library.Calamity;
+import library.Location;
 import library.User;
 import requests.CalamityRequest;
 import requests.UserRequest;
@@ -58,11 +59,12 @@ public class SendRescuerController implements Initializable {
     public SendRescuerController(User user) {
         this.user = user;
         selectedUsers = FXCollections.observableArrayList();
-
+        ObjectMapper objMapper = new ObjectMapper();
         CalamityRequest request = new CalamityRequest();
         ConfirmationMessage calamityMessage = request.allCalamity();//check for error
         if(calamityMessage.getStatus() != ConfirmationMessage.StatusType.ERROR){
-            allCalamities = (List) calamityMessage.getReturnObject();
+            Object val = calamityMessage.getReturnObject();
+            allCalamities = objMapper.convertValue(val, new TypeReference<List<Calamity>>(){});
         } else{
             //todo display empty list (error)message
             allCalamities = new ArrayList<>();
@@ -71,7 +73,8 @@ public class SendRescuerController implements Initializable {
         UserRequest userRequest = new UserRequest();
         ConfirmationMessage userMessage = userRequest.allusers(user.getToken());//check for error
         if(userMessage.getStatus() != ConfirmationMessage.StatusType.ERROR){
-            availableUsers = (List) userMessage.getReturnObject();
+            Object val = userMessage.getReturnObject();
+            availableUsers = objMapper.convertValue(val, new TypeReference<List<User>>(){});
         } else{
             //todo display empty list (error)message
             availableUsers = new ArrayList<>();
@@ -100,10 +103,27 @@ public class SendRescuerController implements Initializable {
     private void initTableViews() {
         //set tableView columns
         //todo set tableview collums
+        //rescuerTableView
+        TableColumn rescuerNameCol = new TableColumn("Name");
+        rescuerNameCol.setCellValueFactory(new PropertyValueFactory<User, String>("username"));
+
+        TableColumn rescuerLocationCol = new TableColumn("Location");
+        rescuerLocationCol.setCellValueFactory(new PropertyValueFactory<User, String>("city"));
+
+        rescuerTableView.getColumns().addAll(rescuerNameCol, rescuerLocationCol);
+        //calamityTableView
+        TableColumn calamityTitleCol = new TableColumn("Title");
+        calamityTitleCol.setCellValueFactory(new PropertyValueFactory<Calamity, String>("title"));
+
+        TableColumn calamityLocationCol = new TableColumn("Location");
+        calamityLocationCol.setCellValueFactory(new PropertyValueFactory<Calamity, Location>("location"));
+
+        calamityTableView.getColumns().addAll(calamityTitleCol, calamityLocationCol);
+
         //set tableView lists
         rescuerTableView.setItems(FXCollections.observableArrayList(availableUsers));
         calamityTableView.setItems(FXCollections.observableArrayList(allCalamities));
-        rescuerTableView.setItems(selectedUsers);
+        selectedRescuerListView.setItems(selectedUsers);
 
     }
 
