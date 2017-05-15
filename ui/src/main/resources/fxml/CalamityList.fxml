@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.lynden.gmapsfx.GoogleMapView?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
@@ -60,6 +61,7 @@
                      </children>
                   </VBox>
                   <Line endY="625.0" layoutX="421.0" layoutY="11.0" stroke="WHITE" />
+                  <GoogleMapView fx:id="googleMapView" />
                </children>
             </HBox>
             <HBox prefWidth="200.0">
