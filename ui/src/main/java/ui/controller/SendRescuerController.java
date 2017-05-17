@@ -187,6 +187,7 @@ public class SendRescuerController implements Initializable {
      */
     private void selectCalamity(ActionEvent actionEvent) {
         Calamity selCalamity = calamityTableView.getSelectionModel().getSelectedItem();
+
         if(selCalamity != null){
             setSelectedCalamity(selCalamity);
         }
@@ -199,8 +200,8 @@ public class SendRescuerController implements Initializable {
         }
         selectedCalamity = calamity;
         selectedCalamityLabel.setText(calamity.getTitle());
-
         refreshTableViews();
+        //todo set selected users
     }
 
     /***
