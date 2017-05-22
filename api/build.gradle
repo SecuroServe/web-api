@@ -38,3 +38,15 @@ dependencies {
     compile project(':interfaces')
     compile project(':library')
 }
+
+//create a single Jar with all dependencies
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Implementation-Title': 'Gradle API build',
+                'Implementation-Version': version,
+                'Main-Class': 'controllers.Application'
+    }
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
