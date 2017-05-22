@@ -126,8 +126,6 @@ public class CalamityRepo {
         }
 
         return calamity;
-
-
     }
 
     /**
