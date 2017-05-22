@@ -57,6 +57,39 @@ public class MediaRepo {
     }
 
     /**
+     * Gets a Media object from the database that belongs to a specific alert object.
+     *
+     * @param alertId The id of the Alert object.
+     * @return The Media object from the database.
+     * @throws SQLException Database error.
+     */
+    public Media getMediaByAlert(int alertId) throws SQLException {
+        Media media = null;
+        int mediaId = -1;
+        String mediaName = null;
+
+        String query = "SELECT `ID`, `Name` FROM media WHERE AlertID = ?";
+
+        List<Object> parameters = new ArrayList<>();
+        parameters.add(alertId);
+
+        try (ResultSet rs = database.executeQuery(query, parameters, Database.QueryType.QUERY)) {
+            if (rs.next()) {
+                mediaId = rs.getInt(1);
+                mediaName = rs.getString(2);
+            }
+        }
+
+        if (isText(mediaId)) {
+            media = getText(mediaId, mediaName);
+        } else if (isMediaFile(mediaId)) {
+            media = getMediaFile(mediaId, mediaName);
+        }
+
+        return media;
+    }
+
+    /**
      * Gets a Text object from the database.
      *
      * @param mediaId   The id of the media record.
