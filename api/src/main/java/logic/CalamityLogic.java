@@ -77,11 +77,10 @@ public class CalamityLogic {
     /**
      * Gets a calamity b id.
      *
-     * @param token      The authentication token.
      * @param calamityId The id of the calamity.
      * @return ConfirmationMessage with feedback.
      */
-    public ConfirmationMessage getCalamity(String token, int calamityId) {
+    public ConfirmationMessage getCalamity(int calamityId) {
         try {
             Calamity returnCal = calamityRepo.getCalamity(calamityId);
 
