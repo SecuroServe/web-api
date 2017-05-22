@@ -14,7 +14,7 @@ apply plugin: 'org.springframework.boot'
 
 jar {
     baseName = 'gs-spring-boot'
-    version =  '0.1.0'
+    version = '0.1.0'
 }
 
 repositories {
@@ -23,6 +23,7 @@ repositories {
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
+
 
 dependencies {
     // tag::jetty[]

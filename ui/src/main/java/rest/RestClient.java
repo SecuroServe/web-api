@@ -91,8 +91,9 @@ public class RestClient {
 
     /**
      * Executes a DELETE request using the Spring REST library.
-     * @param uri           The request URL
-     * @param parameters    A MultiValueMap containing parameters.
+     *
+     * @param uri        The request URL
+     * @param parameters A MultiValueMap containing parameters.
      */
     private void delete(String uri, MultiValueMap<String, Object> parameters) {
         rest.delete(uri, parameters);

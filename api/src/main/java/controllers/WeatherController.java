@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.RestController;
  * Created by Michel on 1-5-2017.
  */
 @RestController
-public class WeatherController implements IWeather{
+public class WeatherController implements IWeather {
 
     private WeatherLogic weatherLogic;
 
-    public WeatherController(){
+    public WeatherController() {
         this.weatherLogic = new WeatherLogic();
     }
 
@@ -62,7 +62,7 @@ public class WeatherController implements IWeather{
      * @param token     Token to validate the user
      * @param longitude Longitude of the library.Location to get the weather from
      * @param latitude  Latitude of the library.Location to get the weather from
-     * @param count Number of days for the forecast
+     * @param count     Number of days for the forecast
      * @return ConfirmationMessage with the daily forecast at the library.Location.
      */
     @Override

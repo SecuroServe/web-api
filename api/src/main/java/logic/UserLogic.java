@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 
 /**
  * Handles the user logic.
- *
+ * <p>
  * Created by Jandie on 20-3-2017.
  */
 public class UserLogic {
@@ -100,9 +100,9 @@ public class UserLogic {
 
     public ConfirmationMessage getAllUsers(String token) throws NoSuchAlgorithmException, ParseException {
         //todo authenticate token
-        try{
+        try {
             return new ConfirmationMessage(ConfirmationMessage.StatusType.SUCCES, "List<library.User> retrieved!", userRepo.getAllUsers());
-        } catch (SQLException e){
+        } catch (SQLException e) {
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Failed to get list of users from repo", e);
             return new ConfirmationMessage(ConfirmationMessage.StatusType.ERROR, "Failed to get list of users", e);
         }

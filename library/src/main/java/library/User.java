@@ -8,7 +8,7 @@ import java.io.Serializable;
  * Created by Jandie on 13-3-2017.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class User implements Serializable{
+public class User implements Serializable {
 
     /**
      * The id of the user.
@@ -75,38 +75,7 @@ public class User implements Serializable{
         this.token = token;
     }
 
-    public User() { }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setUserType(UserType userType) {
-        this.userType = userType;
-    }
-
-    public void setAssignedCalamity(Calamity assignedCalamity) {
-        this.assignedCalamity = assignedCalamity;
-    }
-
-    public void setBuilding(Building building) {
-        this.building = building;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
+    public User() {
     }
 
     /**
@@ -118,6 +87,10 @@ public class User implements Serializable{
         return id;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     /**
      * Gets the type of user.
      *
@@ -125,6 +98,10 @@ public class User implements Serializable{
      */
     public UserType getUserType() {
         return userType;
+    }
+
+    public void setUserType(UserType userType) {
+        this.userType = userType;
     }
 
     /**
@@ -136,6 +113,10 @@ public class User implements Serializable{
         return assignedCalamity;
     }
 
+    public void setAssignedCalamity(Calamity assignedCalamity) {
+        this.assignedCalamity = assignedCalamity;
+    }
+
     /**
      * Gets the building where the user is stationed.
      *
@@ -143,6 +124,10 @@ public class User implements Serializable{
      */
     public Building getBuilding() {
         return building;
+    }
+
+    public void setBuilding(Building building) {
+        this.building = building;
     }
 
     /**
@@ -154,6 +139,10 @@ public class User implements Serializable{
         return username;
     }
 
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     /**
      * Gets the email of the user.
      *
@@ -161,6 +150,10 @@ public class User implements Serializable{
      */
     public String getEmail() {
         return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     /**
@@ -172,6 +165,10 @@ public class User implements Serializable{
         return city;
     }
 
+    public void setCity(String city) {
+        this.city = city;
+    }
+
     /**
      * Gets the authentication token of the user.
      *
@@ -179,6 +176,10 @@ public class User implements Serializable{
      */
     public String getToken() {
         return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
     @Override

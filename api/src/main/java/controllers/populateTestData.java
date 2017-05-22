@@ -6,12 +6,7 @@ import datarepo.database.Database;
 import library.Calamity;
 import library.Location;
 import library.User;
-import library.UserType;
 
-import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
-import java.sql.SQLException;
-import java.text.ParseException;
 import java.util.Date;
 
 /**
@@ -25,9 +20,9 @@ public class populateTestData {
 
         Location testLocation = new Location(-1, 0, 0, 10);
 
-        try{
+        try {
 
-            User testUser = userRepo.register(-1,-1, "testUser", "test123", "test@test.com", "Eindhoven");
+            User testUser = userRepo.register(-1, -1, "testUser", "test123", "test@test.com", "Eindhoven");
             calamityRepo.addCalamity(new Calamity(-1, testLocation, testUser, true, false, new Date(1L), "Brand in het ziekenhuis", "hallo, er is hier vuur."));
 
         } catch (Exception e) {
