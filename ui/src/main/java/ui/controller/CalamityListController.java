@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -21,6 +22,7 @@ import javafx.stage.Stage;
 import library.Calamity;
 import library.Location;
 import library.User;
+import netscape.javascript.JSObject;
 import org.omg.CORBA.MARSHAL;
 import requests.CalamityRequest;
 import requests.UserRequest;
@@ -98,16 +100,6 @@ public class CalamityListController implements Initializable {
         // Refreshing the table every 10 seconds
         timerToRefresh.schedule(new PostRequestTask(), 10 * 1000);
         googleMapView.addMapInializedListener(() -> mapInitialized());
-        map.addMouseEventHandler(UIEventType.click, (GMapMouseEvent event) -> {
-
-            if(changeButton.getText().equals("Save Changes")) {
-                LatLong latLong = event.getLatLong();
-                this.selectedCalamity.getLocation().setLatitude(latLong.getLatitude());
-                this.selectedCalamity.getLocation().setLongitude(latLong.getLongitude());
-
-                updateMap(selectedCalamity);
-            }
-        });
     }
 
     private void handleChangeAction(ActionEvent actionEvent) {
@@ -289,6 +281,16 @@ public class CalamityListController implements Initializable {
                 .zoom(15);
 
         map = googleMapView.createMap(mapOptions);
+        map.addUIEventHandler(UIEventType.click, (JSObject obj) -> {
+            LatLong ll = new LatLong((JSObject) obj.getMember("latLng"));
+            if(changeButton.getText().equalsIgnoreCase("Save changes")) {
+                System.out.println("LatLong: lat: " + ll.getLatitude() + " lng: " + ll.getLongitude());
+                this.selectedCalamity.getLocation().setLatitude(ll.getLatitude());
+                this.selectedCalamity.getLocation().setLongitude(ll.getLongitude());
+
+                updateMap(selectedCalamity);
+            }
+        });
 
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(location);
@@ -327,6 +329,16 @@ public class CalamityListController implements Initializable {
                 .zoom(15);
 
         map = googleMapView.createMap(mapOptions);
+//        map.addMouseEventHandler(UIEventType.click, (GMapMouseEvent event) -> {
+//
+//            if(changeButton.getText().equals("Save Changes")) {
+//                LatLong latLong = event.getLatLong();
+//                this.selectedCalamity.getLocation().setLatitude(latLong.getLatitude());
+//                this.selectedCalamity.getLocation().setLongitude(latLong.getLongitude());
+//
+//                updateMap(selectedCalamity);
+//            }
+//        });
 
         //Add markers to the map
         MarkerOptions markerOptions1 = new MarkerOptions();
