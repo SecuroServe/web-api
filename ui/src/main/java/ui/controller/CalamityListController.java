@@ -1,6 +1,8 @@
 package ui.controller;
 
 import com.lynden.gmapsfx.GoogleMapView;
+import com.lynden.gmapsfx.javascript.event.GMapMouseEvent;
+import com.lynden.gmapsfx.javascript.event.UIEventType;
 import com.lynden.gmapsfx.javascript.object.*;
 import com.lynden.gmapsfx.shapes.Circle;
 import com.lynden.gmapsfx.shapes.CircleOptions;
@@ -9,6 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -19,6 +22,8 @@ import javafx.stage.Stage;
 import library.Calamity;
 import library.Location;
 import library.User;
+import netscape.javascript.JSObject;
+import org.omg.CORBA.MARSHAL;
 import requests.CalamityRequest;
 import requests.UserRequest;
 import java.net.URL;
@@ -98,13 +103,12 @@ public class CalamityListController implements Initializable {
     }
 
     private void handleChangeAction(ActionEvent actionEvent) {
-
         if(titleTextField.isEditable()){
             titleTextField.setEditable(false);
             informationTextArea.setEditable(false);
             changeButton.setText("Change values");
 
-            if(!selectedCalamity.getTitle().equals(this.titleTextField.getText()) || !selectedCalamity.getMessage().equals(informationTextArea.getText())){
+            if(!selectedCalamity.getTitle().equals(this.titleTextField.getText()) || !selectedCalamity.getMessage().equals(informationTextArea.getText())) {
 
                 this.selectedCalamity.setTitle(titleTextField.getText());
                 this.selectedCalamity.setMessage(informationTextArea.getText());
@@ -277,6 +281,16 @@ public class CalamityListController implements Initializable {
                 .zoom(15);
 
         map = googleMapView.createMap(mapOptions);
+        map.addUIEventHandler(UIEventType.click, (JSObject obj) -> {
+            LatLong ll = new LatLong((JSObject) obj.getMember("latLng"));
+            if(changeButton.getText().equalsIgnoreCase("Save changes")) {
+                System.out.println("LatLong: lat: " + ll.getLatitude() + " lng: " + ll.getLongitude());
+                this.selectedCalamity.getLocation().setLatitude(ll.getLatitude());
+                this.selectedCalamity.getLocation().setLongitude(ll.getLongitude());
+
+                updateMap(selectedCalamity);
+            }
+        });
 
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(location);
@@ -315,6 +329,16 @@ public class CalamityListController implements Initializable {
                 .zoom(15);
 
         map = googleMapView.createMap(mapOptions);
+//        map.addMouseEventHandler(UIEventType.click, (GMapMouseEvent event) -> {
+//
+//            if(changeButton.getText().equals("Save Changes")) {
+//                LatLong latLong = event.getLatLong();
+//                this.selectedCalamity.getLocation().setLatitude(latLong.getLatitude());
+//                this.selectedCalamity.getLocation().setLongitude(latLong.getLongitude());
+//
+//                updateMap(selectedCalamity);
+//            }
+//        });
 
         //Add markers to the map
         MarkerOptions markerOptions1 = new MarkerOptions();

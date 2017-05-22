@@ -77,18 +77,15 @@ public class CalamityLogic {
     /**
      * Gets a calamity b id.
      *
-     * @param token      The authentication token.
      * @param calamityId The id of the calamity.
      * @return ConfirmationMessage with feedback.
      */
-    public ConfirmationMessage getCalamity(String token, int calamityId) {
+    public ConfirmationMessage getCalamity(int calamityId) {
         try {
-            userRepo.getUser(token).getUserType().containsPermission(UserType.Permission.CALAMITY_GET);
-
             Calamity returnCal = calamityRepo.getCalamity(calamityId);
 
             return new ConfirmationMessage(ConfirmationMessage.StatusType.SUCCES, "got calamity", returnCal);
-        } catch (NoPermissionException | ParseException | NoSuchAlgorithmException | SQLException e) {
+        } catch (ParseException | NoSuchAlgorithmException | SQLException e) {
             Logger.getLogger(CalamityLogic.class.getName()).log(Level.SEVERE,
                     "Error while loading calamity", e);
 

@@ -40,16 +40,14 @@ public class CalamityController implements ICalamity {
     /**
      * Returns a single calamity by id.
      *
-     * @param token The authentication token.
      * @param id    The id of the calamity.
      * @return A single calamity by id.
      */
     @Override
 
     @RequestMapping("/calamitybyid")
-    public ConfirmationMessage calamityById(@RequestParam(value = "token") String token,
-                                            @RequestParam(value = "id") int id) {
-        return calamityLogic.getCalamity(token, id);
+    public ConfirmationMessage calamityById(@RequestParam(value = "id") int id) {
+        return calamityLogic.getCalamity(id);
     }
 
     /**

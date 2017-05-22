@@ -1,7 +1,5 @@
 package interfaces;
 
-import library.Location;
-
 /**
  * Created by Jandie on 13-3-2017.
  */
@@ -17,13 +15,11 @@ public interface ICalamity {
     /**
      * Returns a single calamity by id.
      *
-     * @param token The authentication token.
      * @param id    The id of the calamity.
      * @return A single calamity by id.
      */
 
-    ConfirmationMessage calamityById(String token,
-                                     int id);
+    ConfirmationMessage calamityById(int id);
 
     /**
      * Adds a new calamity.

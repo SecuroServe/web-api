@@ -5,6 +5,8 @@ import interfaces.ConfirmationMessage;
 import interfaces.IMedia;
 import library.Media;
 import logic.MediaLogic;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -29,7 +31,9 @@ public class MediaController implements IMedia {
      * @return ConfirmationMessage with the Media object.
      */
     @Override
-    public ConfirmationMessage getMedia(String token, int id) {
+    @RequestMapping("/getmedia")
+    public ConfirmationMessage getMedia(@RequestParam(value = "token") String token,
+                                        @RequestParam(value = "id") int id) {
         return mediaLogic.getMedia(token, id);
     }
 
@@ -43,7 +47,10 @@ public class MediaController implements IMedia {
      * also containing the new media.
      */
     @Override
-    public ConfirmationMessage addMedia(String token, Media media, int alertId) {
+    @RequestMapping("/addmedia")
+    public ConfirmationMessage addMedia(@RequestParam(value = "token") String token,
+                                        @RequestParam(value = "media") Media media,
+                                        @RequestParam(value = "alertId") int alertId) {
         return mediaLogic.addMedia(token, media, alertId);
     }
 
@@ -56,7 +63,10 @@ public class MediaController implements IMedia {
      * @return Confirmation message with feedback about the upload action
      */
     @Override
-    public ConfirmationMessage uploadMedia(String token, int mediaId, MultipartFile file) {
+    @RequestMapping("/uploadmedia")
+    public ConfirmationMessage uploadMedia(@RequestParam(value = "token") String token,
+                                           @RequestParam(value = "mediaId") int mediaId,
+                                           @RequestParam(value = "file") MultipartFile file) {
         return mediaLogic.uploadMedia(token, mediaId, file);
     }
 
@@ -69,7 +79,9 @@ public class MediaController implements IMedia {
      * and also contains the downloaded file.
      */
     @Override
-    public ConfirmationMessage downloadMedia(String token, int mediaId) {
+    @RequestMapping("/downloadmedia")
+    public ConfirmationMessage downloadMedia(@RequestParam(value = "token") String token,
+                                             @RequestParam(value = "mediaId") int mediaId) {
         return mediaLogic.downloadMedia(token, mediaId);
     }
 
@@ -82,7 +94,9 @@ public class MediaController implements IMedia {
      * containing the new update.
      */
     @Override
-    public ConfirmationMessage updateMedia(String token, Media media) {
+    @RequestMapping("/updatemedia")
+    public ConfirmationMessage updateMedia(@RequestParam(value = "token") String token,
+                                           @RequestParam(value = "media") Media media) {
         return mediaLogic.updateMedia(token, media);
     }
 
@@ -94,7 +108,9 @@ public class MediaController implements IMedia {
      * @return Confirmation message with feedback about the deletion
      */
     @Override
-    public ConfirmationMessage removeMedia(String token, int mediaId) {
+    @RequestMapping("/removemedia")
+    public ConfirmationMessage removeMedia(@RequestParam(value = "token") String token,
+                                           @RequestParam(value = "mediaId") int mediaId) {
         return mediaLogic.removeMedia(token, mediaId);
     }
 }

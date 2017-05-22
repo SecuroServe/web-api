@@ -2,10 +2,8 @@ package requests;
 
 import interfaces.ConfirmationMessage;
 import interfaces.ICalamity;
-import library.Location;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestTemplate;
 import rest.RestClient;
 
 /**
@@ -39,9 +37,8 @@ public class CalamityRequest implements ICalamity {
     }
 
     @Override
-    public ConfirmationMessage calamityById(String token, int id) {
+    public ConfirmationMessage calamityById(int id) {
         MultiValueMap<String, Object> parameters = new LinkedMultiValueMap<>();
-        parameters.add("token", token);
         parameters.add("id", id);
         return restClient.request(REQUEST_PREFIX + GET_CALAMITY_BY_ID, RestClient.RequestType.GET, parameters);
     }

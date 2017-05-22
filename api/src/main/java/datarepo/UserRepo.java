@@ -206,7 +206,10 @@ public class UserRepo {
             }
         }
 
-        return getUserById(user.getId());
+        user = getUserById(user.getId());
+        user.setToken(token);
+
+        return user;
     }
 
     /**
@@ -274,7 +277,7 @@ public class UserRepo {
 
                 UserType userType = new UserTypeRepo(database).getUserTypeOfUser(id);
 
-                user = new User(id, userType, null, null, username, email, city, token);
+                user = new User(id, userType, null, null, username, email, city, null);
             }
         }
 
