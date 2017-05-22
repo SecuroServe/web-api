@@ -25,6 +25,12 @@ public class WeatherLogic {
         this.omw = new OpenWeatherMap(OpenWeatherMap.Units.METRIC, "98d0f150f25d72ef30ec69301ef50f89");
     }
 
+    public WeatherLogic(Database database) {
+        database = database;
+        userRepo = new UserRepo(database);
+        this.omw = new OpenWeatherMap(OpenWeatherMap.Units.METRIC, "98d0f150f25d72ef30ec69301ef50f89");
+    }
+
     /**
      * Get current weather from the OpenWeatherMap API
      * @param token Token to validate the user

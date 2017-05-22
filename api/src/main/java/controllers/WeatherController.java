@@ -1,5 +1,6 @@
 package controllers;
 
+import datarepo.database.Database;
 import interfaces.ConfirmationMessage;
 import interfaces.IWeather;
 import logic.WeatherLogic;
@@ -17,6 +18,10 @@ public class WeatherController implements IWeather{
 
     public WeatherController(){
         this.weatherLogic = new WeatherLogic();
+    }
+
+    public WeatherController(Database database) {
+        this.weatherLogic = new WeatherLogic(database);
     }
 
     /**
