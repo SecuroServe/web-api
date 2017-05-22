@@ -19,8 +19,6 @@ import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
 
-    private Main main;
-
     @FXML
     public Button loginBtn;
     @FXML
@@ -29,6 +27,7 @@ public class LoginController implements Initializable {
     public TextField user;
     @FXML
     public TextField password;
+    private Main main;
 
     public LoginController(Main main) {
         this.main = main;

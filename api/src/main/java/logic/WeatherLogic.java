@@ -33,7 +33,8 @@ public class WeatherLogic {
 
     /**
      * Get current weather from the OpenWeatherMap API
-     * @param token Token to validate the user
+     *
+     * @param token     Token to validate the user
      * @param longitude
      * @param latitude
      * @return ConfirmationMessage with the raw data of the API
@@ -51,7 +52,8 @@ public class WeatherLogic {
 
     /**
      * Get hourly forecast from the OpenWeatherMap API
-     * @param token Token to validate the user
+     *
+     * @param token     Token to validate the user
      * @param longitude
      * @param latitude
      * @return ConfirmationMessage with the raw data of the API
@@ -68,10 +70,11 @@ public class WeatherLogic {
 
     /**
      * Get daily forecast from the OpenWeatherMap API
-     * @param token Token to validate the user
+     *
+     * @param token     Token to validate the user
      * @param longitude
      * @param latitude
-     * @param count Amount of days to get the forecast of.
+     * @param count     Amount of days to get the forecast of.
      * @return ConfirmationMessage with the raw data of the API
      */
     public ConfirmationMessage getDailyForecast(String token, float longitude, float latitude, byte count) {

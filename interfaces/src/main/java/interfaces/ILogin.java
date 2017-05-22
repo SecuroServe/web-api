@@ -14,5 +14,5 @@ public interface ILogin {
      * @return The token of the user.
      */
     ConfirmationMessage login(String username,
-                 String password);
+                              String password);
 }

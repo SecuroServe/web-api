@@ -80,26 +80,7 @@ public class Building implements Serializable {
         //TODO GET LOCATION
     }
 
-    public Building() { }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setLocation(Location location) {
-        this.location = location;
-    }
-
-    public void setPostalCode(String postalCode) {
-        this.postalCode = postalCode;
-    }
-
-    public void setNumber(int number) {
-        this.number = number;
-    }
-
-    public void setNumberAddition(String numberAddition) {
-        this.numberAddition = numberAddition;
+    public Building() {
     }
 
     /**
@@ -111,6 +92,10 @@ public class Building implements Serializable {
         return this.id;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     /**
      * Get the library.Location of this library.Building
      *
@@ -118,6 +103,10 @@ public class Building implements Serializable {
      */
     public Location getLocation() {
         return this.location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
     }
 
     /**
@@ -130,39 +119,21 @@ public class Building implements Serializable {
     }
 
     /**
+     * Set the BuildingType of this library.Building
+     *
+     * @param type the new BuildingType of this library.Building
+     */
+    public void setType(BuildingType type) {
+        this.type = type;
+    }
+
+    /**
      * Get the Description of this library.Building
      *
      * @return the Description of this library.Building
      */
     public String getDescription() {
         return this.description;
-    }
-
-    /**
-     * Get the PostalCode of this library.Building
-     *
-     * @return the PostalCode of this library.Building
-     */
-    public String getPostalCode() {
-        return this.postalCode;
-    }
-
-    /**
-     * Get the Number of this library.Building
-     *
-     * @return the Number of this library.Building
-     */
-    public int getNumber() {
-        return this.number;
-    }
-
-    /**
-     * Get the NumberAddition of this library.Building
-     *
-     * @return the NumberAddition of this library.Building
-     */
-    public String getNumberAddition() {
-        return this.numberAddition;
     }
 
     /**
@@ -175,12 +146,42 @@ public class Building implements Serializable {
     }
 
     /**
-     * Set the BuildingType of this library.Building
+     * Get the PostalCode of this library.Building
      *
-     * @param type the new BuildingType of this library.Building
+     * @return the PostalCode of this library.Building
      */
-    public void setType(BuildingType type) {
-        this.type = type;
+    public String getPostalCode() {
+        return this.postalCode;
+    }
+
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
+    }
+
+    /**
+     * Get the Number of this library.Building
+     *
+     * @return the Number of this library.Building
+     */
+    public int getNumber() {
+        return this.number;
+    }
+
+    public void setNumber(int number) {
+        this.number = number;
+    }
+
+    /**
+     * Get the NumberAddition of this library.Building
+     *
+     * @return the NumberAddition of this library.Building
+     */
+    public String getNumberAddition() {
+        return this.numberAddition;
+    }
+
+    public void setNumberAddition(String numberAddition) {
+        this.numberAddition = numberAddition;
     }
 
     public enum BuildingType {

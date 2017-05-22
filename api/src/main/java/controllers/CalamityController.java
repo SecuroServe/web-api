@@ -40,7 +40,7 @@ public class CalamityController implements ICalamity {
     /**
      * Returns a single calamity by id.
      *
-     * @param id    The id of the calamity.
+     * @param id The id of the calamity.
      * @return A single calamity by id.
      */
     @Override
@@ -53,9 +53,9 @@ public class CalamityController implements ICalamity {
     /**
      * Adds a new calamity.
      *
-     * @param token    The authentication token.
-     * @param title    The name of the calamity.
-     * @param message  The description of the calamity.
+     * @param token     The authentication token.
+     * @param title     The name of the calamity.
+     * @param message   The description of the calamity.
      * @param latitude  The latitude of the new calamity.
      * @param longitude The longitude of the new calamity.
      * @param radius    The radius of the new calamity.
@@ -78,10 +78,10 @@ public class CalamityController implements ICalamity {
     /**
      * Updates a calamity.
      *
-     * @param token       The authentication token.
-     * @param id          The id of the calamity.
-     * @param title        The name of the calamity.
-     * @param message The description of the calamity.
+     * @param token     The authentication token.
+     * @param id        The id of the calamity.
+     * @param title     The name of the calamity.
+     * @param message   The description of the calamity.
      * @param latitude  The latitude of the new calamity.
      * @param longitude The longitude of the new calamity.
      * @param radius    The radius of the new calamity.
