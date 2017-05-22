@@ -83,12 +83,10 @@ public class CalamityLogic {
      */
     public ConfirmationMessage getCalamity(String token, int calamityId) {
         try {
-            userRepo.getUser(token).getUserType().containsPermission(UserType.Permission.CALAMITY_GET);
-
             Calamity returnCal = calamityRepo.getCalamity(calamityId);
 
             return new ConfirmationMessage(ConfirmationMessage.StatusType.SUCCES, "got calamity", returnCal);
-        } catch (NoPermissionException | ParseException | NoSuchAlgorithmException | SQLException e) {
+        } catch (ParseException | NoSuchAlgorithmException | SQLException e) {
             Logger.getLogger(CalamityLogic.class.getName()).log(Level.SEVERE,
                     "Error while loading calamity", e);
 
