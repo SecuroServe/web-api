@@ -73,7 +73,7 @@ public class SendRescuerController implements Initializable {
             //convert list to list of calamities using mapper
             allCalamities = objMapper.convertValue(val, new TypeReference<List<Calamity>>(){});
         } else{
-            //todo display empty list (error)message
+            calamityTableView.setPlaceholder(new Label("No open calamities"));
             allCalamities = new ArrayList<>();
         }
 
@@ -83,7 +83,7 @@ public class SendRescuerController implements Initializable {
             //convert list to list of users
             availableUsers = objMapper.convertValue(val, new TypeReference<List<User>>(){});
         } else{
-            //todo display empty list (error)message
+            rescuerTableView.setPlaceholder(new Label("No available rescuers"));
             availableUsers = new ArrayList<>();
         }
         //todo filter for only available rescuers.
@@ -109,7 +109,6 @@ public class SendRescuerController implements Initializable {
 
     private void initTableViews() {
         //set tableView columns
-        //todo set tableview collums
         //rescuerTableView
         TableColumn rescuerNameCol = new TableColumn("Name");
         rescuerNameCol.setCellValueFactory(new PropertyValueFactory<User, String>("username"));
@@ -159,7 +158,7 @@ public class SendRescuerController implements Initializable {
             selectedUsers.add(selUser);
             availableUsers.remove(selUser);
         }else{
-            //todo popup a message saying what went wrong;
+            showMessage("No user selected");
         }
         refreshTableViews();
     }
@@ -175,7 +174,7 @@ public class SendRescuerController implements Initializable {
             selectedUsers.remove(selUser);
             availableUsers.add(selUser);
         }else {
-            //todo popup another message with what went wrong.
+            showMessage("No user selected");
         }
         refreshTableViews();
     }
@@ -190,6 +189,8 @@ public class SendRescuerController implements Initializable {
 
         if(selCalamity != null){
             setSelectedCalamity(selCalamity);
+        } else {
+            showMessage("No calamity selected");
         }
     }
 
@@ -211,13 +212,11 @@ public class SendRescuerController implements Initializable {
      * @param actionEvent
      */
     private void finishAction(ActionEvent actionEvent) {
-        //todo check all inputs and send a notification to Rescuers;
+        //todo send a notification to Rescuers;
         if(selectedCalamity == null || selectedUsers.size() == 0){
-            //todo show invalid input message
+            String s = "Please select a calamity, and at least 1 rescuer";
+            showMessage(s);
         }else {
-            for(User u : selectedUsers){
-                selectedCalamity.addAssignee(u);
-            }
 
             calamityRequest.updateCalamity(user.getToken(),
                     selectedCalamity.getId(),
@@ -229,7 +228,25 @@ public class SendRescuerController implements Initializable {
                     selectedCalamity.getLocation().getRadius(),
                     selectedCalamity.isConfirmed(),
                     selectedCalamity.isClosed());
+
+            for(User u : selectedUsers){
+                calamityRequest.addCalamityAssignee(user.getToken(), selectedCalamity.getId(), u.getId());
+            }
+            showMessage("Succesfully added users to the calamity");
+
         }
+    }
+
+    /**
+     * shows a message containing the passed String.
+     * @param s the string to show
+     */
+    private void showMessage(String s) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Message!");
+        alert.setHeaderText(null);
+        alert.setContentText(s);
+        alert.showAndWait();
     }
 
     /**
