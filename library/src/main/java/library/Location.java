@@ -21,6 +21,7 @@ public class Location implements Serializable {
      * @param latitude the latutude of the location.
      * @param radius the radius of the location, can be 0.
      */
+
     public Location(int id, double latitude, double longitude, double radius) {
         this.longitude = longitude;
         this.latitude = latitude;
@@ -28,25 +29,18 @@ public class Location implements Serializable {
         this.id = id;
     }
 
-    public Location(double lat, double lon, double radius) { }
+    public Location() {
 
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
     }
 
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
-    }
-
-    public void setRadius(double radius) {
-        this.radius = radius;
+    public Location(double lat, double lon, double radius) {
     }
 
     public double getLongitude() {
         return this.longitude;
     }
 
-    public void setLongitude(long longitude) {
+    public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
 
@@ -54,7 +48,7 @@ public class Location implements Serializable {
         return this.latitude;
     }
 
-    public void setLatitude(long latitude) {
+    public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
 
@@ -62,16 +56,16 @@ public class Location implements Serializable {
         return this.radius;
     }
 
-    public void setRadius(long radius) {
+    public void setRadius(double radius) {
         this.radius = radius;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public int getId() {
         return this.id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     @Override

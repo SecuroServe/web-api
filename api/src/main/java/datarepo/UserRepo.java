@@ -25,14 +25,13 @@ import java.util.List;
 public class UserRepo {
 
     /**
-     * Contains the intance of the database.
-     */
-    private Database database;
-
-    /**
      * Defines the default dateformat for user.
      */
     private static final DateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+    /**
+     * Contains the intance of the database.
+     */
+    private Database database;
 
     /**
      * Creates new instance of database.
@@ -206,7 +205,10 @@ public class UserRepo {
             }
         }
 
-        return getUserById(user.getId());
+        user = getUserById(user.getId());
+        user.setToken(token);
+
+        return user;
     }
 
     /**
@@ -274,10 +276,42 @@ public class UserRepo {
 
                 UserType userType = new UserTypeRepo(database).getUserTypeOfUser(id);
 
-                user = new User(id, userType, null, null, username, email, city, token);
+                user = new User(id, userType, null, null, username, email, city, null);
             }
         }
 
         return user;
+    }
+
+    /**
+     * this method creates a list of users from entries from the database.
+     *
+     * @return a List of Users.
+     * @throws SQLException
+     */
+    public List<User> getAllUsers() throws SQLException {
+        //todo return all users in a list
+        List<User> userList = new ArrayList<>();
+        String query = "SELECT `UserTypeID`, `BuildingID`, `Username`, " +
+                "`Email`, `City`, `Token` FROM `User`";
+
+        List<Object> parameters = new ArrayList<>();
+
+        try (ResultSet rs = database.executeQuery(query, parameters, Database.QueryType.QUERY)) {
+            while (rs.next()) {
+                int userID = rs.getInt(1);
+                String username = rs.getString(3);
+                String email = rs.getString(4);
+                String city = rs.getString(5);
+                String userToken = rs.getString(6);
+
+                UserType userType = new UserTypeRepo(database).getUserTypeOfUser(userID);
+
+                User user = new User(userID, userType, null, null, username, email, city, userToken);
+                userList.add(user);
+            }
+        }
+
+        return userList;
     }
 }

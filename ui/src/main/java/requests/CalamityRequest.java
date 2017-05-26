@@ -2,10 +2,8 @@ package requests;
 
 import interfaces.ConfirmationMessage;
 import interfaces.ICalamity;
-import library.Location;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestTemplate;
 import rest.RestClient;
 
 /**
@@ -15,7 +13,7 @@ public class CalamityRequest implements ICalamity {
 
     private static final String REQUEST_PREFIX = "http://localhost:8080";
 
-    private static final String GET_ALL = "/allcalamities";
+    private static final String GET_ALL = "/allcalamity";
     private static final String GET_CALAMITY_BY_ID = "/calamitybyid";
 
     private static final String POST_ADD_CALAMITY_ASSIGNEE = "/addcalamityassignee";
@@ -35,13 +33,12 @@ public class CalamityRequest implements ICalamity {
     @Override
     public ConfirmationMessage allCalamity() {
         MultiValueMap<String, Object> parameters = new LinkedMultiValueMap<>();
-        return restClient.request(REQUEST_PREFIX + GET_ALL, RestClient.RequestType.GET, parameters);
+        return restClient.request(REQUEST_PREFIX + "/allcalamity", RestClient.RequestType.GET, parameters);
     }
 
     @Override
-    public ConfirmationMessage calamityById(String token, int id) {
+    public ConfirmationMessage calamityById(int id) {
         MultiValueMap<String, Object> parameters = new LinkedMultiValueMap<>();
-        parameters.add("token", token);
         parameters.add("id", id);
         return restClient.request(REQUEST_PREFIX + GET_CALAMITY_BY_ID, RestClient.RequestType.GET, parameters);
     }

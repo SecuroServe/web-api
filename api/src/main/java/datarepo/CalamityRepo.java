@@ -41,7 +41,7 @@ public class CalamityRepo {
 
         List<Object> parameters = new ArrayList<>();
         parameters.add(calamity.getLocation().getId());
-        parameters.add(calamity.getUser().getId());
+        parameters.add(calamity.getUser() == null ? -1 : calamity.getUser().getId());
         parameters.add(calamity.getConfirmation() ? 1 : 0);
         parameters.add(calamity.getStatus() ? 1 : 0);
         parameters.add(calamity.getDate());
@@ -76,6 +76,10 @@ public class CalamityRepo {
         parameters.add(calamity.getTitle());
         parameters.add(calamity.getMessage());
         parameters.add(calamity.getId());
+
+        if (calamity.getLocation() != null) {
+            new LocationRepo(database).updateLocation(calamity.getLocation());
+        }
 
         database.executeQuery(query, parameters, Database.QueryType.NON_QUERY);
     }
@@ -122,8 +126,6 @@ public class CalamityRepo {
         }
 
         return calamity;
-
-
     }
 
     /**

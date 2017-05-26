@@ -36,7 +36,7 @@ public class MediaControllerTest {
 
         Assert.assertEquals(true, media instanceof Text);
         Assert.assertEquals("CalamityTestReport", media.getName());
-        Assert.assertEquals("testDescription", ((Text) media).getText());
+        Assert.assertEquals("This is a test!", ((Text) media).getText());
     }
 
     @Test
@@ -50,7 +50,7 @@ public class MediaControllerTest {
         media = (Media) mc.addMedia(user.getToken(), media, alert.getId()).getReturnObject();
         media = (Media) mc.getMedia(user.getToken(), media.getId()).getReturnObject();
 
-        Assert.assertEquals(true, media instanceof Text);
+        Assert.assertEquals(true, media instanceof MediaFile);
         Assert.assertEquals("TestPhoto", media.getName());
         Assert.assertEquals("test.jpeg", ((MediaFile) media).getFileName());
         Assert.assertEquals(MediaFile.FileType.PHOTO, ((MediaFile) media).getFileType());
@@ -73,7 +73,7 @@ public class MediaControllerTest {
 
         media = (Media) mc.updateMedia(user.getToken(), media).getReturnObject();
 
-        Assert.assertEquals(true, media instanceof Text);
+        Assert.assertEquals(true, media instanceof MediaFile);
         Assert.assertEquals("TestPhoto", media.getName());
         Assert.assertEquals("test.jpeg", ((MediaFile) media).getFileName());
         Assert.assertEquals(MediaFile.FileType.PHOTO, ((MediaFile) media).getFileType());

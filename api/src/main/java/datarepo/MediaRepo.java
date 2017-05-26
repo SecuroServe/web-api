@@ -1,9 +1,12 @@
 package datarepo;
 
 import datarepo.database.Database;
+import datarepo.storage.FileSystemStorageService;
 import library.Media;
 import library.MediaFile;
 import library.Text;
+import org.springframework.core.io.Resource;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,10 +17,12 @@ import java.util.List;
  * Created by Jandie on 2017-05-08.
  */
 public class MediaRepo {
+    private final FileSystemStorageService storageService;
     private Database database;
 
     public MediaRepo(Database database) {
         this.database = database;
+        this.storageService = new FileSystemStorageService();
     }
 
     /**
@@ -39,6 +44,39 @@ public class MediaRepo {
         try (ResultSet rs = database.executeQuery(query, parameters, Database.QueryType.QUERY)) {
             if (rs.next()) {
                 mediaName = rs.getString(1);
+            }
+        }
+
+        if (isText(mediaId)) {
+            media = getText(mediaId, mediaName);
+        } else if (isMediaFile(mediaId)) {
+            media = getMediaFile(mediaId, mediaName);
+        }
+
+        return media;
+    }
+
+    /**
+     * Gets a Media object from the database that belongs to a specific alert object.
+     *
+     * @param alertId The id of the Alert object.
+     * @return The Media object from the database.
+     * @throws SQLException Database error.
+     */
+    public Media getMediaByAlert(int alertId) throws SQLException {
+        Media media = null;
+        int mediaId = -1;
+        String mediaName = null;
+
+        String query = "SELECT `ID`, `Name` FROM media WHERE AlertID = ?";
+
+        List<Object> parameters = new ArrayList<>();
+        parameters.add(alertId);
+
+        try (ResultSet rs = database.executeQuery(query, parameters, Database.QueryType.QUERY)) {
+            if (rs.next()) {
+                mediaId = rs.getInt(1);
+                mediaName = rs.getString(2);
             }
         }
 
@@ -184,12 +222,11 @@ public class MediaRepo {
     public MediaFile addMediaFile(MediaFile mediaFile, int alertId) throws SQLException {
         int mediaId = addMedia(mediaFile.getName(), alertId);
 
-        String query = "INSERT INTO `file` (`MediaID`, `Title`, `FileName`, `FileType`) " +
-                "VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO `file` (`MediaID`, `FileName`, `FileType`) " +
+                "VALUES (?, ?, ?)";
 
         List<Object> parameters = new ArrayList<>();
         parameters.add(mediaId);
-        parameters.add(mediaFile.getName());
         parameters.add(mediaFile.getFileName());
         parameters.add(mediaFile.getFileType().toString());
 
@@ -275,5 +312,72 @@ public class MediaRepo {
         parameters.add(mediaId);
 
         database.executeQuery(query, parameters, Database.QueryType.NON_QUERY);
+    }
+
+    /**
+     * Updates a Media object in the database.
+     *
+     * @param media The media object.
+     */
+    public void updateMedia(Media media) throws SQLException {
+        if (isText(media.getId())) {
+            updateText((Text) media);
+        } else if (isMediaFile(media.getId())) {
+            updateMediaFile((MediaFile) media);
+        }
+    }
+
+    /**
+     * Updates a Text object in the database.
+     *
+     * @param text The text object.
+     */
+    private void updateText(Text text) throws SQLException {
+        String query = "UPDATE `text` SET `Text` = ? WHERE `MediaID` = ?";
+
+        List<Object> parameters = new ArrayList<>();
+        parameters.add(text.getText());
+        parameters.add(text.getId());
+
+        database.executeQuery(query, parameters, Database.QueryType.NON_QUERY);
+    }
+
+    /**
+     * Updates a MediaFile object in the database.
+     *
+     * @param mediaFile The mediaFile object.
+     */
+    private void updateMediaFile(MediaFile mediaFile) throws SQLException {
+        String query = "UPDATE `file` SET `FileName` = ?, `FileType` = ? WHERE `MediaID` = ?";
+
+        List<Object> parameters = new ArrayList<>();
+        parameters.add(mediaFile.getFileName());
+        parameters.add(mediaFile.getFileType().toString());
+        parameters.add(mediaFile.getId());
+
+        database.executeQuery(query, parameters, Database.QueryType.NON_QUERY);
+    }
+
+    /**
+     * Saves a file to the filesystem.
+     *
+     * @param file           The file to save as a MultipartFile.
+     * @param customFileName The custom file name.
+     */
+    public void saveFile(MultipartFile file, String customFileName) {
+        storageService.init();
+        storageService.store(file, customFileName);
+    }
+
+    /**
+     * Loads a file as a resource.
+     *
+     * @param customFileName The name of the file.
+     * @return The file as a Rescource.
+     */
+    public Resource loadFile(String customFileName) {
+        storageService.init();
+
+        return storageService.loadAsResource(customFileName);
     }
 }

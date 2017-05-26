@@ -34,7 +34,7 @@ public final class GeoUtil {
         // Haversine formula for "a"
         double a = Math.sin(diffLat / 2) * Math.sin(diffLat / 2) +
                 Math.cos(lat1Rad) * Math.cos(lat2Rad) *
-                Math.sin(diffLon / 2) * Math.sin(diffLon / 2);
+                        Math.sin(diffLon / 2) * Math.sin(diffLon / 2);
 
         // Haversine formula for "c"
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));

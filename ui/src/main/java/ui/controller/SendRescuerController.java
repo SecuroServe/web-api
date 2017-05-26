@@ -1,24 +1,32 @@
 package ui.controller;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import interfaces.ConfirmationMessage;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import library.Calamity;
+import library.Location;
 import library.User;
-import ui.Main;
+import requests.CalamityRequest;
+import requests.UserRequest;
 
-import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 /**
  * Created by yannic on 12/04/2017.
  */
 public class SendRescuerController implements Initializable {
+    //fxml
     @FXML
     private Button backButton;
     @FXML
@@ -30,19 +38,54 @@ public class SendRescuerController implements Initializable {
     @FXML
     private Button removeRescuerButton;
     @FXML
-    private TableView calamityTableView;
+    private TableView<Calamity> calamityTableView;
     @FXML
-    private TableView rescuerTableView;
+    private TableView<User> rescuerTableView;
     @FXML
-    private ListView selectedRescuerListView;
+    private ListView<User> selectedRescuerListView;
     @FXML
     private Label selectedCalamityLabel;
-
+    //fields
     private User user;
+
+    private ObservableList<User> selectedUsers;
+    private List<User> availableUsers;
+    private List<Calamity> allCalamities;
+    private Calamity selectedCalamity;
+
+    private CalamityRequest calamityRequest;
+    private UserRequest userRequest;
 
     public SendRescuerController(User user) {
         this.user = user;
+        selectedUsers = FXCollections.observableArrayList();
+        calamityRequest = new CalamityRequest();
+        userRequest = new UserRequest();
 
+        ObjectMapper objMapper = new ObjectMapper();
+
+        ConfirmationMessage calamityMessage = calamityRequest.allCalamity();//check for error
+        if (calamityMessage.getStatus() != ConfirmationMessage.StatusType.ERROR) {
+            Object val = calamityMessage.getReturnObject();
+            //convert list to list of calamities using mapper
+            allCalamities = objMapper.convertValue(val, new TypeReference<List<Calamity>>() {
+            });
+        } else {
+            //todo display empty list (error)message
+            allCalamities = new ArrayList<>();
+        }
+
+        ConfirmationMessage userMessage = userRequest.allusers(user.getToken());//check for error
+        if (userMessage.getStatus() != ConfirmationMessage.StatusType.ERROR) {
+            Object val = userMessage.getReturnObject();
+            //convert list to list of users
+            availableUsers = objMapper.convertValue(val, new TypeReference<List<User>>() {
+            });
+        } else {
+            //todo display empty list (error)message
+            availableUsers = new ArrayList<>();
+        }
+        //todo filter for only available rescuers.
     }
 
     /**
@@ -55,14 +98,53 @@ public class SendRescuerController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        //set button actions
+        setButtonActions();
+        //init tables
+        initTableViews();
+
+        selectedCalamityLabel.setText("no calamity selected");
+    }
+
+    private void initTableViews() {
+        //set tableView columns
+        //todo set tableview collums
+        //rescuerTableView
+        TableColumn rescuerNameCol = new TableColumn("Name");
+        rescuerNameCol.setCellValueFactory(new PropertyValueFactory<User, String>("username"));
+
+        TableColumn rescuerLocationCol = new TableColumn("Location");
+        rescuerLocationCol.setCellValueFactory(new PropertyValueFactory<User, String>("city"));
+
+        rescuerTableView.getColumns().addAll(rescuerNameCol, rescuerLocationCol);
+        //calamityTableView
+        TableColumn calamityTitleCol = new TableColumn("Title");
+        calamityTitleCol.setCellValueFactory(new PropertyValueFactory<Calamity, String>("title"));
+
+        TableColumn calamityLocationCol = new TableColumn("Location");
+        calamityLocationCol.setCellValueFactory(new PropertyValueFactory<Calamity, Location>("location"));
+
+        calamityTableView.getColumns().addAll(calamityTitleCol, calamityLocationCol);
+
+        //set tableView lists
+        rescuerTableView.setItems(FXCollections.observableArrayList(availableUsers));
+        calamityTableView.setItems(FXCollections.observableArrayList(allCalamities));
+        selectedRescuerListView.setItems(selectedUsers);
+
+
+    }
+
+    private void setButtonActions() {
         backButton.setOnAction(this::handleBackAction);
         doneButton.setOnAction(this::finishAction);
         selectCalamityButton.setOnAction(this::selectCalamity);
         addRescuerButton.setOnAction(this::addRescuer);
         removeRescuerButton.setOnAction(this::removeRescuer);
-        selectedCalamityLabel.setText("test");
+    }
 
-
+    private void refreshTableViews() {
+        rescuerTableView.setItems(FXCollections.observableList(availableUsers));
+        calamityTableView.setItems(FXCollections.observableList(allCalamities));
     }
 
     /***
@@ -71,7 +153,14 @@ public class SendRescuerController implements Initializable {
      * @param actionEvent
      */
     private void addRescuer(ActionEvent actionEvent) {
-
+        User selUser = rescuerTableView.getSelectionModel().getSelectedItem();
+        if (selUser != null) {
+            selectedUsers.add(selUser);
+            availableUsers.remove(selUser);
+        } else {
+            //todo popup a message saying what went wrong;
+        }
+        refreshTableViews();
     }
 
     /***
@@ -80,8 +169,14 @@ public class SendRescuerController implements Initializable {
      * @param actionEvent
      */
     private void removeRescuer(ActionEvent actionEvent) {
-
-
+        User selUser = selectedRescuerListView.getSelectionModel().getSelectedItem();
+        if (selUser != null) {
+            selectedUsers.remove(selUser);
+            availableUsers.add(selUser);
+        } else {
+            //todo popup another message with what went wrong.
+        }
+        refreshTableViews();
     }
 
     /***
@@ -90,7 +185,21 @@ public class SendRescuerController implements Initializable {
      * @param actionEvent
      */
     private void selectCalamity(ActionEvent actionEvent) {
+        Calamity selCalamity = calamityTableView.getSelectionModel().getSelectedItem();
+        if (selCalamity != null) {
+            setSelectedCalamity(selCalamity);
+        }
+    }
 
+    private void setSelectedCalamity(Calamity calamity) {
+        allCalamities.remove(calamity);
+        if (selectedCalamity != null) {
+            allCalamities.add(selectedCalamity);
+        }
+        selectedCalamity = calamity;
+        selectedCalamityLabel.setText(calamity.getTitle());
+
+        refreshTableViews();
     }
 
     /***
@@ -100,13 +209,32 @@ public class SendRescuerController implements Initializable {
      * @param actionEvent
      */
     private void finishAction(ActionEvent actionEvent) {
+        //todo check all inputs and send a notification to Rescuers;
+        if (selectedCalamity == null || selectedUsers.size() == 0) {
+            //todo show invalid input message
+        } else {
+            for (User u : selectedUsers) {
+                selectedCalamity.addAssignee(u);
+            }
 
+            calamityRequest.updateCalamity(user.getToken(),
+                    selectedCalamity.getId(),
+                    selectedCalamity.getTitle(),
+                    selectedCalamity.getMessage(),
+                    selectedCalamity.getLocation().getId(),
+                    selectedCalamity.getLocation().getLatitude(),
+                    selectedCalamity.getLocation().getLongitude(),
+                    selectedCalamity.getLocation().getRadius(),
+                    selectedCalamity.isConfirmed(),
+                    selectedCalamity.isClosed());
+        }
     }
 
     /**
      * this method goes back to the dashboard.
      * it is called when the backbutton is clicked.
      * nothing is done with
+     *
      * @param actionEvent
      */
     private void handleBackAction(ActionEvent actionEvent) {

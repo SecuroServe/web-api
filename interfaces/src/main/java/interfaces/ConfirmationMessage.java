@@ -50,6 +50,10 @@ public class ConfirmationMessage {
         return status;
     }
 
+    public void setStatus(StatusType status) {
+        this.status = status;
+    }
+
     /**
      * Gets the message.
      *
@@ -59,6 +63,10 @@ public class ConfirmationMessage {
         return message;
     }
 
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
     /**
      * Gets the return object.
      *
@@ -66,14 +74,6 @@ public class ConfirmationMessage {
      */
     public Object getReturnObject() {
         return returnObject;
-    }
-
-    public void setStatus(StatusType status) {
-        this.status = status;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
     }
 
     public void setReturnObject(Object returnObject) {

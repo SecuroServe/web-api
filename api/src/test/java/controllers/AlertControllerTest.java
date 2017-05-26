@@ -80,6 +80,14 @@ public class AlertControllerTest {
                 52.368909, 9.748703, 0).getReturnObject();
         Alert alert6 = (Alert) ac.addAlert(user.getToken(), "testAlert", "testDescription", 10,
                 52.368914, 9.748370, 0).getReturnObject();
+        Alert alert7 = (Alert) ac.addAlert(user.getToken(), "testAlert", "testDescription", 10,
+                52.369253, 9.748971, 0).getReturnObject();
+        Alert alert8 = (Alert) ac.addAlert(user.getToken(), "testAlert", "testDescription", 10,
+                52.369105, 9.748333, 0).getReturnObject();
+        Alert alert9 = (Alert) ac.addAlert(user.getToken(), "testAlert", "testDescription", 10,
+                52.368914, 9.748370, 0).getReturnObject();
+        Alert alert10 = (Alert) ac.addAlert(user.getToken(), "testAlert", "testDescription", 10,
+                52.369040, 9.748287, 0).getReturnObject();
 
         int size = ((List<Calamity>) cc.allCalamity().getReturnObject()).size();
 

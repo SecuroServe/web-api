@@ -20,7 +20,7 @@ public class WeatherRequest implements IWeather {
 
     RestClient restClient;
 
-    public WeatherRequest(){
+    public WeatherRequest() {
         restClient = new RestClient();
     }
 

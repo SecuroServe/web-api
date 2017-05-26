@@ -1,5 +1,6 @@
 package ui.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import interfaces.ConfirmationMessage;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -7,22 +8,16 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import library.Building;
-import library.Calamity;
 import library.User;
-import library.UserType;
 import requests.LoginRequest;
 import requests.UserRequest;
 import ui.Main;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.LinkedHashMap;
 import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
-
-    private Main main;
 
     @FXML
     public Button loginBtn;
@@ -32,6 +27,7 @@ public class LoginController implements Initializable {
     public TextField user;
     @FXML
     public TextField password;
+    private Main main;
 
     public LoginController(Main main) {
         this.main = main;
@@ -58,18 +54,10 @@ public class LoginController implements Initializable {
             UserRequest userRequest = new UserRequest();
             result = userRequest.getUser(token);
 
-            LinkedHashMap<String, ?> values = (LinkedHashMap<String, ?>) result.getReturnObject();
+            Object values = result.getReturnObject();
 
-            Object id = values.get("id");
-            Object userType = values.get("userType");
-            Object assignedCalamity = values.get("assignedCalamity");
-            Object building = values.get("building");
-            Object username = values.get("username");
-            Object email = values.get("email");
-            Object city = values.get("city");
-            Object tokenU = values.get("token");
-
-            User user = new User((int) id, (UserType) userType, (Calamity) assignedCalamity, (Building) building, (String) username, (String) email, (String) city, (String) tokenU);
+            ObjectMapper mapper = new ObjectMapper();
+            User user = mapper.convertValue(values, User.class);
 
             try {
                 main.loadDashBoard(user);

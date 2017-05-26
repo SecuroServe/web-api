@@ -2,14 +2,12 @@ package logic;
 
 import constants.ApiConstants;
 import datarepo.AlertRepo;
+import datarepo.CalamityRepo;
 import datarepo.UserRepo;
 import datarepo.database.Database;
 import exceptions.NoPermissionException;
 import interfaces.ConfirmationMessage;
-import library.Alert;
-import library.Location;
-import library.User;
-import library.UserType;
+import library.*;
 import utils.GeoUtil;
 
 import java.security.NoSuchAlgorithmException;
@@ -82,6 +80,8 @@ public class AlertLogic {
             Alert alert = new Alert(-1, location, u, new Date(), name, description, urgency);
             alertRepo.addAlert(alert);
 
+            calculateAlertGroups();
+
             return new ConfirmationMessage(ConfirmationMessage.StatusType.SUCCES,
                     "Added alert", alert);
         } catch (NoPermissionException | SQLException | ParseException | NoSuchAlgorithmException e) {
@@ -97,14 +97,16 @@ public class AlertLogic {
      * Updates an alert.
      *
      * @param token       The authentication token.
-     * @param id          The id of the alert.
-     * @param name        The name of the alert.
-     * @param description The description of the alert.
-     * @param lat    The location of the alert.
-     * @param lon    The location of the alert.
-     * @return Confirmation message with feedback about the update.
+     * @param id          The ID.
+     * @param name        The name.
+     * @param description The description.
+     * @param urgency     The urgency.
+     * @param lat         The Location latitude.
+     * @param lon         The Location longitude.
+     * @param radius      The Location radius.
+     * @return ConfirmationMessage Alert with feedback about the update.
      */
-    public ConfirmationMessage updateAlert(String token, int id, String name, String description, int urgency,  double lat, double lon, double radius){
+    public ConfirmationMessage updateAlert(String token, int id, String name, String description, int urgency, double lat, double lon, double radius) {
         try {
             userRepo.getUser(token).getUserType().containsPermission(UserType.Permission.ALERT_UPDATE);
 
@@ -153,10 +155,16 @@ public class AlertLogic {
         }
     }
 
+    /**
+     * Gets all alerts from the repo.
+     *
+     * @param token The authentication token.
+     * @return ConfirmationMessage with the alert list.
+     */
     public ConfirmationMessage allAlert(String token) {
         try {
             return new ConfirmationMessage(ConfirmationMessage.StatusType.SUCCES,
-                    "Get all alerts", alertRepo.allAlert());
+                    "Get all alerts", alertRepo.allAlert(false));
         } catch (SQLException | NoSuchAlgorithmException | ParseException e) {
             Logger.getLogger(AlertLogic.class.getName()).log(Level.SEVERE,
                     "Error while getting all alerts", e);
@@ -166,29 +174,115 @@ public class AlertLogic {
         }
     }
 
-    private void calculateAlertGroups() {
-//        List<?> alerts = (List<?>) allAlert().getReturnObject();
-//
-//        List<Alert> alertGroup = new ArrayList<>();
-//
-//        for (Object x : alerts) {
-//
-//            Alert alertX = (Alert) x;
-//
-//            alertGroup.add(alertX);
-//
-//            for (Object y : alerts) {
-//                Alert alertY = (Alert) y;
-//
-//                if (GeoUtil.measureGeoDistance(alertY.getLocation(), alertX.getLocation()) > ApiConstants.ALERT_GROUP_RADIUS) {
-//                    alertGroup.add(alertY);
-//                }
-//            }
-//
-//            if (alertGroup.size() >= ApiConstants.ALERT_GROUP_AMOUNT) {
-//                break;
-//            }
-//
-//        }
+    private void calculateAlertGroups() throws ParseException, NoSuchAlgorithmException, SQLException {
+        List<Alert> alerts = alertRepo.allAlert(true);
+
+        while (alerts.size() > 0) {
+            Alert alertCentre = getNextAlert(alerts);
+
+            List<Alert> alertGroup = findAlertGroup(alerts, alertCentre);
+
+            if (alertGroup.size() >= ApiConstants.ALERT_GROUP_AMOUNT) {
+                createCalamityForGroup(alertGroup);
+            }
+        }
+    }
+
+    private Alert getNextAlert(List<Alert> alerts) {
+        if (alerts.size() == 0) return null;
+
+        return alerts.get(0);
+    }
+
+    /**
+     * Creates a calamity for a group of alerts.
+     *
+     * @param alertGroup The group of alerts.
+     * @throws SQLException
+     */
+    private void createCalamityForGroup(List<Alert> alertGroup) throws SQLException {
+        Calamity calamity = new Calamity(-1, calculateCentreLocation(alertGroup), null,
+                false, false, new Date(), "generated", "generated");
+
+        new CalamityRepo(database).addCalamity(calamity);
+
+        for (Alert alert : alertGroup) {
+            alert.setCalamityId(calamity.getId());
+
+            alertRepo.updateAlert(alert);
+        }
+    }
+
+    /**
+     * Calculates the average location from a group of alerts.
+     *
+     * @param alertGroup The group to calculate the location from.
+     * @return The centre location of the group.
+     */
+    private Location calculateCentreLocation(List<Alert> alertGroup) {
+        double latSum = 0;
+        double longSum = 0;
+
+        for (Alert alert : alertGroup) {
+            latSum += alert.getLocation().getLatitude();
+            longSum += alert.getLocation().getLongitude();
+        }
+
+        double latAvg = latSum / alertGroup.size();
+        double longAvg = longSum / alertGroup.size();
+
+        return new Location(latAvg, longAvg, 0);
+    }
+
+    /**
+     * Finds a list of alerts that are considered a group based on distance between each alert.
+     *
+     * @param alerts      The alert list to compare the distance.
+     * @param alertCentre The alert to start looking from.
+     * @return An alert list that contains a group.
+     */
+    private List<Alert> findAlertGroup(List<Alert> alerts, Alert alertCentre) {
+        List<Alert> alertGroup = new ArrayList<>();
+        List<Alert> newAlertNeighbours = new ArrayList<>();
+
+        alertGroup.add(alertCentre);
+        alerts.remove(alertCentre);
+        newAlertNeighbours.add(alertCentre);
+
+        while (newAlertNeighbours.size() > 0) {
+
+            List<Alert> prevNeighbours = new ArrayList<>(newAlertNeighbours);
+            newAlertNeighbours.clear();
+
+            for (Alert alert : prevNeighbours) {
+                newAlertNeighbours.addAll(findAlertNeighbours(alert, alerts));
+            }
+
+            alertGroup.addAll(newAlertNeighbours);
+            alerts.removeAll(newAlertNeighbours);
+        }
+
+        return alertGroup;
+    }
+
+    /**
+     * Finds other alerts within a distance of a specific alert.
+     *
+     * @param alert  The alert to look from.
+     * @param alerts The alert list to compare distances.
+     * @return A list with alerts that are within the distance.
+     */
+    private List<Alert> findAlertNeighbours(Alert alert, List<Alert> alerts) {
+
+        List<Alert> alertGroup = new ArrayList<>();
+
+        for (Alert alertRadius : alerts) {
+
+            if (GeoUtil.measureGeoDistance(alertRadius.getLocation(), alert.getLocation()) <= ApiConstants.ALERT_GROUP_RADIUS) {
+                alertGroup.add(alertRadius);
+            }
+        }
+
+        return alertGroup;
     }
 }

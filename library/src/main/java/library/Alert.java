@@ -16,7 +16,14 @@ public class Alert implements Serializable {
     private String name;
     private String description;
     private Location location;
+    private int calamityId;
     private int urgency;
+    private Media media;
+
+    public Alert(int id, Location location, User user, Date date, String name, String description, int urgency, int calamityId) {
+        this(id, location, user, date, name, description, urgency);
+        this.calamityId = calamityId;
+    }
 
     public Alert(int id, Location location, User user, Date date, String name, String description, int urgency) {
         this.id = id;
@@ -26,6 +33,8 @@ public class Alert implements Serializable {
         this.description = description;
         this.location = location;
         this.urgency = urgency;
+
+        media = null;
     }
 
     public int getId() {
@@ -76,11 +85,27 @@ public class Alert implements Serializable {
         this.location = location;
     }
 
+    public int getCalamityId() {
+        return calamityId;
+    }
+
+    public void setCalamityId(int calamityId) {
+        this.calamityId = calamityId;
+    }
+
     public int getUrgency() {
         return urgency;
     }
 
     public void setUrgency(int urgency) {
         this.urgency = urgency;
+    }
+
+    public Media getMedia() {
+        return media;
+    }
+
+    public void setMedia(Media media) {
+        this.media = media;
     }
 }

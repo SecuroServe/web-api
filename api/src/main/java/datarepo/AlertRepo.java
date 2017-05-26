@@ -3,6 +3,7 @@ package datarepo;
 import datarepo.database.Database;
 import library.Alert;
 import library.Location;
+import library.Media;
 
 import java.security.NoSuchAlgorithmException;
 import java.sql.ResultSet;
@@ -68,6 +69,7 @@ public class AlertRepo {
         String query = "UPDATE `Alert` " +
                 "SET `LocationID` = ?," +
                 "`CreatedByUserID` = ?," +
+                "`CalamityID` = ?," +
                 "`Time` = ?," +
                 "`Title` = ?," +
                 "`Description` = ?, " +
@@ -77,6 +79,7 @@ public class AlertRepo {
         List<Object> parameters = new ArrayList<>();
         parameters.add(location.getId());
         parameters.add(Alert.getUser().getId());
+        parameters.add(Alert.getCalamityId());
         parameters.add(Alert.getDate());
         parameters.add(Alert.getName());
         parameters.add(Alert.getDescription());
@@ -96,34 +99,103 @@ public class AlertRepo {
      * @throws NoSuchAlgorithmException exception when Algorithm is not found
      */
     public Alert getAlert(int id) throws SQLException, ParseException, NoSuchAlgorithmException {
-        Alert Alert = null;
+        Alert alert = null;
         UserRepo userRepo = new UserRepo(database);
         LocationRepo locationRepo = new LocationRepo(database);
 
-        String query = "SELECT `LocationID`, `CreatedByUserID`, `Time`, `Title`, `Description`, `Urgency` " +
-                "FROM `Alert` " +
-                "WHERE `ID` = ?";
+        String query = "SELECT a.CreatedByUserID, a.LocationID, a.CalamityID, a.Time, a.Title, a.Description, a.Urgency " +
+                "FROM alert a WHERE a.ID = ?";
 
         List<Object> parameters = new ArrayList<>();
         parameters.add(id);
 
         try (ResultSet rs = database.executeQuery(query, parameters, Database.QueryType.QUERY)) {
             if (rs != null && rs.next()) {
-                int locationId = rs.getInt(1);
-                int createdByUserId = rs.getInt(2);
-                Date time = rs.getDate(3);
-                String name = rs.getString(4);
-                String description = rs.getString(5);
-                int urgency = rs.getInt(6);
+                int createdByUserId = rs.getInt(1);
+                int locationId = rs.getInt(2);
+                int calamityId = rs.getInt(3);
+                Date time = rs.getDate(4);
+                String name = rs.getString(5);
+                String description = rs.getString(6);
+                int urgency = rs.getInt(7);
 
-                Alert = new Alert(id, locationRepo.getLocation(locationId), userRepo.getUserById(createdByUserId),
-                        time, name, description, urgency);
+                alert = new Alert(id, locationRepo.getLocation(locationId), userRepo.getUserById(createdByUserId),
+                        time, name, description, urgency, calamityId);
+
+                Media media = new MediaRepo(database).getMediaByAlert(id);
+
+                if (media != null) {
+                    alert.setMedia(media);
+                }
             }
         }
 
-        return Alert;
+        return alert;
 
 
+    }
+
+    /**
+     * Returns a list of all alerts.
+     *
+     * @param unassigned Determines whether to retrieve unassigned (not belonging to a calamity) alerts.
+     * @return The list of alerts.
+     * @throws SQLException
+     * @throws ParseException
+     * @throws NoSuchAlgorithmException
+     */
+    public List<Alert> allAlert(boolean unassigned) throws SQLException, ParseException, NoSuchAlgorithmException {
+        List<Alert> calamities = new ArrayList<>();
+
+        UserRepo userRepo = new UserRepo(database);
+        LocationRepo locationRepo = new LocationRepo(database);
+
+        String query;
+
+        if (unassigned) {
+            query = "SELECT `ID`, `LocationID`, `CreatedByUserID`, `Time`, `Title`, `Description`, `Urgency` " +
+                    "FROM `Alert` WHERE `CalamityID` < 0";
+        } else {
+            query = "SELECT `ID`, `LocationID`, `CreatedByUserID`, `Time`, `Title`, `Description`, `Urgency` " +
+                    "FROM `Alert`";
+        }
+
+        List<Object> parameters = new ArrayList<>();
+
+        try (ResultSet rs = database.executeQuery(query, parameters, Database.QueryType.QUERY)) {
+            while (rs != null && rs.next()) {
+
+                int id = rs.getInt(1);
+                int locationId = rs.getInt(2);
+                int createdByUserId = rs.getInt(3);
+                Date time = rs.getDate(4);
+                String title = rs.getString(5);
+                String description = rs.getString(6);
+                int urgency = rs.getInt(7);
+
+                Alert alert = new Alert(
+                        id,
+                        locationRepo.getLocation(locationId),
+                        userRepo.getUserById(createdByUserId),
+                        time,
+                        title,
+                        description,
+                        urgency
+                );
+
+                if (!unassigned) {
+                    Media media = new MediaRepo(database).getMediaByAlert(id);
+
+                    if (media != null) {
+                        alert.setMedia(media);
+                    }
+                }
+
+                calamities.add(alert);
+            }
+        }
+
+        return calamities;
     }
 
     /**
@@ -145,42 +217,5 @@ public class AlertRepo {
         query = "DELETE FROM Alert WHERE ID = ?";
 
         database.executeQuery(query, parameters, Database.QueryType.NON_QUERY);
-    }
-
-    public List<Alert> allAlert() throws SQLException, ParseException, NoSuchAlgorithmException {
-        List<Alert> calamities = new ArrayList<>();
-
-        UserRepo userRepo = new UserRepo(database);
-        LocationRepo locationRepo = new LocationRepo(database);
-
-        String query = "SELECT `ID`, `LocationID`, `CreatedByUserID`, `Time`, `Title`, `Description`, `Urgency` " +
-                "FROM `Alert`";
-
-        List<Object> parameters = new ArrayList<>();
-
-        try (ResultSet rs = database.executeQuery(query, parameters, Database.QueryType.QUERY)) {
-            while (rs != null && rs.next()) {
-
-                int id = rs.getInt(1);
-                int locationId = rs.getInt(2);
-                int createdByUserId = rs.getInt(3);
-                Date time = rs.getDate(4);
-                String title = rs.getString(5);
-                String description = rs.getString(6);
-                int urgency = rs.getInt(7);
-
-                calamities.add(new Alert(
-                        id,
-                        locationRepo.getLocation(locationId),
-                        userRepo.getUserById(createdByUserId),
-                        time,
-                        title,
-                        description,
-                        urgency
-                ));
-            }
-        }
-
-        return calamities;
     }
 }
