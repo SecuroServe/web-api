@@ -100,7 +100,8 @@ public class AlertLogic {
      * @param id          The id of the alert.
      * @param name        The name of the alert.
      * @param description The description of the alert.
-     * @param location    The location of the alert.
+     * @param lat    The location of the alert.
+     * @param lon    The location of the alert.
      * @return Confirmation message with feedback about the update.
      */
     public ConfirmationMessage updateAlert(String token, int id, String name, String description, int urgency,  double lat, double lon, double radius){

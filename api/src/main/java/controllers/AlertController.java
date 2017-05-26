@@ -6,10 +6,12 @@ import interfaces.IAlert;
 import library.Location;
 import logic.AlertLogic;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Created by Jandie on 2017-05-01.
  */
+@RestController
 public class AlertController implements IAlert {
 
     private AlertLogic alertLogic;
