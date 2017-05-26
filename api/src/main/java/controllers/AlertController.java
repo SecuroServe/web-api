@@ -6,6 +6,7 @@ import interfaces.IAlert;
 import library.Location;
 import logic.AlertLogic;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * Created by Jandie on 2017-05-01.
@@ -62,7 +63,13 @@ public class AlertController implements IAlert {
     @Override
 
     @RequestMapping("/addalert")
-    public ConfirmationMessage addAlert(String token, String name, String description, int urgency, double lat, double lon, double radius) {
+    public ConfirmationMessage addAlert(@RequestParam(value = "token") String token,
+                                        @RequestParam(value = "name") String name,
+                                        @RequestParam(value = "description") String description,
+                                        @RequestParam(value = "urgency") int urgency,
+                                        @RequestParam(value = "latitude") double lat,
+                                        @RequestParam(value = "longtitude") double lon,
+                                        @RequestParam(value = "radius") double radius) {
         Location location = new Location(-1, lat, lon, radius);
         return alertLogic.addAlert(token, name, description, location, urgency);
     }
