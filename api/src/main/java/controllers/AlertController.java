@@ -61,7 +61,7 @@ public class AlertController implements IAlert {
      * also containing the new alert.
      */
     @Override
-    @RequestMapping("/addalerts")
+    @RequestMapping("/addalert")
     public ConfirmationMessage addAlert(@RequestParam(value = "token") String token,
                                         @RequestParam(value = "name") String name,
                                         @RequestParam(value = "description") String description,
