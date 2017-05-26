@@ -33,7 +33,7 @@ public class WeatherRequest implements IWeather {
      * @return ConfirmationMessage with the current weather at the library.Location
      */
     @Override
-    public ConfirmationMessage getCurrentWeather(String token, float longitude, float latitude) {
+    public ConfirmationMessage getCurrentWeather(String token, double longitude, double latitude) {
         MultiValueMap<String, Object> parameters = new LinkedMultiValueMap<>();
         parameters.add("token", longitude);
         parameters.add("longitude", longitude);
@@ -50,7 +50,7 @@ public class WeatherRequest implements IWeather {
      * @return ConfirmationMessage with the hourly forecast at the library.Location.
      */
     @Override
-    public ConfirmationMessage getHourlyForecast(String token, float longitude, float latitude) {
+    public ConfirmationMessage getHourlyForecast(String token, double longitude, double latitude) {
         MultiValueMap<String, Object> parameters = new LinkedMultiValueMap<>();
         parameters.add("token", longitude);
         parameters.add("longitude", longitude);
@@ -68,7 +68,7 @@ public class WeatherRequest implements IWeather {
      * @return ConfirmationMessage with the daily forecast at the library.Location.
      */
     @Override
-    public ConfirmationMessage getDailyForecast(String token, float longitude, float latitude, byte count) {
+    public ConfirmationMessage getDailyForecast(String token, double longitude, double latitude, byte count) {
         MultiValueMap<String, Object> parameters = new LinkedMultiValueMap<>();
         parameters.add("token", longitude);
         parameters.add("longitude", longitude);

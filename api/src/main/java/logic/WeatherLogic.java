@@ -39,11 +39,11 @@ public class WeatherLogic {
      * @param latitude
      * @return ConfirmationMessage with the raw data of the API
      */
-    public ConfirmationMessage getCurrentWeather(String token, float longitude, float latitude) {
+    public ConfirmationMessage getCurrentWeather(String token, double longitude, double latitude) {
 
         try {
             userRepo.getUser(token).getUserType().containsPermission(UserType.Permission.CALAMITY_GET);
-            CurrentWeather cw = omw.currentWeatherByCoordinates(latitude, longitude);
+            CurrentWeather cw = omw.currentWeatherByCoordinates((float)latitude, (float)longitude);
             return new ConfirmationMessage(ConfirmationMessage.StatusType.SUCCES, "Current Weather", cw);
         } catch (Exception e) {
             return new ConfirmationMessage(ConfirmationMessage.StatusType.ERROR, "Failed to obtain current weather", e);
@@ -58,10 +58,10 @@ public class WeatherLogic {
      * @param latitude
      * @return ConfirmationMessage with the raw data of the API
      */
-    public ConfirmationMessage getHourlyForecast(String token, float longitude, float latitude) {
+    public ConfirmationMessage getHourlyForecast(String token, double longitude, double latitude) {
         try {
             userRepo.getUser(token).getUserType().containsPermission(UserType.Permission.CALAMITY_GET);
-            HourlyForecast hf = omw.hourlyForecastByCoordinates(latitude, longitude);
+            HourlyForecast hf = omw.hourlyForecastByCoordinates((float)latitude, (float)longitude);
             return new ConfirmationMessage(ConfirmationMessage.StatusType.SUCCES, "Hourly Forecast", hf);
         } catch (Exception e) {
             return new ConfirmationMessage(ConfirmationMessage.StatusType.ERROR, "Failed to obtain hourly forecast", e);
@@ -77,10 +77,10 @@ public class WeatherLogic {
      * @param count     Amount of days to get the forecast of.
      * @return ConfirmationMessage with the raw data of the API
      */
-    public ConfirmationMessage getDailyForecast(String token, float longitude, float latitude, byte count) {
+    public ConfirmationMessage getDailyForecast(String token, double longitude, double latitude, byte count) {
         try {
             userRepo.getUser(token).getUserType().containsPermission(UserType.Permission.CALAMITY_GET);
-            DailyForecast df = omw.dailyForecastByCoordinates(latitude, longitude, count);
+            DailyForecast df = omw.dailyForecastByCoordinates((float)latitude, (float)longitude, count);
             return new ConfirmationMessage(ConfirmationMessage.StatusType.SUCCES, "Daily Forecast", df);
         } catch (Exception e) {
             return new ConfirmationMessage(ConfirmationMessage.StatusType.ERROR, "Failed to obtain daily forecast", e);

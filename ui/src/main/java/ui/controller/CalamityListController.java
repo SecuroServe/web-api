@@ -7,6 +7,7 @@ import com.lynden.gmapsfx.javascript.event.UIEventType;
 import com.lynden.gmapsfx.javascript.object.*;
 import com.lynden.gmapsfx.shapes.Circle;
 import com.lynden.gmapsfx.shapes.CircleOptions;
+import interfaces.ConfirmationMessage;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -19,9 +20,13 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import library.Calamity;
 import library.User;
+import net.aksingh.owmjapis.CurrentWeather;
 import netscape.javascript.JSObject;
+import org.json.JSONObject;
+import org.omg.CORBA.Current;
 import requests.CalamityRequest;
 import requests.UserRequest;
+import requests.WeatherRequest;
 
 import java.net.URL;
 import java.util.*;
@@ -147,6 +152,16 @@ public class CalamityListController implements Initializable {
         dateTextField.setText(calamity.getDate().toString());
         informationTextArea.setText(createReadableText(calamity.getMessage()));
         updateMap(calamity);
+        getWeatherData(calamity);
+    }
+
+    private void getWeatherData(Calamity calamity) {
+        ObjectMapper mapper = new ObjectMapper();
+
+        WeatherRequest wr = new WeatherRequest();
+        Object cw = mapper.convertValue(wr.getCurrentWeather(user.getToken(), calamity.getLocation().getLongitude(), calamity.getLocation().getLatitude()).getReturnObject(), JSONObject.class);
+
+        System.out.println(cw);
     }
 
     private String createReadableText(String message) {

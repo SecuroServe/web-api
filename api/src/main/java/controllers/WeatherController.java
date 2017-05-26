@@ -35,8 +35,8 @@ public class WeatherController implements IWeather {
     @Override
     @RequestMapping("/weather/current")
     public ConfirmationMessage getCurrentWeather(@RequestParam(value = "token") String token,
-                                                 @RequestParam(value = "longitude") float longitude,
-                                                 @RequestParam(value = "latitude") float latitude) {
+                                                 @RequestParam(value = "longitude") double longitude,
+                                                 @RequestParam(value = "latitude") double latitude) {
         return this.weatherLogic.getCurrentWeather(token, longitude, latitude);
     }
 
@@ -51,8 +51,8 @@ public class WeatherController implements IWeather {
     @Override
     @RequestMapping("/weather/hourlyforecast")
     public ConfirmationMessage getHourlyForecast(@RequestParam(value = "token") String token,
-                                                 @RequestParam(value = "longitude") float longitude,
-                                                 @RequestParam(value = "latitude") float latitude) {
+                                                 @RequestParam(value = "longitude") double longitude,
+                                                 @RequestParam(value = "latitude") double latitude) {
         return this.weatherLogic.getHourlyForecast(token, longitude, latitude);
     }
 
@@ -68,8 +68,8 @@ public class WeatherController implements IWeather {
     @Override
     @RequestMapping("/weather/dailyforecast")
     public ConfirmationMessage getDailyForecast(@RequestParam(value = "token") String token,
-                                                @RequestParam(value = "longitude") float longitude,
-                                                @RequestParam(value = "latitude") float latitude,
+                                                @RequestParam(value = "longitude") double longitude,
+                                                @RequestParam(value = "latitude") double latitude,
                                                 @RequestParam(value = "count") byte count) {
         return this.weatherLogic.getDailyForecast(token, longitude, latitude, count);
     }
