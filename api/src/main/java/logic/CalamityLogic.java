@@ -136,7 +136,6 @@ public class CalamityLogic {
     public ConfirmationMessage deleteCalamity(String token, int calamityId) {
         try {
             userRepo.getUser(token).getUserType().containsPermission(UserType.Permission.CALAMITY_DELETE);
-
             userRepo.getUser(token);
             calamityRepo.deleteCalamity(calamityId);
 
@@ -162,15 +161,24 @@ public class CalamityLogic {
     public ConfirmationMessage addCalamityAssignee(String token, int calamityId, int userId) {
         try {
             userRepo.getUser(token).getUserType().containsPermission(UserType.Permission.CALAMITY_ADD_ASSIGNEE);
-
             calamityRepo.addCalamityAssignee(calamityId, userId);
 
+            String firebaseToken = userRepo.getFirebaseToken(userId);
+            if(firebaseToken != "") {
+
+                //TODO Send notification to firebase to this token
+
+                return new ConfirmationMessage(ConfirmationMessage.StatusType.SUCCES,
+                        "library.Calamity assignee added and alerted", null);
+            }
+
             return new ConfirmationMessage(ConfirmationMessage.StatusType.SUCCES,
-                    "library.Calamity assignee added", null);
+                    "library.Calamity assignee added but not alerted", null);
+
         } catch (NoPermissionException | SQLException | ParseException | NoSuchAlgorithmException e) {
+
             Logger.getLogger(CalamityLogic.class.getName()).log(Level.SEVERE,
                     "Error while adding calamity assignee", e);
-
             return new ConfirmationMessage(ConfirmationMessage.StatusType.ERROR,
                     "Error while adding calamity assignee", e);
         }

@@ -63,4 +63,13 @@ public interface IUser {
      */
     ConfirmationMessage deleteUser(String token,
                                    int id);
+
+    /**
+     * Adds a Firebase token to a user, when he uses a app
+     *
+     * @param userToken     The authentication token.
+     * @param firebaseToken The Firebase token
+     * @return  Confirmation message with feedback about the insert.
+     */
+    ConfirmationMessage giveUserToken(String userToken, String firebaseToken);
 }

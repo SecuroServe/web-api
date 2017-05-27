@@ -6,6 +6,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import rest.RestClient;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * Created by guillaimejanssen on 30/04/2017.
@@ -40,16 +41,21 @@ public class UserRequest implements IUser {
 
     @Override
     public ConfirmationMessage addUser(int userTypeId, int buildingId, String username, String password, String email, String city, String token) {
-        return null;
+        throw new NotImplementedException();
     }
 
     @Override
     public ConfirmationMessage updateUser(String token, int id, String username, String password, String email, String city) {
-        return null;
+        throw new NotImplementedException();
     }
 
     @Override
     public ConfirmationMessage deleteUser(String token, int id) {
-        return null;
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public ConfirmationMessage giveUserToken(String userToken, String firebaseToken) {
+        throw new NotImplementedException();
     }
 }

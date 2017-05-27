@@ -107,4 +107,16 @@ public class UserLogic {
             return new ConfirmationMessage(ConfirmationMessage.StatusType.ERROR, "Failed to get list of users", e);
         }
     }
+
+    public ConfirmationMessage setFirebaseToken(String usertoken, String firebaseToken) {
+        try{
+            User user = userRepo.getUser(usertoken);
+            return new ConfirmationMessage(ConfirmationMessage.StatusType.SUCCES, "FirebaseToken has been set!", userRepo.setFirebaseToken(user.getId(), firebaseToken));
+
+        } catch (SQLException  | ParseException | NoSuchAlgorithmException e) {
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,
+                    "Failed to set FirebaseToken to user", e);
+            return new ConfirmationMessage(ConfirmationMessage.StatusType.ERROR, "Failed to set FirebaseToken to user!", e);
+        }
+    }
 }

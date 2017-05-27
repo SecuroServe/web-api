@@ -123,4 +123,11 @@ public class UserController implements IUser {
     public ConfirmationMessage deleteUser(@RequestParam(value = "token") String token, @RequestParam(value = "id") int id) {
         return userLogic.deleteUser(token, id);
     }
+
+    @Override
+    @RequestMapping("/setfirebasetoken")
+    public ConfirmationMessage giveUserToken(@RequestParam(value = "usertoken") String userToken,
+                                             @RequestParam(value = "firebasetoken") String firebaseToken) {
+        return userLogic.setFirebaseToken(userToken, firebaseToken);
+    }
 }

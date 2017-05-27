@@ -1,5 +1,6 @@
 package datarepo;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import datarepo.database.Database;
 import exceptions.WrongUsernameOrPasswordException;
 import library.Calamity;
@@ -338,10 +339,10 @@ public class UserRepo {
      * @throws SQLException
      */
     public List<User> getAllUsers() throws SQLException {
-        //todo return all users in a list
         List<User> userList = new ArrayList<>();
         String query =
-                "SELECT u.`UserTypeID`, " +
+                "SELECT u.`ID`, " +
+                        "u.`UserTypeID`, " +
                         "u.`BuildingID`, " +
                         "u.`Username`, " +
                         "u.`Email`, " +
@@ -356,11 +357,11 @@ public class UserRepo {
         try (ResultSet rs = database.executeQuery(query, parameters, Database.QueryType.QUERY)) {
             while (rs.next()) {
                 int userID = rs.getInt(1);
-                String username = rs.getString(3);
-                String email = rs.getString(4);
-                String city = rs.getString(5);
-                String userToken = rs.getString(6);
-                int calamityId = rs.getInt(7);
+                String username = rs.getString(4);
+                String email = rs.getString(5);
+                String city = rs.getString(6);
+                String userToken = rs.getString(7);
+                int calamityId = rs.getInt(8);
 
                 UserType userType = new UserTypeRepo(database).getUserTypeOfUser(userID);
 
@@ -376,5 +377,49 @@ public class UserRepo {
         }
 
         return userList;
+    }
+
+    public Boolean setFirebaseToken(int userID, String firebaseToken) throws SQLException {
+        String query =
+                "INSERT INTO `FirebaseToken`" +
+                        "(`UserID`," +
+                        "`FirebaseToken`)" +
+                "VALUES (?, ?)";
+
+        List<Object> parameters = new ArrayList<>();
+        parameters.add(userID);
+        parameters.add(firebaseToken);
+
+        try (ResultSet rs = database.executeQuery(query, parameters, Database.QueryType.INSERT)) {
+            if (rs.next()) {
+                int id = rs.getInt(1);
+                if(id > 0) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public String getFirebaseToken(int userID) throws SQLException {
+        String FirebaseToken = "";
+
+        String query =
+                "SELECT `ID`, " +
+                        "`FirebaseToken`" +
+                "FROM `FirebaseToken`" +
+                "WHERE `UserID` = ?";
+
+        List<Object> parameters = new ArrayList<>();
+        parameters.add(userID);
+
+        try (ResultSet rs = database.executeQuery(query, parameters, Database.QueryType.QUERY)) {
+            if (rs.next()) {
+                FirebaseToken = rs.getString(2);
+            }
+        }
+
+        return FirebaseToken;
     }
 }

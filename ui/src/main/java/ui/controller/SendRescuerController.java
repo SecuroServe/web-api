@@ -58,32 +58,9 @@ public class SendRescuerController implements Initializable {
 
     public SendRescuerController(User user) {
         this.user = user;
-        selectedUsers = FXCollections.observableArrayList();
-        calamityRequest = new CalamityRequest();
-        userRequest = new UserRequest();
-
-        ObjectMapper objMapper = new ObjectMapper();
-
-        ConfirmationMessage calamityMessage = calamityRequest.allCalamity();//check for error
-        if (calamityMessage.getStatus() != ConfirmationMessage.StatusType.ERROR) {
-            Object val = calamityMessage.getReturnObject();
-            //convert list to list of calamities using mapper
-            allCalamities = objMapper.convertValue(val, new TypeReference<List<Calamity>>(){});
-        } else{
-            calamityTableView.setPlaceholder(new Label("No open calamities"));
-            allCalamities = new ArrayList<>();
-        }
-
-        ConfirmationMessage userMessage = userRequest.allusers(user.getToken());//check for error
-        if (userMessage.getStatus() != ConfirmationMessage.StatusType.ERROR) {
-            Object val = userMessage.getReturnObject();
-            //convert list to list of users
-            availableUsers = objMapper.convertValue(val, new TypeReference<List<User>>(){});
-        } else{
-            rescuerTableView.setPlaceholder(new Label("No available rescuers"));
-            availableUsers = new ArrayList<>();
-        }
-        //todo filter for only available rescuers.
+        this.selectedUsers = FXCollections.observableArrayList();
+        this.calamityRequest = new CalamityRequest();
+        this.userRequest = new UserRequest();
     }
 
     /**
@@ -96,41 +73,71 @@ public class SendRescuerController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        //set button actions
+        //set button actions and init tables
         setButtonActions();
-        //init tables
         initTableViews();
 
         selectedCalamityLabel.setText("no calamity selected");
+
+        // Retrieving all calamities + users from API
+        ObjectMapper objMapper = new ObjectMapper();
+
+        ConfirmationMessage calamityMessage = calamityRequest.allCalamity();
+        if (calamityMessage.getStatus() != ConfirmationMessage.StatusType.ERROR) {
+            Object val = calamityMessage.getReturnObject();
+            //convert list to list of calamities using mapper
+            allCalamities = objMapper.convertValue(val, new TypeReference<List<Calamity>>(){});
+        } else{
+            calamityTableView.setPlaceholder(new Label("No open calamities"));
+            allCalamities = new ArrayList<>();
+        }
+
+        ConfirmationMessage userMessage = userRequest.allusers(user.getToken());
+        if (userMessage.getStatus() != ConfirmationMessage.StatusType.ERROR) {
+            Object val = userMessage.getReturnObject();
+            //convert list to list of users
+            availableUsers = objMapper.convertValue(val, new TypeReference<List<User>>(){});
+            for(User u : availableUsers) {
+                if(u.getAssignedCalamity() != null) {
+                    availableUsers.remove(u);
+                }
+            }
+        } else{
+            rescuerTableView.setPlaceholder(new Label("No available rescuers"));
+            availableUsers = new ArrayList<>();
+        }
     }
 
+    /**
+     * Inits the user + calamity table
+     */
     private void initTableViews() {
-        //set tableView columns
-        //rescuerTableView
+
+        // User table
         TableColumn rescuerNameCol = new TableColumn("Name");
         rescuerNameCol.setCellValueFactory(new PropertyValueFactory<User, String>("username"));
-
         TableColumn rescuerLocationCol = new TableColumn("Location");
         rescuerLocationCol.setCellValueFactory(new PropertyValueFactory<User, String>("city"));
 
         rescuerTableView.getColumns().addAll(rescuerNameCol, rescuerLocationCol);
-        //calamityTableView
+
+        // Calamity table
         TableColumn calamityTitleCol = new TableColumn("Title");
         calamityTitleCol.setCellValueFactory(new PropertyValueFactory<Calamity, String>("title"));
-
         TableColumn calamityLocationCol = new TableColumn("Location");
         calamityLocationCol.setCellValueFactory(new PropertyValueFactory<Calamity, Location>("location"));
 
         calamityTableView.getColumns().addAll(calamityTitleCol, calamityLocationCol);
 
-        //set tableView lists
+        //Sets list for tableViews
         rescuerTableView.setItems(FXCollections.observableArrayList(availableUsers));
         calamityTableView.setItems(FXCollections.observableArrayList(allCalamities));
         selectedRescuerListView.setItems(selectedUsers);
-
-
     }
 
+    /**
+     * Sets all button action ready for use
+     */
     private void setButtonActions() {
         backButton.setOnAction(this::handleBackAction);
         doneButton.setOnAction(this::finishAction);
@@ -139,6 +146,9 @@ public class SendRescuerController implements Initializable {
         removeRescuerButton.setOnAction(this::removeRescuer);
     }
 
+    /**
+     * On refresh, do this method to update tableViews
+     */
     private void refreshTableViews() {
         rescuerTableView.setItems(FXCollections.observableList(availableUsers));
         calamityTableView.setItems(FXCollections.observableList(allCalamities));
@@ -208,7 +218,6 @@ public class SendRescuerController implements Initializable {
      * @param actionEvent
      */
     private void finishAction(ActionEvent actionEvent) {
-        //todo send a notification to Rescuers;
         if(selectedCalamity == null || selectedUsers.size() == 0){
             String s = "Please select a calamity, and at least 1 rescuer";
             showMessage(s);
@@ -227,8 +236,7 @@ public class SendRescuerController implements Initializable {
             for(User u : selectedUsers){
                 calamityRequest.addCalamityAssignee(user.getToken(), selectedCalamity.getId(), u.getId());
             }
-            showMessage("Succesfully added users to the calamity");
-
+            showMessage("Successfully added users to the calamity and alerted them!");
         }
     }
 
