@@ -213,7 +213,6 @@ public class SendRescuerController implements Initializable {
             String s = "Please select a calamity, and at least 1 rescuer";
             showMessage(s);
         }else {
-          
             calamityRequest.updateCalamity(user.getToken(),
                     selectedCalamity.getId(),
                     selectedCalamity.getTitle(),
@@ -249,7 +248,6 @@ public class SendRescuerController implements Initializable {
      * this method goes back to the dashboard.
      * it is called when the backbutton is clicked.
      * nothing is done with
-     *
      * @param actionEvent
      */
     private void handleBackAction(ActionEvent actionEvent) {

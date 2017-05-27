@@ -7,6 +7,7 @@ import com.lynden.gmapsfx.javascript.event.UIEventType;
 import com.lynden.gmapsfx.javascript.object.*;
 import com.lynden.gmapsfx.shapes.Circle;
 import com.lynden.gmapsfx.shapes.CircleOptions;
+import interfaces.ConfirmationMessage;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -17,11 +18,18 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import jdk.nashorn.internal.parser.JSONParser;
 import library.Calamity;
 import library.User;
+import library.Weather;
+import net.aksingh.owmjapis.CurrentWeather;
+import net.aksingh.owmjapis.OpenWeatherMap;
+import net.aksingh.owmjapis.Tools;
 import netscape.javascript.JSObject;
+import org.json.JSONObject;
 import requests.CalamityRequest;
 import requests.UserRequest;
+import requests.WeatherRequest;
 
 import java.net.URL;
 import java.util.*;
@@ -54,6 +62,8 @@ public class CalamityListController implements Initializable {
     private TextField creatorTextField;
     @FXML
     private TextField dateTextField;
+    @FXML
+    private Label weatherLabel;
     @FXML
     private TextArea informationTextArea;
     @FXML
@@ -142,11 +152,40 @@ public class CalamityListController implements Initializable {
 
     private void fillCalamityDetails(Calamity calamity) throws NullPointerException {
         this.selectedCalamity = calamity;
+
+        updateMap(calamity);
+        getWeatherData(calamity);
+
         titleTextField.setText(calamity.getTitle());
         creatorTextField.setText(calamity.getUser().toString());
         dateTextField.setText(calamity.getDate().toString());
         informationTextArea.setText(createReadableText(calamity.getMessage()));
-        updateMap(calamity);
+
+    }
+
+    private void getWeatherData(Calamity calamity) {
+        WeatherRequest request = new WeatherRequest();
+        ObjectMapper mapper = new ObjectMapper();
+
+        ConfirmationMessage message = mapper.convertValue(request.getCurrentWeather(user.getToken(),
+                calamity.getLocation().getLongitude(),
+                calamity.getLocation().getLatitude()), ConfirmationMessage.class);
+
+        if(message.getStatus().equals(ConfirmationMessage.StatusType.ERROR)) {
+            weatherLabel.setText("There is no weather data available\n\n" +
+                    "Message: " + message.getMessage());
+        } else {
+
+            Weather weather = mapper.convertValue(message.getReturnObject(), Weather.class);
+            weatherLabel.setText(
+                    "Location: " + weather.getCityName() + "(" + weather.getCountryCode() + ")   (" + weather.getLatLong().getLatitude() + "/" + weather.getLatLong().getLongitude() + ")\n\n" +
+                            "Temperature (°C):" + weather.getTemperature().getTemperature() + "\n" +
+                            " (Min: " + weather.getTemperature().getMinTemperature() + " / Max: " + weather.getTemperature().getMaxTemperature() + ")\n\n" +
+                            "Extra information: \n" +
+                            "Clouds: " + weather.getClouds() + "%\n" +
+                            "Humidity: " + weather.getTemperature().getHumidity() + "%\n" +
+                            "Wind Speed: " + weather.getWindSpeed() + "");
+        }
     }
 
     private String createReadableText(String message) {
@@ -256,7 +295,7 @@ public class CalamityListController implements Initializable {
         calamityTable.setItems(obsList);
     }
 
-    private void updateMap(Calamity calamity) {
+    private void updateMap(Calamity calamity) throws NullPointerException {
         LatLong location = new LatLong(calamity.getLocation().getLatitude(), calamity.getLocation().getLongitude());
         MapOptions mapOptions = new MapOptions();
         mapOptions.center(location)
