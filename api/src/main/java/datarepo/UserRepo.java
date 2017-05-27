@@ -2,6 +2,7 @@ package datarepo;
 
 import datarepo.database.Database;
 import exceptions.WrongUsernameOrPasswordException;
+import library.Calamity;
 import library.User;
 import library.UserType;
 import utils.HashUtil;
@@ -58,7 +59,13 @@ public class UserRepo {
         String tokenExpiration;
         String token = null;
 
-        String query = "SELECT `id`, `token`, `tokenExpiration` FROM `User` WHERE `username` = ? AND `passwordhash` = ?";
+        String query =
+                "SELECT `id`, " +
+                        "`token`, " +
+                        "`tokenExpiration` " +
+                "FROM `User` " +
+                "WHERE `username` = ? " +
+                "AND `passwordhash` = ?";
 
         List<Object> parameters = new ArrayList<>();
         parameters.add(username);
@@ -119,7 +126,11 @@ public class UserRepo {
         date.add(Calendar.MINUTE, 15);
 
         String tokenExpiration = sdf.format(date.getTime());
-        String query = "UPDATE `User` SET `token` = ?, `tokenexpiration` = ? WHERE `token` = ?";
+        String query =
+                "UPDATE `User` " +
+                "SET `token` = ?, " +
+                    "`tokenexpiration` = ? " +
+                "WHERE `token` = ?";
 
         List<Object> parameters = new ArrayList<>();
         parameters.add(token);
@@ -139,7 +150,10 @@ public class UserRepo {
      * @throws SQLException
      */
     private String getUserSalt(String username) throws SQLException {
-        String query = "SELECT `Salt` FROM `User` WHERE `Username` = ?";
+        String query =
+                "SELECT `Salt` " +
+                "FROM `User` " +
+                "WHERE `Username` = ?";
 
         List<Object> parameters = new ArrayList<>();
         parameters.add(username);
@@ -180,9 +194,17 @@ public class UserRepo {
         password = HashUtil.hashPassword(password, salt, "SHA-256", "UTF-8");
         String token = HashUtil.generateSalt();
         String tokenExpiration = sdf.format(date.getTime());
-        String query = "INSERT INTO `User` " +
-                "(`UserTypeID`, `BuildingID`, `Username`, " +
-                "`PasswordHash`, `Salt`, `Email`, `City`, `Token`, `TokenExpiration`) " +
+        String query =
+                "INSERT INTO `User` " +
+                "(`UserTypeID`, " +
+                        "`BuildingID`, " +
+                        "`Username`, " +
+                        "`PasswordHash`, " +
+                        "`Salt`, " +
+                        "`Email`, " +
+                        "`City`, " +
+                        "`Token`, " +
+                        "`TokenExpiration`) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         List<Object> parameters = new ArrayList<>();
@@ -227,8 +249,17 @@ public class UserRepo {
 
     public User getUser(String token) throws SQLException, NoSuchAlgorithmException, ParseException {
         User user = null;
-        String query = "SELECT `ID`, `UserTypeID`, `BuildingID`, `Username`, " +
-                "`Email`,  `City`, `TokenExpiration` FROM `User` WHERE `Token` = ?";
+        String query =
+                "SELECT u.`ID`, " +
+                        "u.`BuildingID`, " +
+                        "u.`Username`, " +
+                        "u.`Email`,  " +
+                        "u.`City`, " +
+                        "u.`TokenExpiration`, " +
+                        "ca.`CalamityID` " +
+                "FROM `User` u " +
+                "LEFT JOIN `CalamityAssignee` ca ON u.`ID` = ca.`AssigneeID` " +
+                "WHERE u.`Token` = ?";
 
         List<Object> parameters = new ArrayList<>();
         parameters.add(token);
@@ -236,18 +267,21 @@ public class UserRepo {
         try (ResultSet rs = database.executeQuery(query, parameters, Database.QueryType.QUERY)) {
             if (rs.next()) {
                 int id = rs.getInt(1);
-                int buildingId = rs.getInt(3);
-                String username = rs.getString(4);
-                String email = rs.getString(5);
-                String city = rs.getString(6);
-
-                if (new Date().after(sdf.parse(rs.getString(7)))) {
+                int buildingId = rs.getInt(2);
+                String username = rs.getString(3);
+                String email = rs.getString(4);
+                String city = rs.getString(5);
+                if (new Date().after(sdf.parse(rs.getString(6)))) {
                     return null;
                 }
+                int calamityId = rs.getInt(7);
 
                 UserType userType = new UserTypeRepo(database).getUserTypeOfUser(id);
 
                 user = new User(id, userType, null, null, username, email, city, token);
+                if(calamityId > 0) {
+                    user.setAssignedCalamity(new CalamityRepo(database).getAssignedCalamity(calamityId));
+                }
             }
         }
 
@@ -260,8 +294,17 @@ public class UserRepo {
 
     public User getUserById(int id) throws SQLException, NoSuchAlgorithmException, ParseException {
         User user = null;
-        String query = "SELECT `UserTypeID`, `BuildingID`, `Username`, " +
-                "`Email`, `City`, `Token` FROM `User` WHERE `ID` = ?";
+        String query =
+                "SELECT u.`UserTypeID`, " +
+                        "u.`BuildingID`, " +
+                        "u.`Username`, " +
+                        "u.`Email`, " +
+                        "u.`City`, " +
+                        "u.`Token`, " +
+                        "ca.`CalamityID` " +
+                "FROM `User` u " +
+                "LEFT JOIN `CalamityAssignee` ca ON u.`ID` = ca.`AssigneeID` " +
+                "WHERE u.`ID` = ?";
 
         List<Object> parameters = new ArrayList<>();
         parameters.add(id);
@@ -273,15 +316,20 @@ public class UserRepo {
                 String email = rs.getString(4);
                 String city = rs.getString(5);
                 String token = rs.getString(6);
+                int calamityId = rs.getInt(7);
 
                 UserType userType = new UserTypeRepo(database).getUserTypeOfUser(id);
 
                 user = new User(id, userType, null, null, username, email, city, null);
+                if (calamityId > 0) {
+                    user.setAssignedCalamity(new CalamityRepo(database).getAssignedCalamity(calamityId));
+                }
             }
         }
 
         return user;
     }
+
 
     /**
      * this method creates a list of users from entries from the database.
@@ -292,8 +340,16 @@ public class UserRepo {
     public List<User> getAllUsers() throws SQLException {
         //todo return all users in a list
         List<User> userList = new ArrayList<>();
-        String query = "SELECT `UserTypeID`, `BuildingID`, `Username`, " +
-                "`Email`, `City`, `Token` FROM `User`";
+        String query =
+                "SELECT u.`UserTypeID`, " +
+                        "u.`BuildingID`, " +
+                        "u.`Username`, " +
+                        "u.`Email`, " +
+                        "u.`City`, " +
+                        "u.`Token`, " +
+                        "ca.`CalamityID` " +
+                "FROM `User` u " +
+                "LEFT JOIN `CalamityAssignee` ca ON u.`ID` = ca.`AssigneeID`";
 
         List<Object> parameters = new ArrayList<>();
 
@@ -304,12 +360,19 @@ public class UserRepo {
                 String email = rs.getString(4);
                 String city = rs.getString(5);
                 String userToken = rs.getString(6);
+                int calamityId = rs.getInt(7);
 
                 UserType userType = new UserTypeRepo(database).getUserTypeOfUser(userID);
 
                 User user = new User(userID, userType, null, null, username, email, city, userToken);
+                if(calamityId > 0) {
+                    user.setAssignedCalamity(new CalamityRepo(database).getAssignedCalamity(calamityId));
+                }
+
                 userList.add(user);
             }
+        } catch (ParseException | NoSuchAlgorithmException e) {
+            e.printStackTrace();
         }
 
         return userList;

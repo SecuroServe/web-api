@@ -124,7 +124,39 @@ public class CalamityRepo {
                 }
             }
         }
+        return calamity;
+    }
 
+    public Calamity getAssignedCalamity(int id) throws SQLException, ParseException, NoSuchAlgorithmException {
+        Calamity calamity = null;
+        LocationRepo locationRepo = new LocationRepo(database);
+
+        String query =
+                "SELECT `LocationID`, " +
+                        "`isConfirmed`, " +
+                        "`isClosed`, " +
+                        "`Time`, " +
+                        "`Title`, " +
+                        "`Message` " +
+                "FROM `Calamity` " +
+                "WHERE `ID` = ?";
+
+        List<Object> parameters = new ArrayList<>();
+        parameters.add(id);
+
+        try (ResultSet rs = database.executeQuery(query, parameters, Database.QueryType.QUERY)) {
+            if (rs.next()) {
+                int locationId = rs.getInt(1);
+                boolean isConfirmed = rs.getInt(2) == 1;
+                boolean isClosed = rs.getInt(3) == 1;
+                Date time = rs.getDate(4);
+                String title = rs.getString(5);
+                String message = rs.getString(6);
+
+                calamity = new Calamity(id, locationRepo.getLocation(locationId), null,
+                        isConfirmed, isClosed, time, title, message);
+            }
+        }
         return calamity;
     }
 

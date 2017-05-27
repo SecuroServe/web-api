@@ -60,7 +60,6 @@ public class UserController implements IUser {
             return userLogic.getUser(userToken);
         } catch (NoSuchAlgorithmException | ParseException e) {
             e.printStackTrace();
-
             return null;
         }
     }
