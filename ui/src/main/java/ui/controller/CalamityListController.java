@@ -18,12 +18,14 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import jdk.nashorn.internal.parser.JSONParser;
 import library.Calamity;
 import library.User;
 import net.aksingh.owmjapis.CurrentWeather;
+import net.aksingh.owmjapis.OpenWeatherMap;
+import net.aksingh.owmjapis.Tools;
 import netscape.javascript.JSObject;
 import org.json.JSONObject;
-import org.omg.CORBA.Current;
 import requests.CalamityRequest;
 import requests.UserRequest;
 import requests.WeatherRequest;
@@ -59,6 +61,8 @@ public class CalamityListController implements Initializable {
     private TextField creatorTextField;
     @FXML
     private TextField dateTextField;
+    @FXML
+    private Label weatherLabel;
     @FXML
     private TextArea informationTextArea;
     @FXML
@@ -147,21 +151,45 @@ public class CalamityListController implements Initializable {
 
     private void fillCalamityDetails(Calamity calamity) throws NullPointerException {
         this.selectedCalamity = calamity;
+
+        updateMap(calamity);
+        getWeatherData(calamity);
+
         titleTextField.setText(calamity.getTitle());
         creatorTextField.setText(calamity.getUser().toString());
         dateTextField.setText(calamity.getDate().toString());
         informationTextArea.setText(createReadableText(calamity.getMessage()));
-        updateMap(calamity);
-        getWeatherData(calamity);
+
     }
 
     private void getWeatherData(Calamity calamity) {
-        ObjectMapper mapper = new ObjectMapper();
 
-        WeatherRequest wr = new WeatherRequest();
-        Object cw = mapper.convertValue(wr.getCurrentWeather(user.getToken(), calamity.getLocation().getLongitude(), calamity.getLocation().getLatitude()).getReturnObject(), JSONObject.class);
+        OpenWeatherMap openWeatherMap = new OpenWeatherMap(OpenWeatherMap.Units.METRIC, "98d0f150f25d72ef30ec69301ef50f89");
+        CurrentWeather weather = openWeatherMap.currentWeatherByCoordinates((float)calamity.getLocation().getLatitude(), (float)calamity.getLocation().getLongitude());
 
-        System.out.println(cw);
+        weatherLabel.setText(
+                "Location: " + weather.getCityName() + "(" + weather.getSysInstance().getCountryCode() + ")   (" + weather.getCoordInstance().getLatitude() + "/" + weather.getCoordInstance().getLongitude() + ")\n\n" +
+                        "Temperature (°C):" + weather.getMainInstance().getTemperature() + "\n" +
+                        " (Min: " + weather.getMainInstance().getMinTemperature() + " / Max: " + weather.getMainInstance().getMaxTemperature() + ")\n\n" +
+                        "Extra information: \n" +
+                        "Clouds: " + weather.getCloudsInstance().getPercentageOfClouds() + "%\n" +
+                        "Humidity: " + weather.getMainInstance().getHumidity() + "%\n" +
+                        "Wind Speed: " + weather.getWindInstance().getWindSpeed() + "");
+
+        // Er kan van de JSON niet opnieuw een CurrentWeather klasse worden gemaakt.
+        // Dit houdt in dat de API die jezel hebt geschreven beetje overbodig was, aagezien we t zelf ook gwn zo kunnen doen.
+        // Er wordt alleen maar json doorgestuurd en hier kan ik meteen een klasse van maken.
+
+//        WeatherRequest wr = new WeatherRequest();
+//
+//        ObjectMapper mapper = new ObjectMapper();
+//        ConfirmationMessage confirmationMessage = mapper.convertValue(wr.getCurrentWeather(user.getToken(), calamity.getLocation().getLongitude(), calamity.getLocation().getLatitude()), ConfirmationMessage.class);
+//
+//        if(confirmationMessage.getStatus().equals(ConfirmationMessage.StatusType.ERROR)) {
+//            weatherLabel.setText("Oops, there is no weather data available! \n\nError Message: " + confirmationMessage.getMessage());
+//        } else {
+//
+//        }
     }
 
     private String createReadableText(String message) {
@@ -271,7 +299,7 @@ public class CalamityListController implements Initializable {
         calamityTable.setItems(obsList);
     }
 
-    private void updateMap(Calamity calamity) {
+    private void updateMap(Calamity calamity) throws NullPointerException {
         LatLong location = new LatLong(calamity.getLocation().getLatitude(), calamity.getLocation().getLongitude());
         MapOptions mapOptions = new MapOptions();
         mapOptions.center(location)

@@ -35,9 +35,11 @@ public class WeatherRequest implements IWeather {
     @Override
     public ConfirmationMessage getCurrentWeather(String token, double longitude, double latitude) {
         MultiValueMap<String, Object> parameters = new LinkedMultiValueMap<>();
-        parameters.add("token", longitude);
+
+        parameters.add("token", token);
         parameters.add("longitude", longitude);
         parameters.add("latitude", latitude);
+
         return restClient.request(REQUEST_PREFIX + CURRENT_WEATHER, RestClient.RequestType.GET, parameters);
     }
 
@@ -52,9 +54,11 @@ public class WeatherRequest implements IWeather {
     @Override
     public ConfirmationMessage getHourlyForecast(String token, double longitude, double latitude) {
         MultiValueMap<String, Object> parameters = new LinkedMultiValueMap<>();
+
         parameters.add("token", longitude);
         parameters.add("longitude", longitude);
         parameters.add("latitude", latitude);
+
         return restClient.request(REQUEST_PREFIX + HOURLY_FORECAST, RestClient.RequestType.GET, parameters);
     }
 

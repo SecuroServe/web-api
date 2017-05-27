@@ -83,7 +83,8 @@
                                 <GoogleMapView fx:id="googleMapView" prefHeight="370.0" prefWidth="450.0" />
                                 <Region prefHeight="8.0" prefWidth="450.0" />
                                 <Line endX="459.0" startX="10.0" stroke="WHITE" />
-                        <TextArea fx:id="weatherText" editable="false" prefHeight="249.0" prefWidth="450.0" />
+                        <Region prefHeight="8.0" prefWidth="450.0" />
+                        <Label fx:id="weatherLabel" text="Label" />
                             </children>
                         </VBox>
                     </children>
