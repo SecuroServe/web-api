@@ -16,12 +16,9 @@ import library.Location;
 import library.User;
 import requests.CalamityRequest;
 import requests.UserRequest;
-import ui.Main;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -68,7 +65,7 @@ public class SendRescuerController implements Initializable {
         ObjectMapper objMapper = new ObjectMapper();
 
         ConfirmationMessage calamityMessage = calamityRequest.allCalamity();//check for error
-        if(calamityMessage.getStatus() != ConfirmationMessage.StatusType.ERROR){
+        if (calamityMessage.getStatus() != ConfirmationMessage.StatusType.ERROR) {
             Object val = calamityMessage.getReturnObject();
             //convert list to list of calamities using mapper
             allCalamities = objMapper.convertValue(val, new TypeReference<List<Calamity>>(){});
@@ -78,7 +75,7 @@ public class SendRescuerController implements Initializable {
         }
 
         ConfirmationMessage userMessage = userRequest.allusers(user.getToken());//check for error
-        if(userMessage.getStatus() != ConfirmationMessage.StatusType.ERROR){
+        if (userMessage.getStatus() != ConfirmationMessage.StatusType.ERROR) {
             Object val = userMessage.getReturnObject();
             //convert list to list of users
             availableUsers = objMapper.convertValue(val, new TypeReference<List<User>>(){});
@@ -142,7 +139,7 @@ public class SendRescuerController implements Initializable {
         removeRescuerButton.setOnAction(this::removeRescuer);
     }
 
-    private void refreshTableViews(){
+    private void refreshTableViews() {
         rescuerTableView.setItems(FXCollections.observableList(availableUsers));
         calamityTableView.setItems(FXCollections.observableList(allCalamities));
     }
@@ -154,7 +151,7 @@ public class SendRescuerController implements Initializable {
      */
     private void addRescuer(ActionEvent actionEvent) {
         User selUser = rescuerTableView.getSelectionModel().getSelectedItem();
-        if(selUser != null){
+        if (selUser != null) {
             selectedUsers.add(selUser);
             availableUsers.remove(selUser);
         }else{
@@ -170,7 +167,7 @@ public class SendRescuerController implements Initializable {
      */
     private void removeRescuer(ActionEvent actionEvent) {
         User selUser = selectedRescuerListView.getSelectionModel().getSelectedItem();
-        if(selUser != null){
+        if (selUser != null) {
             selectedUsers.remove(selUser);
             availableUsers.add(selUser);
         }else {
@@ -186,7 +183,6 @@ public class SendRescuerController implements Initializable {
      */
     private void selectCalamity(ActionEvent actionEvent) {
         Calamity selCalamity = calamityTableView.getSelectionModel().getSelectedItem();
-
         if(selCalamity != null){
             setSelectedCalamity(selCalamity);
         } else {
@@ -196,7 +192,7 @@ public class SendRescuerController implements Initializable {
 
     private void setSelectedCalamity(Calamity calamity) {
         allCalamities.remove(calamity);
-        if(selectedCalamity != null){
+        if (selectedCalamity != null) {
             allCalamities.add(selectedCalamity);
         }
         selectedCalamity = calamity;
@@ -217,7 +213,7 @@ public class SendRescuerController implements Initializable {
             String s = "Please select a calamity, and at least 1 rescuer";
             showMessage(s);
         }else {
-
+          
             calamityRequest.updateCalamity(user.getToken(),
                     selectedCalamity.getId(),
                     selectedCalamity.getTitle(),
@@ -253,6 +249,7 @@ public class SendRescuerController implements Initializable {
      * this method goes back to the dashboard.
      * it is called when the backbutton is clicked.
      * nothing is done with
+     *
      * @param actionEvent
      */
     private void handleBackAction(ActionEvent actionEvent) {

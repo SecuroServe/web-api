@@ -21,7 +21,7 @@ public interface IAlert {
      * @return A single alert that matches the id.
      */
     ConfirmationMessage getAlert(String token,
-                int id);
+                                 int id);
 
     /**
      * Adds a new alert.
@@ -68,7 +68,7 @@ public interface IAlert {
      * Deletes an alert.
      *
      * @param token The authentication token.
-     * @param id The id of the token.
+     * @param id    The id of the token.
      * @return Confirmation message with feedback about the deletion.
      */
     ConfirmationMessage removeAlert(String token, int id);

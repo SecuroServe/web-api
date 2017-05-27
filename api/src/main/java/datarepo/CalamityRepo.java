@@ -77,6 +77,10 @@ public class CalamityRepo {
         parameters.add(calamity.getMessage());
         parameters.add(calamity.getId());
 
+        if (calamity.getLocation() != null) {
+            new LocationRepo(database).updateLocation(calamity.getLocation());
+        }
+
         database.executeQuery(query, parameters, Database.QueryType.NON_QUERY);
     }
 
@@ -122,8 +126,6 @@ public class CalamityRepo {
         }
 
         return calamity;
-
-
     }
 
     /**

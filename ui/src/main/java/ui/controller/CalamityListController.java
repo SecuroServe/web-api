@@ -1,11 +1,12 @@
 package ui.controller;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lynden.gmapsfx.GoogleMapView;
+import com.lynden.gmapsfx.javascript.event.UIEventType;
 import com.lynden.gmapsfx.javascript.object.*;
 import com.lynden.gmapsfx.shapes.Circle;
 import com.lynden.gmapsfx.shapes.CircleOptions;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -17,10 +18,11 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import library.Calamity;
-import library.Location;
 import library.User;
+import netscape.javascript.JSObject;
 import requests.CalamityRequest;
 import requests.UserRequest;
+
 import java.net.URL;
 import java.util.*;
 
@@ -31,6 +33,9 @@ import java.util.*;
  */
 public class CalamityListController implements Initializable {
 
+    @FXML
+    public TableView<User> userTable;
+    public User user;
     /*
     * Connections to the fxml file, every button, label etc.
     * that will get filled are in here
@@ -44,8 +49,6 @@ public class CalamityListController implements Initializable {
     @FXML
     private TableView<Calamity> calamityTable;
     @FXML
-    public TableView<User> userTable;
-    @FXML
     private TextField titleTextField;
     @FXML
     private TextField creatorTextField;
@@ -55,12 +58,8 @@ public class CalamityListController implements Initializable {
     private TextArea informationTextArea;
     @FXML
     private GoogleMapView googleMapView;
-
     private GoogleMap map;
-
     private Calamity selectedCalamity;
-    public User user;
-
     private Timer timerToRefresh = new Timer();
 
     public CalamityListController(User user) {
@@ -72,7 +71,7 @@ public class CalamityListController implements Initializable {
         refreshButton.setOnAction(this::handleRefreshAction);
         backButton.setOnAction(this::handleBackAction);
         calamityTable.setOnMouseClicked((MouseEvent event) -> {
-            if(event.getButton().equals(MouseButton.PRIMARY)){
+            if (event.getButton().equals(MouseButton.PRIMARY)) {
                 try {
                     fillCalamityDetails(calamityTable.getSelectionModel().getSelectedItem());
                 } catch (NullPointerException ex) {
@@ -98,13 +97,12 @@ public class CalamityListController implements Initializable {
     }
 
     private void handleChangeAction(ActionEvent actionEvent) {
-
-        if(titleTextField.isEditable()){
+        if (titleTextField.isEditable()) {
             titleTextField.setEditable(false);
             informationTextArea.setEditable(false);
             changeButton.setText("Change values");
 
-            if(!selectedCalamity.getTitle().equals(this.titleTextField.getText()) || !selectedCalamity.getMessage().equals(informationTextArea.getText())){
+            if (!selectedCalamity.getTitle().equals(this.titleTextField.getText()) || !selectedCalamity.getMessage().equals(informationTextArea.getText())) {
 
                 this.selectedCalamity.setTitle(titleTextField.getText());
                 this.selectedCalamity.setMessage(informationTextArea.getText());
@@ -157,12 +155,12 @@ public class CalamityListController implements Initializable {
 
         System.out.println(message.length());
 
-        for(int i = 0; i < message.length(); i++) {
+        for (int i = 0; i < message.length(); i++) {
             stringBuilder.append(message.charAt(i));
             String c = Character.toString(message.charAt(i));
             counter++;
 
-            if(counter > 40 && c.equals(" ")) {
+            if (counter > 40 && c.equals(" ")) {
                 stringBuilder.append("\n");
                 System.out.println(counter);
                 counter = 0;
@@ -234,7 +232,8 @@ public class CalamityListController implements Initializable {
 
         // Cast object to list of objects
         ObjectMapper mapper = new ObjectMapper();
-        List<User> users = mapper.convertValue(value, new TypeReference<List<User>>(){ });
+        List<User> users = mapper.convertValue(value, new TypeReference<List<User>>() {
+        });
 
         ObservableList<User> obsList = FXCollections.observableArrayList(users);
         userTable.setItems(obsList);
@@ -245,7 +244,8 @@ public class CalamityListController implements Initializable {
         Object value = calamityRequest.allCalamity().getReturnObject();
 
         ObjectMapper mapper = new ObjectMapper();
-        List<Calamity> calamities = mapper.convertValue(value, new TypeReference<List<Calamity>>(){ });
+        List<Calamity> calamities = mapper.convertValue(value, new TypeReference<List<Calamity>>() {
+        });
 
         //List<Calamity> calamities = new ArrayList<>();
         //calamities.add(new Calamity(1, new Location(1, 51.4477766, 5.4909617, 250.0),
@@ -256,14 +256,7 @@ public class CalamityListController implements Initializable {
         calamityTable.setItems(obsList);
     }
 
-    class PostRequestTask extends TimerTask {
-        @Override
-        public void run() {
-            refreshCalamityTable();
-        }
-    }
-
-    private void updateMap(Calamity calamity){
+    private void updateMap(Calamity calamity) {
         LatLong location = new LatLong(calamity.getLocation().getLatitude(), calamity.getLocation().getLongitude());
         MapOptions mapOptions = new MapOptions();
         mapOptions.center(location)
@@ -277,6 +270,16 @@ public class CalamityListController implements Initializable {
                 .zoom(15);
 
         map = googleMapView.createMap(mapOptions);
+        map.addUIEventHandler(UIEventType.click, (JSObject obj) -> {
+            LatLong ll = new LatLong((JSObject) obj.getMember("latLng"));
+            if (changeButton.getText().equalsIgnoreCase("Save changes")) {
+                System.out.println("LatLong: lat: " + ll.getLatitude() + " lng: " + ll.getLongitude());
+                this.selectedCalamity.getLocation().setLatitude(ll.getLatitude());
+                this.selectedCalamity.getLocation().setLongitude(ll.getLongitude());
+
+                updateMap(selectedCalamity);
+            }
+        });
 
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(location);
@@ -315,6 +318,16 @@ public class CalamityListController implements Initializable {
                 .zoom(15);
 
         map = googleMapView.createMap(mapOptions);
+//        map.addMouseEventHandler(UIEventType.click, (GMapMouseEvent event) -> {
+//
+//            if(changeButton.getText().equals("Save Changes")) {
+//                LatLong latLong = event.getLatLong();
+//                this.selectedCalamity.getLocation().setLatitude(latLong.getLatitude());
+//                this.selectedCalamity.getLocation().setLongitude(latLong.getLongitude());
+//
+//                updateMap(selectedCalamity);
+//            }
+//        });
 
         //Add markers to the map
         MarkerOptions markerOptions1 = new MarkerOptions();
@@ -322,8 +335,15 @@ public class CalamityListController implements Initializable {
 
         Marker fontysM = new Marker(markerOptions1);
 
-        map.addMarker( fontysM );
+        map.addMarker(fontysM);
 
+    }
+
+    class PostRequestTask extends TimerTask {
+        @Override
+        public void run() {
+            refreshCalamityTable();
+        }
     }
 }
 

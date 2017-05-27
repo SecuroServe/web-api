@@ -40,24 +40,22 @@ public class CalamityController implements ICalamity {
     /**
      * Returns a single calamity by id.
      *
-     * @param token The authentication token.
-     * @param id    The id of the calamity.
+     * @param id The id of the calamity.
      * @return A single calamity by id.
      */
     @Override
 
     @RequestMapping("/calamitybyid")
-    public ConfirmationMessage calamityById(@RequestParam(value = "token") String token,
-                                            @RequestParam(value = "id") int id) {
-        return calamityLogic.getCalamity(token, id);
+    public ConfirmationMessage calamityById(@RequestParam(value = "id") int id) {
+        return calamityLogic.getCalamity(id);
     }
 
     /**
      * Adds a new calamity.
      *
-     * @param token    The authentication token.
-     * @param title    The name of the calamity.
-     * @param message  The description of the calamity.
+     * @param token     The authentication token.
+     * @param title     The name of the calamity.
+     * @param message   The description of the calamity.
      * @param latitude  The latitude of the new calamity.
      * @param longitude The longitude of the new calamity.
      * @param radius    The radius of the new calamity.
@@ -80,10 +78,10 @@ public class CalamityController implements ICalamity {
     /**
      * Updates a calamity.
      *
-     * @param token       The authentication token.
-     * @param id          The id of the calamity.
-     * @param title        The name of the calamity.
-     * @param message The description of the calamity.
+     * @param token     The authentication token.
+     * @param id        The id of the calamity.
+     * @param title     The name of the calamity.
+     * @param message   The description of the calamity.
      * @param latitude  The latitude of the new calamity.
      * @param longitude The longitude of the new calamity.
      * @param radius    The radius of the new calamity.

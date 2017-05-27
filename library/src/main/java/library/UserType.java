@@ -11,7 +11,7 @@ import java.util.List;
  * Created by Jandie on 13-3-2017.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class UserType implements Serializable{
+public class UserType implements Serializable {
 
     private String name;
     private List<Permission> permissions;
@@ -21,10 +21,7 @@ public class UserType implements Serializable{
         permissions = new ArrayList<>();
     }
 
-    public UserType() { }
-
-    public void setName(String name) {
-        this.name = name;
+    public UserType() {
     }
 
     public List<Permission> getPermissions() {
@@ -37,6 +34,10 @@ public class UserType implements Serializable{
 
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void addPermission(Permission permission) {

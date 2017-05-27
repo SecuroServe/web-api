@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  * Handles database connection of UserType.
- *
+ * <p>
  * Created by Jandie on 12-Apr-17.
  */
 public class UserTypeRepo {

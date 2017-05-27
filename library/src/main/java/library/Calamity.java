@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Calamity implements Serializable{
+public class Calamity implements Serializable {
 
     /**
      * The id of the library.Calamity
@@ -88,26 +88,25 @@ public class Calamity implements Serializable{
         this.assignees = new ArrayList<>();
     }
 
-    public Calamity() { }
+    public Calamity() {
+    }
 
     public boolean isConfirmed() {
         return isConfirmed;
     }
 
+    /**
+     * Change the value of isConfirmed
+     *
+     * @param confirmed Bool of confirmed
+     */
+    public void setConfirmed(boolean confirmed) {
+        isConfirmed = confirmed;
+        state = updateStatus();
+    }
+
     public boolean isClosed() {
         return isClosed;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    public void setState(CalamityState state) {
-        this.state = state;
-    }
-
-    public void setAssignees(List<User> assignees) {
-        this.assignees = assignees;
     }
 
     /**
@@ -117,6 +116,10 @@ public class Calamity implements Serializable{
      */
     public int getId() {
         return this.id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     /**
@@ -129,6 +132,15 @@ public class Calamity implements Serializable{
     }
 
     /**
+     * Set the new library.Location of a library.Calamity
+     *
+     * @param location The updated location of a library.Calamity
+     */
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
+    /**
      * Get the library.User who created this library.Calamity
      *
      * @return the library.User who created this library.Calamity
@@ -138,12 +150,25 @@ public class Calamity implements Serializable{
     }
 
     /**
+     * Change the user who is assigned to this library.Calamity
+     *
+     * @param user The other user who has to be assigned
+     */
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    /**
      * Get the creation date of this library.Calamity
      *
      * @return the creation date of this library.Calamity
      */
     public Date getDate() {
         return this.date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     /**
@@ -169,43 +194,22 @@ public class Calamity implements Serializable{
     }
 
     /**
+     * Change the value of isClosed
+     *
+     * @param closed Bool of closed
+     */
+    public void setClosed(boolean closed) {
+        isClosed = closed;
+        state = updateStatus();
+    }
+
+    /**
      * Get the title of this library.Calamity
      *
      * @return the title of this library.Calamity
      */
     public String getTitle() {
         return this.title;
-    }
-
-    /**
-     * Get the message of this library.Calamity
-     *
-     * @return the title of this library.Calamity
-     */
-    public String getMessage() {
-        return this.message;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    /**
-     * Set the new library.Location of a library.Calamity
-     *
-     * @param location The updated location of a library.Calamity
-     */
-    public void setLocation(Location location) {
-        this.location = location;
-    }
-
-    /**
-     * Change the user who is assigned to this library.Calamity
-     *
-     * @param user The other user who has to be assigned
-     */
-    public void setUser(User user) {
-        this.user = user;
     }
 
     /**
@@ -218,6 +222,15 @@ public class Calamity implements Serializable{
     }
 
     /**
+     * Get the message of this library.Calamity
+     *
+     * @return the title of this library.Calamity
+     */
+    public String getMessage() {
+        return this.message;
+    }
+
+    /**
      * Change the message of this library.Calamity
      *
      * @param message updated message of the library.Calamity
@@ -226,28 +239,12 @@ public class Calamity implements Serializable{
         this.message = message;
     }
 
-    /**
-     * Change the value of isConfirmed
-     *
-     * @param confirmed Bool of confirmed
-     */
-    public void setConfirmed(boolean confirmed) {
-        isConfirmed = confirmed;
-        state = updateStatus();
-    }
-
-    /**
-     * Change the value of isClosed
-     *
-     * @param closed Bool of closed
-     */
-    public void setClosed(boolean closed) {
-        isClosed = closed;
-        state = updateStatus();
-    }
-
     public CalamityState getState() {
         return state;
+    }
+
+    public void setState(CalamityState state) {
+        this.state = state;
     }
 
     /**
@@ -267,17 +264,6 @@ public class Calamity implements Serializable{
     }
 
     /**
-     * library.Calamity status enum
-     */
-    public enum CalamityState {
-
-        PENDING,
-        OPEN,
-        CLOSED
-
-    }
-
-    /**
      * Adds an assignee to this calamity
      *
      * @param user The assignee.
@@ -293,8 +279,13 @@ public class Calamity implements Serializable{
         return this.assignees;
     }
 
+    public void setAssignees(List<User> assignees) {
+        this.assignees = assignees;
+    }
+
     /**
      * Get alerts from this calamity.
+     *
      * @return Alert List
      */
     public List<Alert> getAlerts() {
@@ -303,6 +294,7 @@ public class Calamity implements Serializable{
 
     /**
      * Adds alerts to this calamity.
+     *
      * @param alerts Alert List
      */
     public void setAlerts(List<Alert> alerts) {
@@ -311,9 +303,21 @@ public class Calamity implements Serializable{
 
     /**
      * Adds an alert to this calamity.
+     *
      * @param alert The alert
      */
     public void addAlert(Alert alert) {
         alerts.add(alert);
+    }
+
+    /**
+     * library.Calamity status enum
+     */
+    public enum CalamityState {
+
+        PENDING,
+        OPEN,
+        CLOSED
+
     }
 }

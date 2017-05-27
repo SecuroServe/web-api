@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 <?import java.net.URL?>
-<StackPane prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane xmlns:fx="http://javafx.com/fxml/1" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.112">
     <children>
         <VBox spacing="10.0" StackPane.alignment="CENTER">
             <children>

@@ -79,13 +79,13 @@ public class CalamityControllerTest {
 
         cc.addCalamityAssignee(user.getToken(), c1.getId(), user.getId());
 
-        c1 = (Calamity) cc.calamityById(user.getToken(), c1.getId()).getReturnObject();
+        c1 = (Calamity) cc.calamityById(c1.getId()).getReturnObject();
 
         Assert.assertEquals(true, isAssigned(user, c1));
 
         cc.deleteCalamityAssignee(user.getToken(), c1.getId(), user.getId());
 
-        c1 = (Calamity) cc.calamityById(user.getToken(), c1.getId()).getReturnObject();
+        c1 = (Calamity) cc.calamityById(c1.getId()).getReturnObject();
 
         Assert.assertEquals(false, isAssigned(user, c1));
 

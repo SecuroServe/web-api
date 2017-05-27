@@ -29,42 +29,43 @@ public class Location implements Serializable {
         this.id = id;
     }
 
-    public Location(){
+    public Location() {
 
     }
 
-    public Location(double lat, double lon, double radius) { }
-
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
-    }
-
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
-    }
-
-    public void setRadius(double radius) {
-        this.radius = radius;
+    public Location(double lat, double lon, double radius) {
     }
 
     public double getLongitude() {
         return this.longitude;
     }
 
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
     public double getLatitude() {
         return this.latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
     }
 
     public double getRadius() {
         return this.radius;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setRadius(double radius) {
+        this.radius = radius;
     }
 
     public int getId() {
         return this.id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     @Override

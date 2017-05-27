@@ -8,23 +8,16 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import jdk.internal.org.objectweb.asm.TypeReference;
-import library.Building;
-import library.Calamity;
 import library.User;
-import library.UserType;
 import requests.LoginRequest;
 import requests.UserRequest;
 import ui.Main;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.LinkedHashMap;
 import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
-
-    private Main main;
 
     @FXML
     public Button loginBtn;
@@ -34,6 +27,7 @@ public class LoginController implements Initializable {
     public TextField user;
     @FXML
     public TextField password;
+    private Main main;
 
     public LoginController(Main main) {
         this.main = main;

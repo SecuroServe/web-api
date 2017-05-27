@@ -26,12 +26,11 @@ public class UserRequest implements IUser {
     }
 
 
-
     @Override
     public ConfirmationMessage allusers(String userToken) {
         MultiValueMap<String, Object> parameters = new LinkedMultiValueMap<>();
         parameters.add("token", userToken);
-        return restClient.request(REQUEST_PREFIX+ALL, RestClient.RequestType.GET, parameters);
+        return restClient.request(REQUEST_PREFIX + ALL, RestClient.RequestType.GET, parameters);
     }
 
     @Override

@@ -24,15 +24,14 @@ import java.util.ResourceBundle;
  */
 public class DashboardController implements Initializable {
 
-    private Main main;
-    private User user;
-
     @FXML
     public Button logoutBtn;
     @FXML
     public VBox calamityBtn;
     @FXML
     public VBox sendRescuerBtn;
+    private Main main;
+    private User user;
 
     public DashboardController(Main main, User user) {
         this.main = main;
@@ -61,7 +60,7 @@ public class DashboardController implements Initializable {
         }
     }
 
-    private void handleInformRescuerBtnAction(MouseEvent mouseEvent){
+    private void handleInformRescuerBtnAction(MouseEvent mouseEvent) {
         Stage stage = new Stage();
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/SendRescuer.fxml"));
