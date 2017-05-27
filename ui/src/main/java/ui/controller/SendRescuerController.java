@@ -197,7 +197,6 @@ public class SendRescuerController implements Initializable {
         }
         selectedCalamity = calamity;
         selectedCalamityLabel.setText(calamity.getTitle());
-
         refreshTableViews();
         //todo set selected users
     }
@@ -214,7 +213,6 @@ public class SendRescuerController implements Initializable {
             String s = "Please select a calamity, and at least 1 rescuer";
             showMessage(s);
         }else {
-
             calamityRequest.updateCalamity(user.getToken(),
                     selectedCalamity.getId(),
                     selectedCalamity.getTitle(),
