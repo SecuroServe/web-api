@@ -1,5 +1,6 @@
 package logic;
 
+import com.google.gson.JsonObject;
 import datarepo.CalamityRepo;
 import datarepo.UserRepo;
 import datarepo.database.Database;
@@ -9,7 +10,9 @@ import library.Calamity;
 import library.Location;
 import library.User;
 import library.UserType;
+import utils.FCMHelper;
 
+import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -166,6 +169,13 @@ public class CalamityLogic {
             String firebaseToken = userRepo.getFirebaseToken(userId);
             if(firebaseToken != "") {
 
+                JsonObject object = new JsonObject();
+                object.addProperty("TITLE", "You've been added to a calamity");
+                object.addProperty("TEXT", "Click here to see more information...");
+
+                FCMHelper fcm = FCMHelper.getInstance();
+                fcm.sendData(FCMHelper.TYPE_TO, firebaseToken, object);
+
                 //TODO Send notification to firebase to this token
 
                 return new ConfirmationMessage(ConfirmationMessage.StatusType.SUCCES,
@@ -175,7 +185,7 @@ public class CalamityLogic {
             return new ConfirmationMessage(ConfirmationMessage.StatusType.SUCCES,
                     "library.Calamity assignee added but not alerted", null);
 
-        } catch (NoPermissionException | SQLException | ParseException | NoSuchAlgorithmException e) {
+        } catch (NoPermissionException | SQLException | ParseException | NoSuchAlgorithmException | IOException  e) {
 
             Logger.getLogger(CalamityLogic.class.getName()).log(Level.SEVERE,
                     "Error while adding calamity assignee", e);

@@ -73,9 +73,6 @@ public class SendRescuerController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        //set button actions and init tables
-        setButtonActions();
-        initTableViews();
 
         selectedCalamityLabel.setText("no calamity selected");
 
@@ -106,6 +103,10 @@ public class SendRescuerController implements Initializable {
             rescuerTableView.setPlaceholder(new Label("No available rescuers"));
             availableUsers = new ArrayList<>();
         }
+
+        //set button actions and init tables
+        setButtonActions();
+        initTableViews();
     }
 
     /**
