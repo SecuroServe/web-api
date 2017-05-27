@@ -21,6 +21,7 @@ import javafx.stage.Stage;
 import jdk.nashorn.internal.parser.JSONParser;
 import library.Calamity;
 import library.User;
+import library.Weather;
 import net.aksingh.owmjapis.CurrentWeather;
 import net.aksingh.owmjapis.OpenWeatherMap;
 import net.aksingh.owmjapis.Tools;
@@ -163,33 +164,28 @@ public class CalamityListController implements Initializable {
     }
 
     private void getWeatherData(Calamity calamity) {
+        WeatherRequest request = new WeatherRequest();
+        ObjectMapper mapper = new ObjectMapper();
 
-        OpenWeatherMap openWeatherMap = new OpenWeatherMap(OpenWeatherMap.Units.METRIC, "98d0f150f25d72ef30ec69301ef50f89");
-        CurrentWeather weather = openWeatherMap.currentWeatherByCoordinates((float)calamity.getLocation().getLatitude(), (float)calamity.getLocation().getLongitude());
+        ConfirmationMessage message = mapper.convertValue(request.getCurrentWeather(user.getToken(),
+                calamity.getLocation().getLongitude(),
+                calamity.getLocation().getLatitude()), ConfirmationMessage.class);
 
-        weatherLabel.setText(
-                "Location: " + weather.getCityName() + "(" + weather.getSysInstance().getCountryCode() + ")   (" + weather.getCoordInstance().getLatitude() + "/" + weather.getCoordInstance().getLongitude() + ")\n\n" +
-                        "Temperature (°C):" + weather.getMainInstance().getTemperature() + "\n" +
-                        " (Min: " + weather.getMainInstance().getMinTemperature() + " / Max: " + weather.getMainInstance().getMaxTemperature() + ")\n\n" +
-                        "Extra information: \n" +
-                        "Clouds: " + weather.getCloudsInstance().getPercentageOfClouds() + "%\n" +
-                        "Humidity: " + weather.getMainInstance().getHumidity() + "%\n" +
-                        "Wind Speed: " + weather.getWindInstance().getWindSpeed() + "");
+        if(message.getStatus().equals(ConfirmationMessage.StatusType.ERROR)) {
+            weatherLabel.setText("There is no weather data available\n\n" +
+                    "Message: " + message.getMessage());
+        } else {
 
-        // Er kan van de JSON niet opnieuw een CurrentWeather klasse worden gemaakt.
-        // Dit houdt in dat de API die jezel hebt geschreven beetje overbodig was, aagezien we t zelf ook gwn zo kunnen doen.
-        // Er wordt alleen maar json doorgestuurd en hier kan ik meteen een klasse van maken.
-
-//        WeatherRequest wr = new WeatherRequest();
-//
-//        ObjectMapper mapper = new ObjectMapper();
-//        ConfirmationMessage confirmationMessage = mapper.convertValue(wr.getCurrentWeather(user.getToken(), calamity.getLocation().getLongitude(), calamity.getLocation().getLatitude()), ConfirmationMessage.class);
-//
-//        if(confirmationMessage.getStatus().equals(ConfirmationMessage.StatusType.ERROR)) {
-//            weatherLabel.setText("Oops, there is no weather data available! \n\nError Message: " + confirmationMessage.getMessage());
-//        } else {
-//
-//        }
+            Weather weather = mapper.convertValue(message.getReturnObject(), Weather.class);
+            weatherLabel.setText(
+                    "Location: " + weather.getCityName() + "(" + weather.getCountryCode() + ")   (" + weather.getLatLong().getLatitude() + "/" + weather.getLatLong().getLongitude() + ")\n\n" +
+                            "Temperature (°C):" + weather.getTemperature().getTemperature() + "\n" +
+                            " (Min: " + weather.getTemperature().getMinTemperature() + " / Max: " + weather.getTemperature().getMaxTemperature() + ")\n\n" +
+                            "Extra information: \n" +
+                            "Clouds: " + weather.getClouds() + "%\n" +
+                            "Humidity: " + weather.getTemperature().getHumidity() + "%\n" +
+                            "Wind Speed: " + weather.getWindSpeed() + "");
+        }
     }
 
     private String createReadableText(String message) {

@@ -4,6 +4,7 @@ import datarepo.UserRepo;
 import datarepo.database.Database;
 import interfaces.ConfirmationMessage;
 import library.UserType;
+import library.Weather;
 import net.aksingh.owmjapis.CurrentWeather;
 import net.aksingh.owmjapis.DailyForecast;
 import net.aksingh.owmjapis.HourlyForecast;
@@ -44,7 +45,7 @@ public class WeatherLogic {
         try {
             userRepo.getUser(token).getUserType().containsPermission(UserType.Permission.CALAMITY_GET);
             CurrentWeather cw = omw.currentWeatherByCoordinates((float)latitude, (float)longitude);
-            return new ConfirmationMessage(ConfirmationMessage.StatusType.SUCCES, "Current Weather", cw);
+            return new ConfirmationMessage(ConfirmationMessage.StatusType.SUCCES, "Current Weather", new Weather(cw));
         } catch (Exception e) {
             return new ConfirmationMessage(ConfirmationMessage.StatusType.ERROR, "Failed to obtain current weather", e);
         }
