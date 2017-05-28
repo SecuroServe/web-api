@@ -65,11 +65,20 @@ public interface IUser {
                                    int id);
 
     /**
-     * Adds a Firebase token to a user, when he uses a app
+     * Adds a Firebase token to a user, when he uses a app.
      *
      * @param userToken     The authentication token.
      * @param firebaseToken The Firebase token
      * @return  Confirmation message with feedback about the insert.
      */
     ConfirmationMessage giveUserToken(String userToken, String firebaseToken);
+
+    /**
+     * Sends a notification to the user to give the operator some information.
+     *
+     * @param userToken The authentication token.
+     * @param userId The user who has to be notified.
+     * @return Confirmation message with feedback.
+     */
+    ConfirmationMessage askInformation(String userToken, int userId);
 }

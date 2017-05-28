@@ -49,26 +49,26 @@
                                 <Label text="Title:" />
                                 <HBox prefHeight="44.0" prefWidth="497.0">
                                     <children>
-                                        <TextField fx:id="titleTextField" minWidth="200.0" prefHeight="49.0" prefWidth="320.0" />
+                                        <TextField fx:id="titleTextField" minWidth="200.0" prefHeight="57.0" prefWidth="534.0" styleClass="textfield" />
                                     </children>
                                 </HBox>
                                 <Label text="Creator:" />
                                 <HBox prefHeight="1.0" prefWidth="497.0">
                                     <children>
-                                        <TextField fx:id="creatorTextField" prefHeight="49.0" prefWidth="320.0" />
+                                        <TextField fx:id="creatorTextField" prefHeight="57.0" prefWidth="508.0" styleClass="textfield" />
                                     </children>
                                 </HBox>
                                 <Label fx:id="calamityDate" text="Date:" />
                                 <HBox prefHeight="12.0" prefWidth="497.0">
                                     <children>
-                                        <TextField fx:id="dateTextField" prefHeight="37.0" prefWidth="320.0" />
+                                        <TextField fx:id="dateTextField" prefHeight="57.0" prefWidth="529.0" styleClass="textfield" />
                                     </children>
                                 </HBox>
                                 <Region prefHeight="38.0" prefWidth="497.0" />
                                 <Label ellipsisString="" text="Information:" />
                                 <HBox prefHeight="287.0" prefWidth="200.0">
                                     <children>
-                                        <TextArea fx:id="informationTextArea" prefHeight="287.0" prefWidth="497.0" />
+                                        <TextArea fx:id="informationTextArea" prefHeight="287.0" prefWidth="497.0" styleClass="textarea" />
                                     </children>
                                 </HBox>
                                 <Region prefHeight="13.0" prefWidth="497.0" />
@@ -96,6 +96,8 @@
                                 <Insets right="10.0" />
                             </HBox.margin>
                         </Button>
+                  <Region prefHeight="200.0" prefWidth="200.0" />
+                  <Button fx:id="askInfoButton" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" text="Ask Info" />
                     </children>
                 </HBox>
             </children>

@@ -94,11 +94,6 @@ public class SendRescuerController implements Initializable {
             Object val = userMessage.getReturnObject();
             //convert list to list of users
             availableUsers = objMapper.convertValue(val, new TypeReference<List<User>>(){});
-            for(User u : availableUsers) {
-                if(u.getAssignedCalamity() != null) {
-                    availableUsers.remove(u);
-                }
-            }
         } else{
             rescuerTableView.setPlaceholder(new Label("No available rescuers"));
             availableUsers = new ArrayList<>();

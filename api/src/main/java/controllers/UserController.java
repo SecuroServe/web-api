@@ -130,4 +130,11 @@ public class UserController implements IUser {
                                              @RequestParam(value = "firebasetoken") String firebaseToken) {
         return userLogic.setFirebaseToken(userToken, firebaseToken);
     }
+
+    @Override
+    @RequestMapping("/notify")
+    public ConfirmationMessage askInformation(@RequestParam(value = "usertoken") String userToken,
+                                              @RequestParam(value = "userid") int userId) {
+        return userLogic.notifyUser(userToken, userId);
+    }
 }

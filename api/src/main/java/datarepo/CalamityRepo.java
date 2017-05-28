@@ -187,8 +187,15 @@ public class CalamityRepo {
         UserRepo userRepo = new UserRepo(database);
         LocationRepo locationRepo = new LocationRepo(database);
 
-        String query = "SELECT `ID`, `LocationID`, `CreatedByUserID`, `isConfirmed`, " +
-                "`isClosed`, `Time`, `Title`, `Message` " +
+        String query =
+                "SELECT `ID`, " +
+                        "`LocationID`, " +
+                        "`CreatedByUserID`, " +
+                        "`isConfirmed`, " +
+                        "`isClosed`, " +
+                        "`Time`, " +
+                        "`Title`, " +
+                        "`Message` " +
                 "FROM `Calamity`";
 
         List<Object> parameters = new ArrayList<>();
@@ -204,8 +211,13 @@ public class CalamityRepo {
                 String title = rs.getString(7);
                 String message = rs.getString(8);
 
-                calamities.add(new Calamity(id, locationRepo.getLocation(locationId), userRepo.getUserById(createdByUserId),
-                        isConfirmed, isClosed, time, title, message));
+                List<User> assignees = this.getCalamityAssignees(id);
+
+                Calamity calamity = new Calamity(id, locationRepo.getLocation(locationId), userRepo.getUserById(createdByUserId),
+                        isConfirmed, isClosed, time, title, message);
+                calamity.setAssignees(assignees);
+
+                calamities.add(calamity);
             }
         }
 
@@ -239,7 +251,13 @@ public class CalamityRepo {
     public List<User> getCalamityAssignees(int calamityId) throws SQLException {
         List<User> assignees = new ArrayList<>();
 
-        String query = "SELECT u.`ID`, u.`UserTypeID`, u.`BuildingID`, u.`Username`, u.`Email`, u.`City` " +
+        String query =
+                "SELECT u.`ID`, " +
+                        "u.`UserTypeID`, " +
+                        "u.`BuildingID`, " +
+                        "u.`Username`, " +
+                        "u.`Email`, " +
+                        "u.`City` " +
                 "FROM `CalamityAssignee` ca " +
                 "INNER JOIN `User` u ON ca.AssigneeID = u.ID " +
                 "WHERE `CalamityID` = ?";

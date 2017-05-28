@@ -176,8 +176,6 @@ public class CalamityLogic {
                 FCMHelper fcm = FCMHelper.getInstance();
                 fcm.sendData(FCMHelper.TYPE_TO, firebaseToken, object);
 
-                //TODO Send notification to firebase to this token
-
                 return new ConfirmationMessage(ConfirmationMessage.StatusType.SUCCES,
                         "library.Calamity assignee added and alerted", null);
             }

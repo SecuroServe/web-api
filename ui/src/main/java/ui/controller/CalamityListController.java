@@ -17,6 +17,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
 import javafx.stage.Stage;
 import jdk.nashorn.internal.parser.JSONParser;
 import library.Calamity;
@@ -55,7 +56,11 @@ public class CalamityListController implements Initializable {
     @FXML
     private Button changeButton;
     @FXML
+    private Button askInfoButton;
+
+    @FXML
     private TableView<Calamity> calamityTable;
+
     @FXML
     private TextField titleTextField;
     @FXML
@@ -63,23 +68,40 @@ public class CalamityListController implements Initializable {
     @FXML
     private TextField dateTextField;
     @FXML
-    private Label weatherLabel;
-    @FXML
     private TextArea informationTextArea;
+
+    @FXML
+    private Label weatherLabel;
+
     @FXML
     private GoogleMapView googleMapView;
+
     private GoogleMap map;
     private Calamity selectedCalamity;
     private Timer timerToRefresh = new Timer();
 
+    private UserRequest userRequest;
+    private CalamityRequest calamityRequest;
+
     public CalamityListController(User user) {
         this.user = user;
+        this.userRequest = new UserRequest();
+        this.calamityRequest = new CalamityRequest();
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        titleTextField.setEditable(false);
+        creatorTextField.setEditable(false);
+        dateTextField.setEditable(false);
+        informationTextArea.setEditable(false);
+
+        googleMapView.addMapInializedListener(this::mapInitialized);
         refreshButton.setOnAction(this::handleRefreshAction);
+        changeButton.setOnAction(this::handleChangeAction);
         backButton.setOnAction(this::handleBackAction);
+        askInfoButton.setOnAction(this::handleAskInfoAction);
         calamityTable.setOnMouseClicked((MouseEvent event) -> {
             if (event.getButton().equals(MouseButton.PRIMARY)) {
                 try {
@@ -89,21 +111,28 @@ public class CalamityListController implements Initializable {
                 }
             }
         });
-        changeButton.setOnAction(this::handleChangeAction);
-
-        titleTextField.setEditable(false);
-        creatorTextField.setEditable(false);
-        dateTextField.setEditable(false);
-        informationTextArea.setEditable(false);
 
         initiateTableColumns();
-        initiateUserTable();
         refreshCalamityTable();
-        refreshUserTable();
 
         // Refreshing the table every 10 seconds
-        timerToRefresh.schedule(new PostRequestTask(), 10 * 1000);
-        googleMapView.addMapInializedListener(() -> mapInitialized());
+        timerToRefresh.schedule(new RefreshTask(), 10 * 1000);
+    }
+
+    private void refreshUserTable() {
+        List<User> users = this.selectedCalamity.getAssignees();
+        ObservableList<User> obsList = FXCollections.observableArrayList(users);
+        userTable.setItems(obsList);
+    }
+
+    private void refreshCalamityTable() {
+        Object value = calamityRequest.allCalamity().getReturnObject();
+
+        ObjectMapper mapper = new ObjectMapper();
+        List<Calamity> calamities = mapper.convertValue(value, new TypeReference<List<Calamity>>() { });
+
+        ObservableList<Calamity> obsList = FXCollections.observableArrayList(calamities);
+        calamityTable.setItems(obsList);
     }
 
     private void handleChangeAction(ActionEvent actionEvent) {
@@ -146,72 +175,25 @@ public class CalamityListController implements Initializable {
     }
 
     private void handleRefreshAction(ActionEvent actionEvent) {
+        int index = calamityTable.getSelectionModel().getSelectedIndex();
         refreshCalamityTable();
-        refreshUserTable();
+        calamityTable.requestFocus();
+        calamityTable.getSelectionModel().select(index);
+        fillCalamityDetails(calamityTable.getSelectionModel().getSelectedItem());
     }
 
-    private void fillCalamityDetails(Calamity calamity) throws NullPointerException {
-        this.selectedCalamity = calamity;
-
-        updateMap(calamity);
-        getWeatherData(calamity);
-
-        titleTextField.setText(calamity.getTitle());
-        creatorTextField.setText(calamity.getUser().toString());
-        dateTextField.setText(calamity.getDate().toString());
-        informationTextArea.setText(createReadableText(calamity.getMessage()));
-
-    }
-
-    private void getWeatherData(Calamity calamity) {
-        WeatherRequest request = new WeatherRequest();
-        ObjectMapper mapper = new ObjectMapper();
-
-        ConfirmationMessage message = mapper.convertValue(request.getCurrentWeather(user.getToken(),
-                calamity.getLocation().getLongitude(),
-                calamity.getLocation().getLatitude()), ConfirmationMessage.class);
-
-        if(message.getStatus().equals(ConfirmationMessage.StatusType.ERROR)) {
-            weatherLabel.setText("There is no weather data available\n\n" +
-                    "Message: " + message.getMessage());
+    private void handleAskInfoAction(ActionEvent actionEvent) {
+        if(userTable.getSelectionModel().getSelectedIndex() < 0) {
+            showMessage("Nothing selected", "Please select a user to ask information!");
         } else {
+            ConfirmationMessage message = userRequest.askInformation(user.getToken(), userTable.getSelectionModel().getSelectedItem().getId());
 
-            Weather weather = mapper.convertValue(message.getReturnObject(), Weather.class);
-            weatherLabel.setText(
-                    "Location: " + weather.getCityName() + "(" + weather.getCountryCode() + ")   (" + weather.getLatLong().getLatitude() + "/" + weather.getLatLong().getLongitude() + ")\n\n" +
-                            "Temperature (°C):" + weather.getTemperature().getTemperature() + "\n" +
-                            " (Min: " + weather.getTemperature().getMinTemperature() + " / Max: " + weather.getTemperature().getMaxTemperature() + ")\n\n" +
-                            "Extra information: \n" +
-                            "Clouds: " + weather.getClouds() + "%\n" +
-                            "Humidity: " + weather.getTemperature().getHumidity() + "%\n" +
-                            "Wind Speed: " + weather.getWindSpeed() + "");
-        }
-    }
-
-    private String createReadableText(String message) {
-        StringBuilder stringBuilder = new StringBuilder();
-        int counter = 0;
-
-        System.out.println(message.length());
-
-        for (int i = 0; i < message.length(); i++) {
-            stringBuilder.append(message.charAt(i));
-            String c = Character.toString(message.charAt(i));
-            counter++;
-
-            if (counter > 40 && c.equals(" ")) {
-                stringBuilder.append("\n");
-                System.out.println(counter);
-                counter = 0;
+            if(message.getStatus().equals(ConfirmationMessage.StatusType.SUCCES)) {
+                showMessage("SUCCESS", "Assignee has been notified");
+            } else {
+                showMessage("ERROR", "Assignee has not been notified");
             }
         }
-        return stringBuilder.toString();
-    }
-
-    private void fillDefaultCalamityDetails() {
-        titleTextField.setText("Calamity title");
-        creatorTextField.setText("Calamity creator");
-        dateTextField.setText("Calamity date");
     }
 
     private void initiateTableColumns() {
@@ -220,34 +202,9 @@ public class CalamityListController implements Initializable {
 
         TableColumn calamityName = new TableColumn("Calamity");
         calamityName.getStyleClass().add("foo");
-        calamityName.setMinWidth(150);
+        calamityName.setMinWidth(397);
         calamityName.setCellValueFactory(new PropertyValueFactory<Calamity, String>("title"));
         calamityTable.getColumns().add(calamityName);
-
-        TableColumn calamityDate = new TableColumn("Date");
-        calamityDate.getStyleClass().add("foo");
-        calamityDate.setMinWidth(250);
-        calamityDate.setCellValueFactory(new PropertyValueFactory<Calamity, Date>("date"));
-        calamityTable.getColumns().add(calamityDate);
-
-//        TableColumn calamityLocation = new TableColumn("Location");
-//        calamityLocation.getStyleClass().add("foo");
-//        calamityLocation.setCellValueFactory(new PropertyValueFactory<Calamity, Location>("location"));
-//        calamityTable.getColumns().add(calamityLocation);
-//
-//        TableColumn calamityAlertedBy = new TableColumn("Alerted By");
-//        calamityAlertedBy.getStyleClass().add("foo");
-//        calamityAlertedBy.setCellValueFactory(new PropertyValueFactory<Calamity, User>("user"));
-//        calamityTable.getColumns().add(calamityAlertedBy);
-//
-//        TableColumn calamityStatus = new TableColumn("State");
-//        calamityStatus.getStyleClass().add("foo");
-//        calamityStatus.setCellValueFactory(new PropertyValueFactory<Calamity, Calamity.CalamityState>("state"));
-//        calamityTable.getColumns().add(calamityStatus);
-
-    }
-
-    private void initiateUserTable() {
 
         userTable.setColumnResizePolicy((param) -> true);
 
@@ -257,42 +214,58 @@ public class CalamityListController implements Initializable {
         userName.setCellValueFactory(new PropertyValueFactory<User, String>("username"));
         userTable.getColumns().add(userName);
 
-
         TableColumn userCity = new TableColumn("City");
         userCity.getStyleClass().add("foo");
-        userCity.setMinWidth(250);
+        userCity.setMinWidth(247);
         userCity.setCellValueFactory(new PropertyValueFactory<User, String>("city"));
         userTable.getColumns().add(userCity);
     }
 
-    private void refreshUserTable() {
-        UserRequest userRequest = new UserRequest();
-        Object value = userRequest.allusers(user.getToken()).getReturnObject();
-
-        // Cast object to list of objects
-        ObjectMapper mapper = new ObjectMapper();
-        List<User> users = mapper.convertValue(value, new TypeReference<List<User>>() {
-        });
-
-        ObservableList<User> obsList = FXCollections.observableArrayList(users);
-        userTable.setItems(obsList);
+    private void fillDefaultCalamityDetails() {
+        titleTextField.setText("Calamity title");
+        creatorTextField.setText("Calamity creator");
+        dateTextField.setText("Calamity date");
+        informationTextArea.setText("Calamity information");
     }
 
-    private void refreshCalamityTable() {
-        CalamityRequest calamityRequest = new CalamityRequest();
-        Object value = calamityRequest.allCalamity().getReturnObject();
+    private void fillCalamityDetails(Calamity calamity) throws NullPointerException {
+        this.selectedCalamity = calamity;
 
-        ObjectMapper mapper = new ObjectMapper();
-        List<Calamity> calamities = mapper.convertValue(value, new TypeReference<List<Calamity>>() {
-        });
+        updateMap(calamity);
+        getWeatherData(calamity);
+        refreshUserTable();
 
-        //List<Calamity> calamities = new ArrayList<>();
-        //calamities.add(new Calamity(1, new Location(1, 51.4477766, 5.4909617, 250.0),
-        //       new User(1, null, null, null, "Henk", "henk@gmail.com", "Eindhoven", "abcd"),
-        //       true, false, new Date(System.currentTimeMillis()), "Aanslag TU", "Lorem Ipsum is slechts een proeftekst uit het drukkerij- en zetterijwezen. Lorem Ipsum is de standaard proeftekst in deze bedrijfstak sinds de 16e eeuw, toen een onbekende drukker een zethaak met letters nam en ze door elkaar husselde om een font-catalogus te maken. Het heeft niet alleen vijf eeuwen overleefd maar is ook, vrijwel onveranderd, overgenomen in elektronische letterzetting. Het is in de jaren '60 populair geworden met de introductie van Letraset vellen met Lorem Ipsum passages en meer recentelijk door desktop publishing software zoals Aldus PageMaker die versies van Lorem Ipsum bevatten."));
+        titleTextField.setText(calamity.getTitle());
+        creatorTextField.setText(calamity.getUser().toString());
+        dateTextField.setText(calamity.getDate().toString());
+        informationTextArea.setText(calamity.getMessage());
+        informationTextArea.setWrapText(true);
+    }
 
-        ObservableList<Calamity> obsList = FXCollections.observableArrayList(calamities);
-        calamityTable.setItems(obsList);
+    public void mapInitialized() {
+        LatLong fontys = new LatLong(51.4520890, 5.4819830);
+
+        //Set the initial properties of the map.
+        MapOptions mapOptions = new MapOptions();
+
+        mapOptions.center(fontys)
+                .mapType(MapTypeIdEnum.ROADMAP)
+                .overviewMapControl(false)
+                .panControl(false)
+                .rotateControl(false)
+                .scaleControl(false)
+                .streetViewControl(false)
+                .zoomControl(true)
+                .zoom(15);
+
+        map = googleMapView.createMap(mapOptions);
+
+        //Add markers to the map
+        MarkerOptions markerOptions1 = new MarkerOptions();
+        markerOptions1.position(fontys);
+
+        Marker fontysM = new Marker(markerOptions1);
+        map.addMarker(fontysM);
     }
 
     private void updateMap(Calamity calamity) throws NullPointerException {
@@ -340,45 +313,40 @@ public class CalamityListController implements Initializable {
         iw.open(map, marker);
     }
 
-    public void mapInitialized() {
-        LatLong fontys = new LatLong(51.4520890, 5.4819830);
+    private void getWeatherData(Calamity calamity) {
+        WeatherRequest request = new WeatherRequest();
+        ObjectMapper mapper = new ObjectMapper();
 
-        //Set the initial properties of the map.
-        MapOptions mapOptions = new MapOptions();
+        ConfirmationMessage message = mapper.convertValue(request.getCurrentWeather(user.getToken(),
+                calamity.getLocation().getLongitude(),
+                calamity.getLocation().getLatitude()), ConfirmationMessage.class);
 
-        mapOptions.center(fontys)
-                .mapType(MapTypeIdEnum.ROADMAP)
-                .overviewMapControl(false)
-                .panControl(false)
-                .rotateControl(false)
-                .scaleControl(false)
-                .streetViewControl(false)
-                .zoomControl(true)
-                .zoom(15);
+        if(message.getStatus().equals(ConfirmationMessage.StatusType.ERROR)) {
+            weatherLabel.setText("There is no weather data available\n\n" +
+                    "Message: " + message.getMessage());
+        } else {
 
-        map = googleMapView.createMap(mapOptions);
-//        map.addMouseEventHandler(UIEventType.click, (GMapMouseEvent event) -> {
-//
-//            if(changeButton.getText().equals("Save Changes")) {
-//                LatLong latLong = event.getLatLong();
-//                this.selectedCalamity.getLocation().setLatitude(latLong.getLatitude());
-//                this.selectedCalamity.getLocation().setLongitude(latLong.getLongitude());
-//
-//                updateMap(selectedCalamity);
-//            }
-//        });
-
-        //Add markers to the map
-        MarkerOptions markerOptions1 = new MarkerOptions();
-        markerOptions1.position(fontys);
-
-        Marker fontysM = new Marker(markerOptions1);
-
-        map.addMarker(fontysM);
-
+            Weather weather = mapper.convertValue(message.getReturnObject(), Weather.class);
+            weatherLabel.setText(
+                    "Location: " + weather.getCityName() + "(" + weather.getCountryCode() + ")   (" + weather.getLatLong().getLatitude() + "/" + weather.getLatLong().getLongitude() + ")\n\n" +
+                            "Temperature (°C):" + weather.getTemperature().getTemperature() + "\n" +
+                            " (Min: " + weather.getTemperature().getMinTemperature() + " / Max: " + weather.getTemperature().getMaxTemperature() + ")\n\n" +
+                            "Extra information: \n" +
+                            "Clouds: " + weather.getClouds() + "%\n" +
+                            "Humidity: " + weather.getTemperature().getHumidity() + "%\n" +
+                            "Wind Speed: " + weather.getWindSpeed() + "");
+        }
     }
 
-    class PostRequestTask extends TimerTask {
+    private void showMessage(String title, String text) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(text);
+        alert.showAndWait();
+    }
+
+    class RefreshTask extends TimerTask {
         @Override
         public void run() {
             refreshCalamityTable();
