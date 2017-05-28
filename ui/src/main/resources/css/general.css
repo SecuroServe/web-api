@@ -58,30 +58,42 @@
     -fx-text-fill: black;
 }
 
-/*.button {*/
-/*!*-fx-background-radius: 12;*!*/
-/*-fx-padding: 10;*/
-/*-fx-shadow-highlight-color: f0f0f0;*/
-/*-fx-body-color: linear-gradient(from 0em 0em to 0em 2.083333em, white, #D7D7D7, white);*/
-/*}*/
+.textfield {
+    -fx-background-color: white;
+    -fx-background-radius: 4px;
+    -fx-text-fill: black;
 
-/*.login-button {*/
-/*-fx-background-color: linear-gradient(from 0em 0em to 0em 2.083333em, #49a0ff, #1e64e8, #227cff);*/
-/*-fx-border-width: 0;*/
-/*-fx-text-fill: #ffffff;*/
-/*-fx-font-weight: bold;*/
-/*}*/
+    -fx-border-color: white;
+    -fx-border-radius: 4px;
+    -fx-border-width: 4px;
+}
 
-/*.close-button {*/
-/*-fx-background-color: #f44;*/
-/*-fx-background-radius: 15;*/
-/*-fx-padding: 5 10;*/
-/*}*/
+.textfield:focused {
+    -fx-background-color: white;
+    -fx-background-radius: 4px;
+    -fx-text-fill: black;
 
-/*.close-button:hover {*/
-/*-fx-background-color: #ff8080;*/
-/*}*/
+    -fx-border-color: rgb(0.0, 184.0, 222.0);
+    -fx-border-radius: 4px;
+    -fx-border-width: 4px;
+}
 
-/*.text-field, .password-field {*/
-/*-fx-padding: 10;*/
-/*}*/
+.textarea {
+    -fx-background-color: white;
+    -fx-background-radius: 4px;
+}
+
+.textarea .content {
+    -fx-background-color: white;
+    -fx-text-fill: black;
+}
+
+.textarea:focused {
+    -fx-background-color: rgb(0.0, 184.0, 222.0);
+    -fx-background-radius: 4px;
+}
+
+.textarea .content:focused {
+    -fx-background-color: white;
+    -fx-text-fill: black;
+}
