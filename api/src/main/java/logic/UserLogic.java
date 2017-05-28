@@ -111,7 +111,12 @@ public class UserLogic {
     public ConfirmationMessage setFirebaseToken(String usertoken, String firebaseToken) {
         try{
             User user = userRepo.getUser(usertoken);
-            return new ConfirmationMessage(ConfirmationMessage.StatusType.SUCCES, "FirebaseToken has been set!", userRepo.setFirebaseToken(user.getId(), firebaseToken));
+
+            if(userRepo.getFirebaseTokenCount(user.getId()) > 0) {
+                return new ConfirmationMessage(ConfirmationMessage.StatusType.SUCCES, "FirebaseToken has been updated!", userRepo.updateFirebaseToken(user.getId(), firebaseToken));
+            } else {
+                return new ConfirmationMessage(ConfirmationMessage.StatusType.SUCCES, "FirebaseToken has been set!", userRepo.setFirebaseToken(user.getId(), firebaseToken));
+            }
 
         } catch (SQLException  | ParseException | NoSuchAlgorithmException e) {
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,

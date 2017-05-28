@@ -403,7 +403,7 @@ public class UserRepo {
     }
 
     public String getFirebaseToken(int userID) throws SQLException {
-        String FirebaseToken = "";
+        String firebaseToken = "";
 
         String query =
                 "SELECT `ID`, " +
@@ -416,10 +416,45 @@ public class UserRepo {
 
         try (ResultSet rs = database.executeQuery(query, parameters, Database.QueryType.QUERY)) {
             if (rs.next()) {
-                FirebaseToken = rs.getString(2);
+                firebaseToken = rs.getString(2);
             }
         }
 
-        return FirebaseToken;
+        return firebaseToken;
+    }
+
+    public int getFirebaseTokenCount(int id) throws SQLException{
+        String query =
+                "SELECT COUNT(`UserID`) " +
+                "FROM `FirebaseToken` " +
+                "WHERE `UserID` = ?";
+
+        List<Object> parameters = new ArrayList<>();
+        parameters.add(id);
+
+        try (ResultSet rs = database.executeQuery(query, parameters, Database.QueryType.QUERY)) {
+            if(rs.next()) {
+                return rs.getInt(1);
+            }
+        }
+
+        return 0;
+    }
+
+    public String updateFirebaseToken(int id, String firebaseToken) throws SQLException {
+        String token = firebaseToken;
+
+        String query =
+                "UPDATE `FirebaseToken` " +
+                "SET `FirebaseToken` = ?" +
+                "WHERE `UserID` = ?";
+
+        List<Object> parameters = new ArrayList<>();
+        parameters.add(firebaseToken);
+        parameters.add(id);
+
+        database.executeQuery(query, parameters, Database.QueryType.NON_QUERY);
+
+        return token;
     }
 }
