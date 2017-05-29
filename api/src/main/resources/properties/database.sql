@@ -15,6 +15,7 @@ DROP TABLE IF EXISTS Calamity;
 DROP TABLE IF EXISTS BuildingType;
 DROP TABLE IF EXISTS Building;
 DROP TABLE IF EXISTS Alert;
+DROP TABLE IF EXISTS FirebaseToken;
 
 CREATE TABLE Alert
 (
@@ -174,6 +175,7 @@ CREATE TABLE User
   City            VARCHAR(128) NOT NULL,
   Token           VARCHAR(64)  NOT NULL,
   TokenExpiration VARCHAR(45)  NOT NULL,
+
   CONSTRAINT Username_UNIQUE
   UNIQUE (Username),
   CONSTRAINT Token_UNIQUE
@@ -195,12 +197,22 @@ CREATE TABLE UserTypePermission
   PermissionID INT NOT NULL
 );
 
-INSERT INTO UserType (Naam) VALUES ('Administrator');
+CREATE TABLE FirebaseToken
+(
+  ID            INT NOT NULL AUTO_INCREMENT
+                PRIMARY KEY,
+  UserID        INT NOT NULL,
+  FirebaseToken VARCHAR(250) NOT NULL,
 
-INSERT INTO Permission (Node, Description) VALUES ('ALERT_ADD', 'Permissions to add a Alert');
-INSERT INTO Permission (Node, Description) VALUES ('ALERT_UPDATE', 'Permissions to update a Alert');
-INSERT INTO Permission (Node, Description) VALUES ('ALERT_GET', 'Permissions to get a Alert');
-INSERT INTO Permission (Node, Description) VALUES ('ALERT_DELETE', 'Permissions to delete a Alert');
+  CONSTRAINT UserID_UNIQUE
+  UNIQUE (UserID),
+  CONSTRAINT FirebaseToken_UNIQUE
+  UNIQUE (FirebaseToken)
+);
+
+INSERT INTO UserType (Naam) VALUES ('Administrator');
+INSERT INTO UserType (Naam) VALUES ('Hulpverlener');
+
 INSERT INTO Permission (Node, Description) VALUES ('CALAMITY_ADD', 'Permissions to add a Calamity');
 INSERT INTO Permission (Node, Description) VALUES ('CALAMITY_UPDATE', 'Permissions to update a Calamity');
 INSERT INTO Permission (Node, Description) VALUES ('CALAMITY_GET', 'Permissions to get a Calamity');
@@ -212,6 +224,14 @@ INSERT INTO Permission (Node, Description)
 VALUES ('CALAMITY_ADD_ASSIGNEE', 'Permissions to add an Assignee to a Calamity');
 INSERT INTO Permission (Node, Description)
 VALUES ('CALAMITY_DELETE_ASSIGNEE', 'Permissions to remove an Assignee to a Calamity');
+INSERT INTO Permission (Node, Description) VALUES ('ALERT_ADD', 'Permissions to add an alert');
+INSERT INTO Permission (Node, Description) VALUES ('ALERT_UPDATE', 'Permissions to update an alert');
+INSERT INTO Permission (Node, Description) VALUES ('ALERT_GET', 'Permissions to get an alert');
+INSERT INTO Permission (Node, Description) VALUES ('ALERT_DELETE', 'Permissions to delete an alert');
+INSERT INTO Permission (Node, Description)
+VALUES ('USER_NOTIFY', 'Permission to notify a user to give the operator more information');
+INSERT INTO Permission (Node, Description)
+VALUES ('SET_FIREBASE_TOKEN', 'Permission to login into a device and make it ready to get notified');
 
 INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (1, 1);
 INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (1, 2);
@@ -226,3 +246,5 @@ INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (1, 10);
 INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (1, 11);
 INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (1, 12);
 INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (1, 13);
+INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (1, 14);
+INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (1, 15);

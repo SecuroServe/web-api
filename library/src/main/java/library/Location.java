@@ -34,6 +34,9 @@ public class Location implements Serializable {
     }
 
     public Location(double lat, double lon, double radius) {
+        this.longitude = lon;
+        this.latitude = lat;
+        this.radius = radius;
     }
 
     public double getLongitude() {

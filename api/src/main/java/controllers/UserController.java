@@ -60,7 +60,6 @@ public class UserController implements IUser {
             return userLogic.getUser(userToken);
         } catch (NoSuchAlgorithmException | ParseException e) {
             e.printStackTrace();
-
             return null;
         }
     }
@@ -123,5 +122,19 @@ public class UserController implements IUser {
     @RequestMapping("/deleteuser")
     public ConfirmationMessage deleteUser(@RequestParam(value = "token") String token, @RequestParam(value = "id") int id) {
         return userLogic.deleteUser(token, id);
+    }
+
+    @Override
+    @RequestMapping("/setfirebasetoken")
+    public ConfirmationMessage giveUserToken(@RequestParam(value = "usertoken") String userToken,
+                                             @RequestParam(value = "firebasetoken") String firebaseToken) {
+        return userLogic.setFirebaseToken(userToken, firebaseToken);
+    }
+
+    @Override
+    @RequestMapping("/notify")
+    public ConfirmationMessage askInformation(@RequestParam(value = "usertoken") String userToken,
+                                              @RequestParam(value = "userid") int userId) {
+        return userLogic.notifyUser(userToken, userId);
     }
 }

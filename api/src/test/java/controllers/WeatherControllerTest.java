@@ -2,7 +2,7 @@ package controllers;
 
 import datarepo.database.Database;
 import library.User;
-import net.aksingh.owmjapis.CurrentWeather;
+import library.Weather;
 import net.aksingh.owmjapis.DailyForecast;
 import net.aksingh.owmjapis.HourlyForecast;
 import org.junit.Assert;
@@ -27,13 +27,13 @@ public class WeatherControllerTest {
 
     @Test
     public void getCurrentWeather() throws Exception {
-        CurrentWeather cw = (CurrentWeather) wc.getCurrentWeather(user.getToken(),
+        Weather weather = (Weather) wc.getCurrentWeather(user.getToken(),
                 5.481383f, 51.440082f)
                 .getReturnObject();
 
-        Assert.assertEquals(5.481383f, cw.getCoordInstance().getLongitude(), 0.01);
-        Assert.assertEquals(51.440082f, cw.getCoordInstance().getLatitude(), 0.01);
-        Assert.assertEquals("Eindhoven", cw.getCityName());
+        Assert.assertEquals(5.481383f, weather.getLatLong().getLongitude(), 0.01);
+        Assert.assertEquals(51.440082f, weather.getLatLong().getLatitude(), 0.01);
+        Assert.assertEquals("Eindhoven", weather.getCityName());
     }
 
     @Test

@@ -10,7 +10,7 @@ import rest.RestClient;
  * Created by Jandie on 2017-05-02.
  */
 public class AlertRequest implements IAlert {
-    private static final String REQUEST_PREFIX = "http://localhost:8080";
+    private static final String REQUEST_PREFIX = "https://www.securoserve.nl/api";
     private static final String GET_ALL_ALERTS = "/getallalerts";
     private static final String GET_ALERT = "/getalert";
     private static final String ADD_ALERT = "/addalert";

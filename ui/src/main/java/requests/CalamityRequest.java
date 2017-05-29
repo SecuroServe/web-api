@@ -11,7 +11,7 @@ import rest.RestClient;
  */
 public class CalamityRequest implements ICalamity {
 
-    private static final String REQUEST_PREFIX = "http://localhost:8080";
+    private static final String REQUEST_PREFIX = "https://www.securoserve.nl/api";
 
     private static final String GET_ALL = "/allcalamity";
     private static final String GET_CALAMITY_BY_ID = "/calamitybyid";

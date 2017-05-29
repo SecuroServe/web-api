@@ -10,8 +10,8 @@ import rest.RestClient;
  * Created by Michel on 8-5-2017.
  */
 public class WeatherRequest implements IWeather {
-
-    private static final String REQUEST_PREFIX = "http://localhost:8080";
+    
+    private static final String REQUEST_PREFIX = "https://www.securoserve.nl/api";
 
     private static final String CURRENT_WEATHER = "/weather/current";
     private static final String HOURLY_FORECAST = "/weather/hourlyforecast";

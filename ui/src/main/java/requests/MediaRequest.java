@@ -12,7 +12,7 @@ import rest.RestClient;
  * Created by Jandie on 2017-05-22.
  */
 public class MediaRequest implements IMedia {
-    private static final String REQUEST_PREFIX = "http://localhost:8080";
+    private static final String REQUEST_PREFIX = "https://www.securoserve.nl/api";
     private static final String GET_MEDIA = "/getmedia";
     private static final String ADD_MEDIA = "/addmedia";
     private static final String UPLOAD_MEDIA = "/uploadmedia";

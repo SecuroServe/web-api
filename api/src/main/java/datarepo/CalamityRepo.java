@@ -124,7 +124,39 @@ public class CalamityRepo {
                 }
             }
         }
+        return calamity;
+    }
 
+    public Calamity getAssignedCalamity(int id) throws SQLException, ParseException, NoSuchAlgorithmException {
+        Calamity calamity = null;
+        LocationRepo locationRepo = new LocationRepo(database);
+
+        String query =
+                "SELECT `LocationID`, " +
+                        "`isConfirmed`, " +
+                        "`isClosed`, " +
+                        "`Time`, " +
+                        "`Title`, " +
+                        "`Message` " +
+                "FROM `Calamity` " +
+                "WHERE `ID` = ?";
+
+        List<Object> parameters = new ArrayList<>();
+        parameters.add(id);
+
+        try (ResultSet rs = database.executeQuery(query, parameters, Database.QueryType.QUERY)) {
+            if (rs.next()) {
+                int locationId = rs.getInt(1);
+                boolean isConfirmed = rs.getInt(2) == 1;
+                boolean isClosed = rs.getInt(3) == 1;
+                Date time = rs.getDate(4);
+                String title = rs.getString(5);
+                String message = rs.getString(6);
+
+                calamity = new Calamity(id, locationRepo.getLocation(locationId), null,
+                        isConfirmed, isClosed, time, title, message);
+            }
+        }
         return calamity;
     }
 
@@ -155,8 +187,15 @@ public class CalamityRepo {
         UserRepo userRepo = new UserRepo(database);
         LocationRepo locationRepo = new LocationRepo(database);
 
-        String query = "SELECT `ID`, `LocationID`, `CreatedByUserID`, `isConfirmed`, " +
-                "`isClosed`, `Time`, `Title`, `Message` " +
+        String query =
+                "SELECT `ID`, " +
+                        "`LocationID`, " +
+                        "`CreatedByUserID`, " +
+                        "`isConfirmed`, " +
+                        "`isClosed`, " +
+                        "`Time`, " +
+                        "`Title`, " +
+                        "`Message` " +
                 "FROM `Calamity`";
 
         List<Object> parameters = new ArrayList<>();
@@ -172,8 +211,13 @@ public class CalamityRepo {
                 String title = rs.getString(7);
                 String message = rs.getString(8);
 
-                calamities.add(new Calamity(id, locationRepo.getLocation(locationId), userRepo.getUserById(createdByUserId),
-                        isConfirmed, isClosed, time, title, message));
+                List<User> assignees = this.getCalamityAssignees(id);
+
+                Calamity calamity = new Calamity(id, locationRepo.getLocation(locationId), userRepo.getUserById(createdByUserId),
+                        isConfirmed, isClosed, time, title, message);
+                calamity.setAssignees(assignees);
+
+                calamities.add(calamity);
             }
         }
 
@@ -207,7 +251,13 @@ public class CalamityRepo {
     public List<User> getCalamityAssignees(int calamityId) throws SQLException {
         List<User> assignees = new ArrayList<>();
 
-        String query = "SELECT u.`ID`, u.`UserTypeID`, u.`BuildingID`, u.`Username`, u.`Email`, u.`City` " +
+        String query =
+                "SELECT u.`ID`, " +
+                        "u.`UserTypeID`, " +
+                        "u.`BuildingID`, " +
+                        "u.`Username`, " +
+                        "u.`Email`, " +
+                        "u.`City` " +
                 "FROM `CalamityAssignee` ca " +
                 "INNER JOIN `User` u ON ca.AssigneeID = u.ID " +
                 "WHERE `CalamityID` = ?";

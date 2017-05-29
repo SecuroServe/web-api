@@ -1,5 +1,6 @@
 package logic;
 
+import com.google.gson.JsonObject;
 import datarepo.UserRepo;
 import datarepo.database.Database;
 import exceptions.NoPermissionException;
@@ -7,7 +8,9 @@ import exceptions.WrongUsernameOrPasswordException;
 import interfaces.ConfirmationMessage;
 import library.User;
 import library.UserType;
+import utils.FCMHelper;
 
+import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -99,12 +102,55 @@ public class UserLogic {
     }
 
     public ConfirmationMessage getAllUsers(String token) throws NoSuchAlgorithmException, ParseException {
-        //todo authenticate token
         try {
             return new ConfirmationMessage(ConfirmationMessage.StatusType.SUCCES, "List<library.User> retrieved!", userRepo.getAllUsers());
         } catch (SQLException e) {
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Failed to get list of users from repo", e);
             return new ConfirmationMessage(ConfirmationMessage.StatusType.ERROR, "Failed to get list of users", e);
+        }
+    }
+
+    public ConfirmationMessage setFirebaseToken(String usertoken, String firebaseToken) {
+        try{
+            userRepo.getUser(usertoken).getUserType().containsPermission(UserType.Permission.SET_FIREBASE_TOKEN);
+
+            User user = userRepo.getUser(usertoken);
+
+            if(userRepo.getFirebaseTokenCount(user.getId()) > 0) {
+                return new ConfirmationMessage(ConfirmationMessage.StatusType.SUCCES, "FirebaseToken has been updated!", userRepo.updateFirebaseToken(user.getId(), firebaseToken));
+            } else {
+                return new ConfirmationMessage(ConfirmationMessage.StatusType.SUCCES, "FirebaseToken has been set!", userRepo.setFirebaseToken(user.getId(), firebaseToken));
+            }
+
+        } catch (SQLException  | ParseException | NoSuchAlgorithmException | NoPermissionException e) {
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE,
+                    "Failed to set FirebaseToken to user", e);
+            return new ConfirmationMessage(ConfirmationMessage.StatusType.ERROR, "Failed to set FirebaseToken to user!", e);
+        }
+    }
+
+    public ConfirmationMessage notifyUser(String userToken, int userId) {
+        try {
+            // Checks permission
+            userRepo.getUser(userToken).getUserType().containsPermission(UserType.Permission.USER_NOTIFY);
+
+            String firebaseToken = userRepo.getFirebaseToken(userId);
+            if(firebaseToken != "") {
+
+                JsonObject object = new JsonObject();
+                object.addProperty("TITLE", "Please send information about assigned calamity");
+                object.addProperty("TEXT", "Click here to send some information...");
+
+                FCMHelper fcm = FCMHelper.getInstance();
+                fcm.sendData(FCMHelper.TYPE_TO, firebaseToken, object);
+
+                return new ConfirmationMessage(ConfirmationMessage.StatusType.SUCCES,
+                        "User has been notified!", null);
+            } else {
+                return new ConfirmationMessage(ConfirmationMessage.StatusType.ERROR, "Failed to get user device-id, no notification has been send!", null);
+            }
+        } catch (IOException | NoSuchAlgorithmException | SQLException | NoPermissionException | ParseException e) {
+            return new ConfirmationMessage(ConfirmationMessage.StatusType.ERROR, "Failed to notify user!", e);
         }
     }
 }
