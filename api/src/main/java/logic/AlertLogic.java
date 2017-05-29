@@ -201,8 +201,11 @@ public class AlertLogic {
      * @throws SQLException
      */
     private void createCalamityForGroup(List<Alert> alertGroup) throws SQLException {
+        String name = alertGroup.get(0).getName();
+        String description = alertGroup.get(0).getDescription();
+
         Calamity calamity = new Calamity(-1, calculateCentreLocation(alertGroup), null,
-                false, false, new Date(), "generated", "generated");
+                false, false, new Date(), name, description);
 
         new CalamityRepo(database).addCalamity(calamity);
 
