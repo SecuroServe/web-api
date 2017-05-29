@@ -11,7 +11,7 @@ import rest.RestClient;
  */
 public class LoginRequest implements ILogin {
 
-    private static final String REQUEST_PREFIX = "http://localhost:8080";
+    private static final String REQUEST_PREFIX = "https://www.securoserve.nl/api";
 
     RestClient restClient;
 

@@ -14,7 +14,7 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
  */
 public class UserRequest implements IUser {
 
-    private static final String REQUEST_PREFIX = "http://localhost:8080";
+    private static final String REQUEST_PREFIX = "https://www.securoserve.nl/api";
 
     private static final String LOGIN = "/getuser?usertoken={usertoken}";
     private static final String ALL = "/allusers";
