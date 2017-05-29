@@ -74,6 +74,8 @@ public class AlertControllerTest {
 
     @Test
     public void proposeCalamityTest() throws Exception {
+        int beginSize = ((List<Calamity>) cc.allCalamity().getReturnObject()).size();
+
         Alert alert1 = (Alert) ac.addAlert(user.getToken(), "testAlert", "testDescription", 10,
                 52.369040, 9.748287, 0).getReturnObject();
         Alert alert2 = (Alert) ac.addAlert(user.getToken(), "testAlert", "testDescription", 10,
@@ -97,7 +99,7 @@ public class AlertControllerTest {
 
         int size = ((List<Calamity>) cc.allCalamity().getReturnObject()).size();
 
-        assertEquals(1, size);
+        assertEquals(1, size - beginSize);
     }
 
     @Test

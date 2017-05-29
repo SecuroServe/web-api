@@ -269,3 +269,64 @@ INSERT INTO User (UserTypeID, BuildingID, Username, PasswordHash, Salt, Email, C
   (1, -1, 'Ellyie', '4c1b086d1d1f7c71a79f3ce073d405a1fb92f8467940e8458b81de6bb8bee131',
    '416b4d356e0b44a98a819617f298240154b43fb0a001fe727ca2dc4e79fba04f', 'Ellyie@securoserve.nl', 'EHV',
    'b7a8a01e7425b008eb91aea61055107c3a73f7d5576f380037d1832421f6b58d', '2017/05/29 10:00:54');
+
+INSERT INTO Location (Latitude, Longitude, Radius) VALUES (51.188217, 6.00973, 3000);
+INSERT INTO Location (Latitude, Longitude, Radius) VALUES (52.191586, 5.498432, 3500);
+INSERT INTO Location (Latitude, Longitude, Radius) VALUES (51.249237, 5.704538, 1500);
+INSERT INTO Location (Latitude, Longitude, Radius) VALUES (52.079597, 4.313273, 10000);
+INSERT INTO Location (Latitude, Longitude, Radius) VALUES (51.554985, 5.081718, 2500);
+INSERT INTO Location (Latitude, Longitude, Radius) VALUES (52.367027, 6.668492, 2500);
+INSERT INTO Location (Latitude, Longitude, Radius) VALUES (51.084126, 5.80753, 25);
+INSERT INTO Location (Latitude, Longitude, Radius) VALUES (51.142124, 5.933264, 250);
+INSERT INTO Location (Latitude, Longitude, Radius) VALUES (52.038765, 5.666199, 25);
+INSERT INTO Location (Latitude, Longitude, Radius) VALUES (51.13204, 6.073557, 1000);
+
+
+INSERT INTO Calamity (LocationID, CreatedByUserID, isConfirmed, isClosed, Time, Title, Message)
+VALUES (1, 1, 1, 0, '2001-09-11 00:00:00', 'Calamiteit op de donderberg', 'Korte beschrijving:
+
+In Roermond is een atoombom gevallen, getuigen in naastliggende dorpen hebben Japanse vliegtuigen gezien. Er wordt getwijfeld of er in Roermond overlevenden zijn, momenteel is het een onbegaanbaar gebied.
+
+Aantal doden: ±57.000
+Aantal gewonden: ±2000
+Tijdstip ongeval: 09:11');
+INSERT INTO Calamity (LocationID, CreatedByUserID, isConfirmed, isClosed, Time, Title, Message) VALUES
+  (2, 1, 1, 0, '2017-05-11 00:00:00', 'Loslopend schaap',
+   'Groot nieuws vandaag in schubbekutteveen, er is een schaap losgebroken, het schaap rent momenteel waarschijnlijk richting de snelweg. Er is een grootscheepse zoekactie op touw gezet!');
+INSERT INTO Calamity (LocationID, CreatedByUserID, isConfirmed, isClosed, Time, Title, Message) VALUES
+  (3, 1, 1, 0, '2017-05-22 00:00:00', 'Gasaanval',
+   'Er is een gasaanval gaande op Weert station, de geallieerden hebben zich verdaan en denken dat het vol met nazi''s zit!');
+INSERT INTO Calamity (LocationID, CreatedByUserID, isConfirmed, isClosed, Time, Title, Message)
+VALUES (4, 1, 1, 0, '2017-05-15 16:28:19', 'Staatsgreep', 'Greet is een staatsgreep aan het plegen');
+INSERT INTO Calamity (LocationID, CreatedByUserID, isConfirmed, isClosed, Time, Title, Message)
+VALUES (5, 1, 1, 0, '2017-05-22 00:00:00', 'Ongeluk met vrachtwagen in Tilburg', 'Korte beschrijving:
+
+Op de Tilburgse promenade is een ongeluk met vrachtwagen gebeurt, het gaat hier mogelijk om een terreurdaad. Een vrachtwagen is over de promenade gereden en heeft verschillende bezoekers geraakt, hieronder zijn vele doden en gewonden. Het inmiddels rustigerbdbdbd
+
+Aantal doden: ±37
+Aantal gewonden: ±200
+Tijdstip ongeval: 13:37');
+INSERT INTO Calamity (LocationID, CreatedByUserID, isConfirmed, isClosed, Time, Title, Message) VALUES
+  (6, 1, 1, 0, '2017-05-22 19:11:19', 'Lorem ipsum dolor sit amet',
+   'consectetur adipiscing elit. Nulla congue semper ex id viverra. Nullam placerat quam nec mauris elementum vestibulum. Sed eu posuere erat. Curabitur sed urna in enim rhoncus convallis nec id massa. Aenean sed massa in mi sagittis scelerisque. Quisque euismod mollis imperdiet. Aliquam quis volutpat tortor. Fusce non mauris eget orci maximus congue. Maecenas suscipit lacinia erat non scelerisque. Aenean varius leo quis tellus lobortis, ornare convallis lorem suscipit. Nulla venenatis ornare quam. Sed non eros ut sem facilisis egestas. Nulla commodo est non risus condimentum, nec lobortis risus venenatis. Donec vel enim mi.');
+INSERT INTO Calamity (LocationID, CreatedByUserID, isConfirmed, isClosed, Time, Title, Message)
+VALUES (7, 1, 1, 0, '2017-05-22 09:11:19', 'Drie auto''s betrokken bij botsing in Roosteren', 'Drie auto''s waren maandagochtend betrokken bij een verkeersongeluk in Roosteren.
+De kopstaartbotsing gebeurde even na 8:00 uur op de Maaseikerweg. De oorzaak is nog niet duidelijk.
+Eén inzittende kwam bekneld te zitten in zijn auto. Voor zover bekend is niemand noemenswaardig gewond geraakt.');
+INSERT INTO Calamity (LocationID, CreatedByUserID, isConfirmed, isClosed, Time, Title, Message)
+VALUES (8, 1, 1, 0, '2017-05-23 04:01:19', 'Brandweer rukt uit voor brand op milieupark', 'Op het milieupark in Montfort heeft dinsdagochtend in alle vroegte een brand gewoed.
+Rond 4:00 uur kreeg de brandweer een melding van de brand.
+Omdat de vlammen op het milieupark aan de Maasbrachterweg vanaf de A73 te zien waren, werd er uitgegaan van een grote brand. De brandweer rukte dus uit met groot materieel uit.
+Ter plekke bleek het om een kleine brand te gaan die waarschijnlijk door broei is ontstaan. Het vuur was snel gedoofd.');
+INSERT INTO Calamity (LocationID, CreatedByUserID, isConfirmed, isClosed, Time, Title, Message)
+VALUES (9, 1, 1, 1, '2017-05-20 00:00:00', 'Forse woningbrand', 'De brandweer van Groningen is zaterdagavond met meerdere voertuigen uitgerukt naar de Orchideestraat in Groningen voor een woningbrand.
+Bij aankomst van de brandweer kwam er veel rook uit de woning. Op het moment van de brand was er niemand thuis.
+ 
+Door een snelle brandweerinzet kon het vuur snel worden geblust. Stichting Salvage komt ter plaatse voor de afhandeling van de brand en rookschade aan drie woningen.');
+INSERT INTO Calamity (LocationID, CreatedByUserID, isConfirmed, isClosed, Time, Title, Message)
+VALUES (10, 1, 1, 0, '2017-05-20 00:00:00', 'Oplichter gevonden en getatoeëerd', 'Kaartjes oplichter Stan T. is vandaag gevonden
+in zijn woonplaats. In het limburgse vlodrop
+bleek hij ook nog een satudarah fan te zijn 
+en heeft hij een prachtige tatoeage laten 
+zetten. Inmiddels kan hij ervan genieten 
+in de bak!');
