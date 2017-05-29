@@ -277,12 +277,61 @@ public class AlertLogic {
         List<Alert> alertGroup = new ArrayList<>();
 
         for (Alert alertRadius : alerts) {
-
-            if (GeoUtil.measureGeoDistance(alertRadius.getLocation(), alert.getLocation()) <= ApiConstants.ALERT_GROUP_RADIUS) {
+            if (isAlertNearby(alertRadius, alert.getLocation(), ApiConstants.ALERT_GROUP_RADIUS)) {
                 alertGroup.add(alertRadius);
             }
         }
 
         return alertGroup;
+    }
+
+    /**
+     * Checks if alert is within a specific radius.
+     *
+     * @param alert    The alert to check.
+     * @param location The location to check the radius from.
+     * @param radius   The radius.
+     * @return Whether or not an alert is within a specific radius.
+     */
+    private boolean isAlertNearby(Alert alert, Location location, int radius) {
+        return GeoUtil.measureGeoDistance(alert.getLocation(), location) <= radius;
+    }
+
+    private List<Alert> findNearbyAlerts(Location location, int radius) throws ParseException, NoSuchAlgorithmException, SQLException {
+        List<Alert> alerts = alertRepo.allAlert(false);
+        List<Alert> foundAlerts = new ArrayList<>();
+
+        for (Alert alert : alerts) {
+            if (isAlertNearby(alert, location, radius)) {
+                foundAlerts.add(alert);
+            }
+        }
+
+        return foundAlerts;
+    }
+
+    /**
+     * Returns a list of nearby alerts based on the location.
+     *
+     * @param token    The authentication token.
+     * @param location The location to check.
+     * @param radius   The radius to check.
+     * @return a list of nearby alerts based on the location.
+     */
+    public ConfirmationMessage getNearbyAlerts(String token, Location location, int radius) {
+        try {
+            userRepo.getUser(token).getUserType().containsPermission(UserType.Permission.ALERT_GET);
+
+            return new ConfirmationMessage(ConfirmationMessage.StatusType.SUCCES,
+                    "Nearby alerts check was successful!",
+                    findNearbyAlerts(location, radius));
+
+        } catch (SQLException | ParseException | NoSuchAlgorithmException | NoPermissionException e) {
+            e.printStackTrace();
+
+            return new ConfirmationMessage(ConfirmationMessage.StatusType.ERROR,
+                    "Nearby alerts check failed!",
+                    e);
+        }
     }
 }

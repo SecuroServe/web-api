@@ -70,5 +70,6 @@ public class UserType implements Serializable {
         USER_NOTIFY,
         SET_FIREBASE_TOKEN,
         USER_UPDATE,
+        DUMMY
     }
 }
