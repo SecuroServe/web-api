@@ -15,6 +15,7 @@ DROP TABLE IF EXISTS Calamity;
 DROP TABLE IF EXISTS BuildingType;
 DROP TABLE IF EXISTS Building;
 DROP TABLE IF EXISTS Alert;
+DROP TABLE IF EXISTS FirebaseToken;
 
 CREATE TABLE Alert
 (
@@ -174,6 +175,7 @@ CREATE TABLE User
   City            VARCHAR(128) NOT NULL,
   Token           VARCHAR(64)  NOT NULL,
   TokenExpiration VARCHAR(45)  NOT NULL,
+
   CONSTRAINT Username_UNIQUE
   UNIQUE (Username),
   CONSTRAINT Token_UNIQUE
@@ -195,6 +197,19 @@ CREATE TABLE UserTypePermission
   PermissionID INT NOT NULL
 );
 
+CREATE TABLE FirebaseToken
+(
+  ID            INT NOT NULL AUTO_INCREMENT
+                PRIMARY KEY,
+  UserID        INT NOT NULL,
+  FirebaseToken VARCHAR(250) NOT NULL,
+
+  CONSTRAINT UserID_UNIQUE
+  UNIQUE (UserID),
+  CONSTRAINT FirebaseToken_UNIQUE
+  UNIQUE (FirebaseToken)
+);
+
 INSERT INTO UserType (Naam) VALUES ('Administrator');
 
 INSERT INTO Permission (Node, Description) VALUES ('ALERT_ADD', 'Permissions to add a Alert');
@@ -208,10 +223,8 @@ INSERT INTO Permission (Node, Description) VALUES ('CALAMITY_DELETE', 'Permissio
 INSERT INTO Permission (Node, Description) VALUES ('USER_REGISTER', 'Permissions to register an User');
 INSERT INTO Permission (Node, Description) VALUES ('USER_DELETE', 'Permissions to delete an User');
 INSERT INTO Permission (Node, Description) VALUES ('USER_UPDATE', 'Permissions to update an User');
-INSERT INTO Permission (Node, Description)
-VALUES ('CALAMITY_ADD_ASSIGNEE', 'Permissions to add an Assignee to a Calamity');
-INSERT INTO Permission (Node, Description)
-VALUES ('CALAMITY_DELETE_ASSIGNEE', 'Permissions to remove an Assignee to a Calamity');
+INSERT INTO Permission (Node, Description) VALUES ('CALAMITY_ADD_ASSIGNEE', 'Permissions to add an Assignee to a Calamity');
+INSERT INTO Permission (Node, Description) VALUES ('CALAMITY_DELETE_ASSIGNEE', 'Permissions to remove an Assignee to a Calamity');
 
 INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (1, 1);
 INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (1, 2);
