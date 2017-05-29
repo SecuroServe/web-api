@@ -5,7 +5,9 @@ import interfaces.ConfirmationMessage;
 import interfaces.IAlert;
 import library.Location;
 import logic.AlertLogic;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Created by Jandie on 2017-05-01.
@@ -46,6 +48,19 @@ public class AlertController implements IAlert {
     @RequestMapping("/getalert")
     public ConfirmationMessage getAlert(String token, int id) {
         return alertLogic.getAlert(token, id);
+    }
+
+    /**
+     * Returns a list of nearby alerts based on the location.
+     *
+     * @param token    The authentication token.
+     * @param location The location to check.
+     * @param radius   The radius to check.
+     * @return a list of nearby alerts based on the location.
+     */
+    @Override
+    public ConfirmationMessage getNearbyAlerts(String token, Location location, int radius) {
+        return alertLogic.getNearbyAlerts(token, location, radius);
     }
 
     /**

@@ -1,5 +1,7 @@
 package interfaces;
 
+import library.Location;
+
 /**
  * Created by Jandie on 13-3-2017.
  */
@@ -22,6 +24,16 @@ public interface IAlert {
      */
     ConfirmationMessage getAlert(String token,
                                  int id);
+
+    /**
+     * Returns a list of nearby alerts based on the location.
+     *
+     * @param token    The authentication token.
+     * @param location The location to check.
+     * @param radius   The radius to check.
+     * @return a list of nearby alerts based on the location.
+     */
+    ConfirmationMessage getNearbyAlerts(String token, Location location, int radius);
 
     /**
      * Adds a new alert.
