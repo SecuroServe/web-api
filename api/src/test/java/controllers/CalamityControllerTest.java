@@ -143,6 +143,24 @@ public class CalamityControllerTest {
         Assert.assertEquals(ConfirmationMessage.StatusType.ERROR, addPostFeedback.getStatus());
     }
 
+    /**
+     * Tests rejection of post with empty text.
+     *
+     * @throws Exception Exception.
+     */
+    @Test
+    public void addPostWithEmptyTextTest() throws Exception {
+        Location location = new Location(-1, 5, 51, 1);
+
+        Calamity c1 = (Calamity) cc.addCalamity(user.getToken(), "nine-eleven-test",
+                "test of 911", location.getLatitude(), location.getLongitude(), location.getRadius(),
+                false, true).getReturnObject();
+
+        ConfirmationMessage addPostFeedback = cc.addPost(user.getToken(), c1.getId(), "");
+
+        Assert.assertEquals(ConfirmationMessage.StatusType.ERROR, addPostFeedback.getStatus());
+    }
+
     @After
     public void tearDown() throws Exception {
         TestUtil.deleteTempUser(user, database);
