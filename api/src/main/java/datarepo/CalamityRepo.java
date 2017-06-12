@@ -2,10 +2,7 @@ package datarepo;
 
 import datarepo.database.Database;
 import exceptions.NoSuchCalamityException;
-import library.Calamity;
-import library.Location;
-import library.Post;
-import library.User;
+import library.*;
 
 import java.security.NoSuchAlgorithmException;
 import java.sql.ResultSet;
@@ -304,6 +301,14 @@ public class CalamityRepo {
         database.executeQuery(query, parameters, Database.QueryType.NON_QUERY);
     }
 
+    /**
+     * Adds a post to a calamity
+     *
+     * @param user       The user who added the post.
+     * @param calamityId The if of the calamity to add the post to.
+     * @param text       The text in the post.
+     * @return Confirmation message with feedback about the addition.
+     */
     public Post addPostToCalamity(User user, int calamityId, String text) throws ParseException, NoSuchAlgorithmException, SQLException,
             NoSuchCalamityException {
         Calamity calamity = this.getCalamity(calamityId);
@@ -363,5 +368,16 @@ public class CalamityRepo {
         }
 
         return posts;
+    }
+
+    /**
+     * Adds a plan to a calamity
+     *
+     * @param calamityId The id of the calamity to add the plan to.
+     * @param plan       The plan to add.
+     * @return The new plan.
+     */
+    public Plan addPlan(int calamityId, Plan plan) {
+        return null;
     }
 }

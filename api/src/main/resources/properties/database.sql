@@ -250,6 +250,7 @@ INSERT INTO Permission (Node, Description)
 VALUES ('SET_FIREBASE_TOKEN', 'Permission to login into a device and make it ready to get notified');
 INSERT INTO Permission (Node, Description) VALUES ('DUMMY', 'DUMMY');
 INSERT INTO Permission (Node, Description) VALUES ('CALAMITY_POST', 'Permission to add post to calamity');
+INSERT INTO Permission (Node, Description) VALUES ('CALAMITY_PLAN', 'Permission to add plan to calamity');
 
 INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (1, 1);
 INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (1, 2);
@@ -267,7 +268,10 @@ INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (1, 13);
 INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (1, 14);
 INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (1, 15);
 INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (1, 17);
+INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (1, 18);
+
 INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (2, 16);
+
 INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (3, 16);
 
 INSERT INTO User (UserTypeID, BuildingID, Username, PasswordHash, Salt, Email, City, Token, TokenExpiration) VALUES

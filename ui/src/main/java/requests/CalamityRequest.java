@@ -1,8 +1,8 @@
 package requests;
 
-import exceptions.NotImplementedException;
 import interfaces.ConfirmationMessage;
 import interfaces.ICalamity;
+import library.Plan;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import rest.RestClient;
@@ -109,7 +109,12 @@ public class CalamityRequest implements ICalamity {
     }
 
     @Override
-    public ConfirmationMessage addPost(String token, int userId, int calamityId, String text) throws NotImplementedException {
-        throw new NotImplementedException("This method id not yet implemented.");
+    public ConfirmationMessage addPost(String token, int userId, int calamityId, String text) {
+        return null;
+    }
+
+    @Override
+    public ConfirmationMessage addPlan(String token, int calamityId, Plan plan) {
+        return null;
     }
 }
