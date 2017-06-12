@@ -16,6 +16,8 @@ DROP TABLE IF EXISTS BuildingType;
 DROP TABLE IF EXISTS Building;
 DROP TABLE IF EXISTS Alert;
 DROP TABLE IF EXISTS FirebaseToken;
+DROP TABLE IF EXISTS Post;
+DROP TABLE IF EXISTS CalamityPost;
 
 CREATE TABLE Alert
 (
@@ -199,15 +201,28 @@ CREATE TABLE UserTypePermission
 
 CREATE TABLE FirebaseToken
 (
-  ID            INT NOT NULL AUTO_INCREMENT
-                PRIMARY KEY,
-  UserID        INT NOT NULL,
+  ID            INT          NOT NULL AUTO_INCREMENT
+    PRIMARY KEY,
+  UserID        INT          NOT NULL,
   FirebaseToken VARCHAR(250) NOT NULL,
 
   CONSTRAINT UserID_UNIQUE
   UNIQUE (UserID),
   CONSTRAINT FirebaseToken_UNIQUE
   UNIQUE (FirebaseToken)
+);
+
+CREATE TABLE CalamityPost
+(
+  CalamityID INT NOT NULL,
+  PostID     INT NOT NULL
+);
+
+CREATE TABLE Post
+(
+  ID     INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  UserID INT NOT NULL,
+  Text   VARCHAR(2000)
 );
 
 INSERT INTO UserType (Naam) VALUES ('Administrator');

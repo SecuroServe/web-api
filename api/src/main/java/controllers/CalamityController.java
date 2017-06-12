@@ -140,4 +140,17 @@ public class CalamityController implements ICalamity {
                                                       @RequestParam(value = "userid") int userId) {
         return calamityLogic.deleteCalamityAssignee(token, calamityId, userId);
     }
+
+    /**
+     * Adds a post to a calamity
+     *
+     * @param token      The authentication token.
+     * @param calamityId The if of the calamity to add the post to.
+     * @param text       The text in the post.
+     * @return Confirmation message with feedback about the addition.
+     */
+    @Override
+    public ConfirmationMessage addPost(String token, int calamityId, String text) {
+        return calamityLogic.addPost(token, calamityId, text);
+    }
 }

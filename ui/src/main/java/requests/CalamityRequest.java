@@ -1,5 +1,6 @@
 package requests;
 
+import exceptions.NotImplementedException;
 import interfaces.ConfirmationMessage;
 import interfaces.ICalamity;
 import org.springframework.util.LinkedMultiValueMap;
@@ -105,5 +106,10 @@ public class CalamityRequest implements ICalamity {
         parameters.add("calamityid", calamityId);
         parameters.add("userid", userId);
         return restClient.request(REQUEST_PREFIX + DELETE_CALAMITY_ASSIGNEE, RestClient.RequestType.DELETE, parameters);
+    }
+
+    @Override
+    public ConfirmationMessage addPost(String token, int calamityId, String text) throws NotImplementedException {
+        throw new NotImplementedException("This method id not yet implemented.");
     }
 }

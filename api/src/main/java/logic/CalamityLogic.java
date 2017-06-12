@@ -234,4 +234,16 @@ public class CalamityLogic {
                     "Error while getting all calamities", e);
         }
     }
+
+    /**
+     * Adds a post to a calamity
+     *
+     * @param token      The authentication token.
+     * @param calamityId The if of the calamity to add the post to.
+     * @param text       The text in the post.
+     * @return Confirmation message with feedback about the addition.
+     */
+    public ConfirmationMessage addPost(String token, int calamityId, String text) {
+        return null;
+    }
 }

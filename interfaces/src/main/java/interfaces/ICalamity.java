@@ -1,5 +1,7 @@
 package interfaces;
 
+import exceptions.NotImplementedException;
+
 /**
  * Created by Jandie on 13-3-2017.
  */
@@ -91,4 +93,14 @@ public interface ICalamity {
      * @return Confirmation message with feedback about the deletion.
      */
     ConfirmationMessage deleteCalamityAssignee(String token, int calamityId, int userId);
+
+    /**
+     * Adds a post to a calamity
+     *
+     * @param token      The authentication token.
+     * @param calamityId The if of the calamity to add the post to.
+     * @param text       The text in the post.
+     * @return Confirmation message with feedback about the addition.
+     */
+    ConfirmationMessage addPost(String token, int calamityId, String text) throws NotImplementedException;
 }
