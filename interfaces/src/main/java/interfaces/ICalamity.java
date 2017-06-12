@@ -98,9 +98,10 @@ public interface ICalamity {
      * Adds a post to a calamity
      *
      * @param token      The authentication token.
+     * @param userId     The id of the user.
      * @param calamityId The if of the calamity to add the post to.
      * @param text       The text in the post.
      * @return Confirmation message with feedback about the addition.
      */
-    ConfirmationMessage addPost(String token, int calamityId, String text) throws NotImplementedException;
+    ConfirmationMessage addPost(String token, int userId, int calamityId, String text) throws NotImplementedException;
 }

@@ -5,11 +5,9 @@ import datarepo.CalamityRepo;
 import datarepo.UserRepo;
 import datarepo.database.Database;
 import exceptions.NoPermissionException;
+import exceptions.NoSuchCalamityException;
 import interfaces.ConfirmationMessage;
-import library.Calamity;
-import library.Location;
-import library.User;
-import library.UserType;
+import library.*;
 import utils.FCMHelper;
 
 import java.io.IOException;
@@ -239,11 +237,33 @@ public class CalamityLogic {
      * Adds a post to a calamity
      *
      * @param token      The authentication token.
+     * @param userId     The id of the user who added the post.
      * @param calamityId The if of the calamity to add the post to.
      * @param text       The text in the post.
      * @return Confirmation message with feedback about the addition.
      */
-    public ConfirmationMessage addPost(String token, int calamityId, String text) {
-        return null;
+    public ConfirmationMessage addPost(String token, int userId, int calamityId, String text) {
+        try {
+            userRepo.getUser(token).getUserType().containsPermission(UserType.Permission.CALAMITY_POST);
+
+            User user = userRepo.getUser(token);
+
+            if (text.trim().equals("")) {
+                return new ConfirmationMessage(ConfirmationMessage.StatusType.ERROR,
+                        "Error while adding Post to Calamity, because text is empty", null);
+            }
+
+            Post post = calamityRepo.addPostToCalamity(user, calamityId, text);
+
+            return new ConfirmationMessage(ConfirmationMessage.StatusType.SUCCES,
+                    "Post added to Calamity", post);
+        } catch (NoPermissionException | ParseException | NoSuchAlgorithmException | SQLException |
+                NoSuchCalamityException e) {
+            Logger.getLogger(CalamityLogic.class.getName()).log(Level.SEVERE,
+                    "Error while adding Post to Calamity.", e);
+
+            return new ConfirmationMessage(ConfirmationMessage.StatusType.ERROR,
+                    "Error while adding Post to Calamity.", e);
+        }
     }
 }
