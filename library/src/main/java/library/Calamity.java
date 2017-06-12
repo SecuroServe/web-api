@@ -326,6 +326,15 @@ public class Calamity implements Serializable {
     }
 
     /**
+     * Returns the posts of calamity.
+     *
+     * @return The posts of calamity.
+     */
+    public List<Post> getPosts() {
+        return this.posts;
+    }
+
+    /**
      * library.Calamity status enum
      */
     public enum CalamityState {
