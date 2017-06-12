@@ -4,6 +4,7 @@ import datarepo.database.Database;
 import interfaces.ConfirmationMessage;
 import library.Calamity;
 import library.Location;
+import library.Post;
 import library.User;
 import org.junit.After;
 import org.junit.Assert;
@@ -21,6 +22,7 @@ public class CalamityControllerTest {
     private CalamityController cc;
     private UserController uc;
     private User user;
+    private User userNoPermission;
 
     @Before
     public void setUp() throws Exception {
@@ -28,6 +30,7 @@ public class CalamityControllerTest {
         cc = new CalamityController(database);
         uc = new UserController(database);
         user = TestUtil.createTempUser(database);
+        userNoPermission = TestUtil.createTempNoPermissionUser(database);
     }
 
     /**
@@ -92,11 +95,58 @@ public class CalamityControllerTest {
         cc.deleteCalamity(user.getToken(), c1.getId());
     }
 
+    /**
+     * Tests addition of a post to a calamity.
+     *
+     * @throws Exception Exception.
+     */
+    @Test
+    public void addPostToCalamityTest() throws Exception {
+        Location location = new Location(-1, 5, 51, 1);
+
+        Calamity c1 = (Calamity) cc.addCalamity(user.getToken(), "nine-eleven-test",
+                "test of 911", location.getLatitude(), location.getLongitude(), location.getRadius(),
+                false, true).getReturnObject();
+
+        ConfirmationMessage addCalamityFeedback = cc.addPost(user.getToken(), c1.getId(), "Mijn mening test.");
+        Post post = (Post) addCalamityFeedback.getReturnObject();
+
+        Assert.assertEquals(ConfirmationMessage.StatusType.SUCCES, addCalamityFeedback.getStatus());
+        Assert.assertEquals("Mijn mening test.", post.getText());
+
+        Calamity c2 = (Calamity) cc.calamityById(c1.getId()).getReturnObject();
+
+        Assert.assertEquals("Mijn mening test.", c2.getPosts().get(0).getText());
+    }
+
+    /**
+     * Tests rejection of user with no permission.
+     *
+     * @throws Exception Exception.
+     */
+    @Test
+    public void addPostToCalamityNoPermissionTest() throws Exception {
+        ConfirmationMessage addPostFeedback = cc.addPost(userNoPermission.getToken(), 1, "Mijn mening test.");
+
+        Assert.assertEquals(ConfirmationMessage.StatusType.ERROR, addPostFeedback.getStatus());
+    }
+
+    /**
+     * Tests rejection of add request when unknown calamityId.
+     *
+     * @throws Exception Exception.
+     */
+    @Test
+    public void addPostToUnknownCalamity() throws Exception {
+        ConfirmationMessage addPostFeedback = cc.addPost(user.getToken(), 9856, "Mijn mening test.");
+
+        Assert.assertEquals(ConfirmationMessage.StatusType.ERROR, addPostFeedback.getStatus());
+    }
+
     @After
     public void tearDown() throws Exception {
         TestUtil.deleteTempUser(user, database);
     }
-
 
     /**
      * Checks if a user is assigned to a calamity.
@@ -114,6 +164,4 @@ public class CalamityControllerTest {
 
         return false;
     }
-
-
 }
