@@ -66,6 +66,11 @@ public class Calamity implements Serializable {
     private List<Alert> alerts;
 
     /**
+     * The posts that belong to this calamity.
+     */
+    private List<Post> posts;
+
+    /**
      * Creates a new instance of library.Calamity with all fields.
      *
      * @param location the library.Location of the library.Calamity
@@ -86,6 +91,7 @@ public class Calamity implements Serializable {
 
         this.alerts = new ArrayList<>();
         this.assignees = new ArrayList<>();
+        this.posts = new ArrayList<>();
     }
 
     public Calamity() {
@@ -308,6 +314,15 @@ public class Calamity implements Serializable {
      */
     public void addAlert(Alert alert) {
         alerts.add(alert);
+    }
+
+    /**
+     * Adds a post to this calamity.
+     *
+     * @param post The post to add.
+     */
+    public void addPost(Post post) {
+        this.posts.add(post);
     }
 
     /**
