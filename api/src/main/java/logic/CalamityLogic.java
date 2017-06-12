@@ -266,4 +266,16 @@ public class CalamityLogic {
                     "Error while adding Post to Calamity.", e);
         }
     }
+
+    /**
+     * Adds a plan to a calamity
+     *
+     * @param token      The authentication token.
+     * @param calamityId The calamity to add the plan to.
+     * @param plan       The plan to add.
+     * @return Confirmation message with feedback about the addition containing the new plan.
+     */
+    public ConfirmationMessage addPlan(String token, int calamityId, Plan plan) {
+        return null;
+    }
 }

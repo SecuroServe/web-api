@@ -71,6 +71,11 @@ public class Calamity implements Serializable {
     private List<Post> posts;
 
     /**
+     * The instruction plan of calamity.
+     */
+    private Plan plan;
+
+    /**
      * Creates a new instance of library.Calamity with all fields.
      *
      * @param location the library.Location of the library.Calamity
@@ -336,6 +341,14 @@ public class Calamity implements Serializable {
 
     public void setPosts(List<Post> posts) {
         this.posts = posts;
+    }
+
+    public Plan getPlan() {
+        return plan;
+    }
+
+    public void setPlan(Plan plan) {
+        this.plan = plan;
     }
 
     /**

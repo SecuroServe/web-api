@@ -1,6 +1,6 @@
 package interfaces;
 
-import exceptions.NotImplementedException;
+import library.Plan;
 
 /**
  * Created by Jandie on 13-3-2017.
@@ -101,7 +101,17 @@ public interface ICalamity {
      * @param userId     The id of the user.
      * @param calamityId The if of the calamity to add the post to.
      * @param text       The text in the post.
-     * @return Confirmation message with feedback about the addition.
+     * @return Confirmation message with feedback about the addition containing the new post.
      */
-    ConfirmationMessage addPost(String token, int userId, int calamityId, String text) throws NotImplementedException;
+    ConfirmationMessage addPost(String token, int userId, int calamityId, String text);
+
+    /**
+     * Adds a plan to a calamity
+     *
+     * @param token      The authentication token.
+     * @param calamityId The calamity to add the plan to.
+     * @param plan       The plan to add.
+     * @return Confirmation message with feedback about the addition containing the new plan.
+     */
+    ConfirmationMessage addPlan(String token, int calamityId, Plan plan);
 }

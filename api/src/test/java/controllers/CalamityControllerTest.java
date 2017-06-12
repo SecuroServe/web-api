@@ -1,12 +1,10 @@
 package controllers;
 
 import datarepo.database.Database;
+import exceptions.NoPermissionException;
+import exceptions.NoSuchCalamityException;
 import interfaces.ConfirmationMessage;
-import library.Calamity;
-import library.Location;
-import library.Post;
-import library.User;
-import org.junit.After;
+import library.*;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -129,6 +127,7 @@ public class CalamityControllerTest {
         ConfirmationMessage addPostFeedback = cc.addPost(userNoPermission.getToken(), user.getId(), 1, "Mijn mening test.");
 
         Assert.assertEquals(ConfirmationMessage.StatusType.ERROR, addPostFeedback.getStatus());
+        Assert.assertTrue(addPostFeedback.getReturnObject() instanceof NoPermissionException);
     }
 
     /**
@@ -141,6 +140,7 @@ public class CalamityControllerTest {
         ConfirmationMessage addPostFeedback = cc.addPost(user.getToken(), user.getId(), 9856, "Mijn mening test.");
 
         Assert.assertEquals(ConfirmationMessage.StatusType.ERROR, addPostFeedback.getStatus());
+        Assert.assertTrue(addPostFeedback.getReturnObject() instanceof NoSuchCalamityException);
     }
 
     /**
@@ -161,9 +161,56 @@ public class CalamityControllerTest {
         Assert.assertEquals(ConfirmationMessage.StatusType.ERROR, addPostFeedback.getStatus());
     }
 
-    @After
-    public void tearDown() throws Exception {
-        TestUtil.deleteTempUser(user, database);
+    /**
+     * Tests addition of plan to calamity.
+     *
+     * @throws Exception Exception.
+     */
+    @Test
+    public void addPlanToCalamityTest() throws Exception {
+        Location location = new Location(-1, 5, 51, 1);
+
+        Calamity c1 = (Calamity) cc.addCalamity(user.getToken(), "nine-eleven-test",
+                "test of 911", location.getLatitude(), location.getLongitude(), location.getRadius(),
+                false, true).getReturnObject();
+
+        Plan plan = new Plan(0, "Do this then that.");
+
+        ConfirmationMessage addPlanFeedback = cc.addPlan(user.getToken(), c1.getId(), plan);
+
+        Plan returnedPlan = (Plan) addPlanFeedback.getReturnObject();
+
+        Assert.assertEquals("Do this then that.", returnedPlan.getDescription());
+
+        Calamity c2 = (Calamity) cc.calamityById(c1.getId()).getReturnObject();
+
+        Assert.assertEquals("Do this then that.", c2.getPlan().getDescription());
+    }
+
+    @Test
+    public void addPlanToCalamityNoPermissionTest() throws Exception {
+        Plan plan = new Plan(0, "Do this then that.");
+
+        Location location = new Location(-1, 5, 51, 1);
+
+        Calamity c1 = (Calamity) cc.addCalamity(user.getToken(), "nine-eleven-test",
+                "test of 911", location.getLatitude(), location.getLongitude(), location.getRadius(),
+                false, true).getReturnObject();
+
+        ConfirmationMessage addPlanFeedback = cc.addPlan(userNoPermission.getToken(), c1.getId(), plan);
+
+        Assert.assertEquals(ConfirmationMessage.StatusType.ERROR, addPlanFeedback.getStatus());
+        Assert.assertTrue(addPlanFeedback.getReturnObject() instanceof NoPermissionException);
+    }
+
+    @Test
+    public void addPlanToUnknownCalamityTest() {
+        Plan plan = new Plan(0, "Do this then that.");
+
+        ConfirmationMessage addPlanFeedback = cc.addPlan(user.getToken(), -1, plan);
+
+        Assert.assertEquals(ConfirmationMessage.StatusType.ERROR, addPlanFeedback.getStatus());
+        Assert.assertTrue(addPlanFeedback.getReturnObject() instanceof NoSuchCalamityException);
     }
 
     /**
