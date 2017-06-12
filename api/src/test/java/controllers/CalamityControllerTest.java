@@ -108,7 +108,7 @@ public class CalamityControllerTest {
                 "test of 911", location.getLatitude(), location.getLongitude(), location.getRadius(),
                 false, true).getReturnObject();
 
-        ConfirmationMessage addCalamityFeedback = cc.addPost(user.getToken(), c1.getId(), "Mijn mening test.");
+        ConfirmationMessage addCalamityFeedback = cc.addPost(user.getToken(), user.getId(), c1.getId(), "Mijn mening test.");
         Post post = (Post) addCalamityFeedback.getReturnObject();
 
         Assert.assertEquals(ConfirmationMessage.StatusType.SUCCES, addCalamityFeedback.getStatus());
@@ -126,7 +126,7 @@ public class CalamityControllerTest {
      */
     @Test
     public void addPostToCalamityNoPermissionTest() throws Exception {
-        ConfirmationMessage addPostFeedback = cc.addPost(userNoPermission.getToken(), 1, "Mijn mening test.");
+        ConfirmationMessage addPostFeedback = cc.addPost(userNoPermission.getToken(), user.getId(), 1, "Mijn mening test.");
 
         Assert.assertEquals(ConfirmationMessage.StatusType.ERROR, addPostFeedback.getStatus());
     }
@@ -138,7 +138,25 @@ public class CalamityControllerTest {
      */
     @Test
     public void addPostToUnknownCalamity() throws Exception {
-        ConfirmationMessage addPostFeedback = cc.addPost(user.getToken(), 9856, "Mijn mening test.");
+        ConfirmationMessage addPostFeedback = cc.addPost(user.getToken(), user.getId(), 9856, "Mijn mening test.");
+
+        Assert.assertEquals(ConfirmationMessage.StatusType.ERROR, addPostFeedback.getStatus());
+    }
+
+    /**
+     * Tests rejection of post with empty text.
+     *
+     * @throws Exception Exception.
+     */
+    @Test
+    public void addPostWithEmptyTextTest() throws Exception {
+        Location location = new Location(-1, 5, 51, 1);
+
+        Calamity c1 = (Calamity) cc.addCalamity(user.getToken(), "nine-eleven-test",
+                "test of 911", location.getLatitude(), location.getLongitude(), location.getRadius(),
+                false, true).getReturnObject();
+
+        ConfirmationMessage addPostFeedback = cc.addPost(user.getToken(), user.getId(), c1.getId(), "");
 
         Assert.assertEquals(ConfirmationMessage.StatusType.ERROR, addPostFeedback.getStatus());
     }

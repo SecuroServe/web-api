@@ -109,7 +109,7 @@ public class CalamityRequest implements ICalamity {
     }
 
     @Override
-    public ConfirmationMessage addPost(String token, int calamityId, String text) throws NotImplementedException {
+    public ConfirmationMessage addPost(String token, int userId, int calamityId, String text) throws NotImplementedException {
         throw new NotImplementedException("This method id not yet implemented.");
     }
 }

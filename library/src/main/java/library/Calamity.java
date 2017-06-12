@@ -334,6 +334,10 @@ public class Calamity implements Serializable {
         return this.posts;
     }
 
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
+    }
+
     /**
      * library.Calamity status enum
      */

@@ -1,8 +1,10 @@
 package datarepo;
 
 import datarepo.database.Database;
+import exceptions.NoSuchCalamityException;
 import library.Calamity;
 import library.Location;
+import library.Post;
 import library.User;
 
 import java.security.NoSuchAlgorithmException;
@@ -122,6 +124,8 @@ public class CalamityRepo {
                 for (User user : getCalamityAssignees(calamity.getId())) {
                     calamity.addAssignee(user);
                 }
+
+                calamity.setPosts(getPostsPerCalamity(id));
             }
         }
         return calamity;
@@ -217,6 +221,8 @@ public class CalamityRepo {
                         isConfirmed, isClosed, time, title, message);
                 calamity.setAssignees(assignees);
 
+                calamity.setPosts(getPostsPerCalamity(id));
+
                 calamities.add(calamity);
             }
         }
@@ -296,5 +302,66 @@ public class CalamityRepo {
         parameters.add(userId);
 
         database.executeQuery(query, parameters, Database.QueryType.NON_QUERY);
+    }
+
+    public Post addPostToCalamity(User user, int calamityId, String text) throws ParseException, NoSuchAlgorithmException, SQLException,
+            NoSuchCalamityException {
+        Calamity calamity = this.getCalamity(calamityId);
+        Post post = new Post(0, user, text);
+
+        if (calamity == null) {
+            throw new NoSuchCalamityException("Calamity does not exsist.");
+        }
+
+        post = addPost(post);
+
+        String query = "INSERT INTO `calamitypost` (`CalamityID`, `PostID`) VALUES (?, ?);";
+
+        List<Object> parameters = new ArrayList<>();
+        parameters.add(calamityId);
+        parameters.add(post.getId());
+
+        database.executeQuery(query, parameters, Database.QueryType.NON_QUERY);
+
+        return post;
+    }
+
+    private Post addPost(Post post) throws SQLException {
+        String query = "INSERT INTO `post` (`UserID`, `Text`) VALUES (?, ?);";
+
+        List<Object> parameters = new ArrayList<>();
+        parameters.add(post.getUser().getId());
+        parameters.add(post.getText());
+
+        try (ResultSet rs = database.executeQuery(query, parameters, Database.QueryType.INSERT)) {
+            if (rs.next()) {
+                post.setId(rs.getInt(1));
+            }
+        }
+
+        return post;
+    }
+
+    private List<Post> getPostsPerCalamity(int calamityId) throws SQLException, ParseException, NoSuchAlgorithmException {
+        List<Post> posts = new ArrayList<>();
+
+        String query = "SELECT p.ID, p.UserID, p.Text FROM post p INNER JOIN calamitypost cp ON p.ID = cp.PostID WHERE cp.CalamityID = ?;";
+
+        List<Object> parameters = new ArrayList<>();
+        parameters.add(calamityId);
+
+        try (ResultSet rs = database.executeQuery(query, parameters, Database.QueryType.QUERY)) {
+            while (rs.next()) {
+                int id = rs.getInt(1);
+                int userId = rs.getInt(2);
+                String text = rs.getString(3);
+
+                User user = new UserRepo(database).getUserById(id);
+
+                posts.add(new Post(id, user, text));
+            }
+        }
+
+        return posts;
     }
 }

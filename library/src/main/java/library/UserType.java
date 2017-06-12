@@ -65,6 +65,7 @@ public class UserType implements Serializable {
         CALAMITY_DELETE,
         CALAMITY_ADD_ASSIGNEE,
         CALAMITY_DELETE_ASSIGNEE,
+        CALAMITY_POST,
         USER_REGISTER,
         USER_DELETE,
         USER_NOTIFY,
