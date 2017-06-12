@@ -2,9 +2,11 @@ package requests;
 
 import interfaces.ConfirmationMessage;
 import interfaces.IAlert;
+import library.Location;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import rest.RestClient;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * Created by Jandie on 2017-05-02.
@@ -51,6 +53,19 @@ public class AlertRequest implements IAlert {
         parameters.add("id", id);
 
         return restClient.request(REQUEST_PREFIX + GET_ALERT, RestClient.RequestType.GET, parameters);
+    }
+
+    /**
+     * Returns a list of nearby alerts based on the location.
+     *
+     * @param token    The authentication token.
+     * @param location The location to check.
+     * @param radius   The radius to check.
+     * @return a list of nearby alerts based on the location.
+     */
+    @Override
+    public ConfirmationMessage getNearbyAlerts(String token, Location location, int radius) {
+        throw new NotImplementedException();
     }
 
     /**

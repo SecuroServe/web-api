@@ -15,6 +15,7 @@ import org.junit.Assert;
  */
 public class TestUtil {
     public static final String USERNAME = "testuser789987";
+    public static final String USERNAME2 = "testu87";
     public static final String PASSWORD = "testpwd*()1223";
     public static final String EMAIL = "testuser789987@test123weqr456.nl";
     public static final String CITY = "Amsterdam";
@@ -55,6 +56,15 @@ public class TestUtil {
         Assert.assertEquals(EMAIL, user.getEmail());
         Assert.assertEquals(CITY, user.getCity());
         Assert.assertNotEquals(null, user.getUserType());
+
+        return user;
+    }
+
+    public static User createTempNoPermissionUser(Database database) throws Exception {
+        UserRepo userRepo = new UserRepo(database);
+
+        User user = userRepo.register(3, -1,
+                USERNAME2, PASSWORD, EMAIL, CITY);
 
         return user;
     }

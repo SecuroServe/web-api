@@ -2,6 +2,7 @@ package requests;
 
 import interfaces.ConfirmationMessage;
 import interfaces.ICalamity;
+import library.Plan;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import rest.RestClient;
@@ -105,5 +106,15 @@ public class CalamityRequest implements ICalamity {
         parameters.add("calamityid", calamityId);
         parameters.add("userid", userId);
         return restClient.request(REQUEST_PREFIX + DELETE_CALAMITY_ASSIGNEE, RestClient.RequestType.DELETE, parameters);
+    }
+
+    @Override
+    public ConfirmationMessage addPost(String token, int userId, int calamityId, String text) {
+        return null;
+    }
+
+    @Override
+    public ConfirmationMessage addPlan(String token, int calamityId, Plan plan) {
+        return null;
     }
 }
