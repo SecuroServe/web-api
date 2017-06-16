@@ -276,6 +276,19 @@ public class CalamityLogic {
      * @return Confirmation message with feedback about the addition containing the new plan.
      */
     public ConfirmationMessage addPlan(String token, int calamityId, Plan plan) {
-        return null;
+        try {
+            userRepo.getUser(token).getUserType().containsPermission(UserType.Permission.CALAMITY_PLAN);
+
+            plan = calamityRepo.addPlan(calamityId, plan);
+
+            return new ConfirmationMessage(ConfirmationMessage.StatusType.SUCCES,
+                    "Plan added to Calamity", plan);
+        } catch (NoPermissionException | SQLException | ParseException | NoSuchAlgorithmException e) {
+            Logger.getLogger(CalamityLogic.class.getName()).log(Level.SEVERE,
+                    "Error while adding Plan to Calamity.", e);
+
+            return new ConfirmationMessage(ConfirmationMessage.StatusType.ERROR,
+                    "Error while adding Plan to Calamity.", e);
+        }
     }
 }
