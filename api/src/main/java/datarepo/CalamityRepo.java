@@ -123,6 +123,7 @@ public class CalamityRepo {
                 }
 
                 calamity.setPosts(getPostsPerCalamity(id));
+                calamity.setPlan(getPlanOfCalamity(id));
             }
         }
         return calamity;
@@ -219,6 +220,7 @@ public class CalamityRepo {
                 calamity.setAssignees(assignees);
 
                 calamity.setPosts(getPostsPerCalamity(id));
+                calamity.setPlan(getPlanOfCalamity(id));
 
                 calamities.add(calamity);
             }
@@ -377,7 +379,48 @@ public class CalamityRepo {
      * @param plan       The plan to add.
      * @return The new plan.
      */
-    public Plan addPlan(int calamityId, Plan plan) {
-        return null;
+    public Plan addPlan(int calamityId, Plan plan) throws SQLException, ParseException, NoSuchAlgorithmException,
+            NoSuchCalamityException {
+        Calamity calamity = this.getCalamity(calamityId);
+
+        if (calamity == null) {
+            throw new NoSuchCalamityException("Calamity does not exsist.");
+        }
+
+        String query = "INSERT INTO `plan` (`CalamityID`, `Description`) VALUES (?, ?)";
+
+        List<Object> parameters = new ArrayList<>();
+        parameters.add(calamityId);
+        parameters.add(plan.getDescription());
+
+        try (ResultSet rs = database.executeQuery(query, parameters, Database.QueryType.INSERT)) {
+            if (rs.next()) {
+                plan.setId(rs.getInt(1));
+            }
+        }
+
+        return plan;
+    }
+
+    private Plan getPlanOfCalamity(int calamityId) throws SQLException {
+        List<Plan> plans = new ArrayList<>();
+
+        String query = "SELECT `ID`, `Description` FROM `plan` WHERE `CalamityID` = ?";
+
+        List<Object> parameters = new ArrayList<>();
+        parameters.add(calamityId);
+
+        try (ResultSet rs = database.executeQuery(query, parameters, Database.QueryType.QUERY)) {
+            while (rs.next()) {
+                int id = rs.getInt(1);
+                String description = rs.getString(2);
+
+                Plan plan = new Plan(id, description);
+
+                plans.add(plan);
+            }
+        }
+
+        return plans.size() > 0 ? plans.get(plans.size() - 1) : null;
     }
 }

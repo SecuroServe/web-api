@@ -283,7 +283,8 @@ public class CalamityLogic {
 
             return new ConfirmationMessage(ConfirmationMessage.StatusType.SUCCES,
                     "Plan added to Calamity", plan);
-        } catch (NoPermissionException | SQLException | ParseException | NoSuchAlgorithmException e) {
+        } catch (NoPermissionException | SQLException | ParseException | NoSuchAlgorithmException |
+                NoSuchCalamityException e) {
             Logger.getLogger(CalamityLogic.class.getName()).log(Level.SEVERE,
                     "Error while adding Plan to Calamity.", e);
 
