@@ -66,6 +66,16 @@ public class Calamity implements Serializable {
     private List<Alert> alerts;
 
     /**
+     * The posts that belong to this calamity.
+     */
+    private List<Post> posts;
+
+    /**
+     * The instruction plan of calamity.
+     */
+    private Plan plan;
+
+    /**
      * A list of keywords that are probably what the calamity is about.
      */
     private List<String> tags;
@@ -92,8 +102,10 @@ public class Calamity implements Serializable {
         this.tags = new ArrayList<>();
         this.alerts = new ArrayList<>();
         this.assignees = new ArrayList<>();
+        this.posts = new ArrayList<>();
 
         initTags();
+
     }
 
     public Calamity() {
@@ -365,6 +377,36 @@ public class Calamity implements Serializable {
      */
     public void addAlert(Alert alert) {
         alerts.add(alert);
+    }
+
+    /**
+     * Adds a post to this calamity.
+     *
+     * @param post The post to add.
+     */
+    public void addPost(Post post) {
+        this.posts.add(post);
+    }
+
+    /**
+     * Returns the posts of calamity.
+     *
+     * @return The posts of calamity.
+     */
+    public List<Post> getPosts() {
+        return this.posts;
+    }
+
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
+    }
+
+    public Plan getPlan() {
+        return plan;
+    }
+
+    public void setPlan(Plan plan) {
+        this.plan = plan;
     }
 
     /**

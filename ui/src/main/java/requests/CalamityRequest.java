@@ -2,6 +2,7 @@ package requests;
 
 import interfaces.ConfirmationMessage;
 import interfaces.ICalamity;
+import library.Plan;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import rest.RestClient;
@@ -23,6 +24,9 @@ public class CalamityRequest implements ICalamity {
 
     private static final String DELETE_CALAMITY = "/deletecalamity";
     private static final String DELETE_CALAMITY_ASSIGNEE = "/deletecalamityassignee";
+
+    private static final String ADD_POST = "/addpost";
+    private static final String ADD_PLAN = "/addplan";
 
     RestClient restClient;
 
@@ -105,5 +109,24 @@ public class CalamityRequest implements ICalamity {
         parameters.add("calamityid", calamityId);
         parameters.add("userid", userId);
         return restClient.request(REQUEST_PREFIX + DELETE_CALAMITY_ASSIGNEE, RestClient.RequestType.DELETE, parameters);
+    }
+
+    @Override
+    public ConfirmationMessage addPost(String token, int userId, int calamityId, String text) {
+        MultiValueMap<String, Object> parameters = new LinkedMultiValueMap<>();
+        parameters.add("token", token);
+        parameters.add("userId", userId);
+        parameters.add("calamityId", calamityId);
+        parameters.add("text", text);
+        return restClient.request(REQUEST_PREFIX + ADD_POST, RestClient.RequestType.POST, parameters);
+    }
+
+    @Override
+    public ConfirmationMessage addPlan(String token, int calamityId, Plan plan) {
+        MultiValueMap<String, Object> parameters = new LinkedMultiValueMap<>();
+        parameters.add("token", token);
+        parameters.add("calamityId", calamityId);
+        parameters.add("plan", plan);
+        return restClient.request(REQUEST_PREFIX + ADD_PLAN, RestClient.RequestType.POST, parameters);
     }
 }

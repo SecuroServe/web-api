@@ -16,6 +16,9 @@ DROP TABLE IF EXISTS BuildingType;
 DROP TABLE IF EXISTS Building;
 DROP TABLE IF EXISTS Alert;
 DROP TABLE IF EXISTS FirebaseToken;
+DROP TABLE IF EXISTS Post;
+DROP TABLE IF EXISTS CalamityPost;
+DROP TABLE IF EXISTS Plan;
 
 CREATE TABLE Alert
 (
@@ -199,15 +202,35 @@ CREATE TABLE UserTypePermission
 
 CREATE TABLE FirebaseToken
 (
-  ID            INT NOT NULL AUTO_INCREMENT
-                PRIMARY KEY,
-  UserID        INT NOT NULL,
+  ID            INT          NOT NULL AUTO_INCREMENT
+    PRIMARY KEY,
+  UserID        INT          NOT NULL,
   FirebaseToken VARCHAR(250) NOT NULL,
 
   CONSTRAINT UserID_UNIQUE
   UNIQUE (UserID),
   CONSTRAINT FirebaseToken_UNIQUE
   UNIQUE (FirebaseToken)
+);
+
+CREATE TABLE CalamityPost
+(
+  CalamityID INT NOT NULL,
+  PostID     INT NOT NULL
+);
+
+CREATE TABLE Post
+(
+  ID     INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  UserID INT NOT NULL,
+  Text   VARCHAR(2000)
+);
+
+CREATE TABLE Plan
+(
+  ID          INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  CalamityID  INT NOT NULL,
+  Description VARCHAR(2000)
 );
 
 INSERT INTO UserType (Naam) VALUES ('Administrator');
@@ -234,6 +257,8 @@ VALUES ('USER_NOTIFY', 'Permission to notify a user to give the operator more in
 INSERT INTO Permission (Node, Description)
 VALUES ('SET_FIREBASE_TOKEN', 'Permission to login into a device and make it ready to get notified');
 INSERT INTO Permission (Node, Description) VALUES ('DUMMY', 'DUMMY');
+INSERT INTO Permission (Node, Description) VALUES ('CALAMITY_POST', 'Permission to add post to calamity');
+INSERT INTO Permission (Node, Description) VALUES ('CALAMITY_PLAN', 'Permission to add plan to calamity');
 
 INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (1, 1);
 INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (1, 2);
@@ -250,7 +275,11 @@ INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (1, 12);
 INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (1, 13);
 INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (1, 14);
 INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (1, 15);
+INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (1, 17);
+INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (1, 18);
+
 INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (2, 16);
+
 INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (3, 16);
 
 INSERT INTO User (UserTypeID, BuildingID, Username, PasswordHash, Salt, Email, City, Token, TokenExpiration) VALUES

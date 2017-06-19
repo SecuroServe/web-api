@@ -4,6 +4,7 @@ import datarepo.database.Database;
 import interfaces.ConfirmationMessage;
 import interfaces.ICalamity;
 import library.Location;
+import library.Plan;
 import logic.CalamityLogic;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -139,5 +140,39 @@ public class CalamityController implements ICalamity {
                                                       @RequestParam(value = "calamityid") int calamityId,
                                                       @RequestParam(value = "userid") int userId) {
         return calamityLogic.deleteCalamityAssignee(token, calamityId, userId);
+    }
+
+    /**
+     * Adds a post to a calamity
+     *
+     * @param token      The authentication token.
+     * @param userId     The id of the user.
+     * @param calamityId The if of the calamity to add the post to.
+     * @param text       The text in the post.
+     * @return Confirmation message with feedback about the addition.
+     */
+    @Override
+    @RequestMapping("/addpost")
+    public ConfirmationMessage addPost(@RequestParam(value = "token") String token,
+                                       @RequestParam(value = "userId") int userId,
+                                       @RequestParam(value = "calamityId") int calamityId,
+                                       @RequestParam(value = "text") String text) {
+        return calamityLogic.addPost(token, userId, calamityId, text);
+    }
+
+    /**
+     * Adds a plan to a calamity
+     *
+     * @param token      The authentication token.
+     * @param calamityId The calamity to add the plan to.
+     * @param plan       The plan to add.
+     * @return Confirmation message with feedback about the addition containing the new plan.
+     */
+    @Override
+    @RequestMapping("/addplan")
+    public ConfirmationMessage addPlan(@RequestParam(value = "token") String token,
+                                       @RequestParam(value = "calamityId") int calamityId,
+                                       @RequestParam(value = "plan") Plan plan) {
+        return calamityLogic.addPlan(token, calamityId, plan);
     }
 }
