@@ -31,12 +31,14 @@ import net.aksingh.owmjapis.Tools;
 import netscape.javascript.JSObject;
 import org.json.JSONObject;
 import requests.CalamityRequest;
+import requests.SocialRequest;
 import requests.UserRequest;
 import requests.WeatherRequest;
 import ui.util.ListViewTweetCell;
 
 import java.net.URL;
 import java.util.*;
+import java.util.logging.ErrorManager;
 
 /**
  * Created by guillaimejanssen on 20/03/2017.
@@ -88,12 +90,13 @@ public class CalamityListController implements Initializable {
 
     private UserRequest userRequest;
     private CalamityRequest calamityRequest;
-
+    private SocialRequest socialRequest;
 
     public CalamityListController(User user) {
         this.user = user;
         this.userRequest = new UserRequest();
         this.calamityRequest = new CalamityRequest();
+        this.socialRequest = new SocialRequest();
     }
 
     @Override
@@ -124,14 +127,21 @@ public class CalamityListController implements Initializable {
 
         initiateTableColumns();
         refreshCalamityTable();
-        refreshSocialPosts();
 
         // Refreshing the table every 10 seconds
         timerToRefresh.schedule(new RefreshTask(), 10 * 1000);
     }
 
     private void refreshSocialPosts() {
+        StringBuilder keywordBuilder = new StringBuilder();
+        for(String string:selectedCalamity.getTitleTags()){
+            keywordBuilder.append(string);
+        }
 
+        ConfirmationMessage message = socialRequest.getSocialPosts(user.getToken(), keywordBuilder.toString());
+        if(message.getStatus() != ConfirmationMessage.StatusType.ERROR){
+            listViewTweets.setItems(FXCollections.observableArrayList((List<SocialPost>)message.getReturnObject()));
+        }
     }
 
     private void refreshUserTable() {
@@ -249,6 +259,7 @@ public class CalamityListController implements Initializable {
         updateMap(calamity);
         getWeatherData(calamity);
         refreshUserTable();
+        refreshSocialPosts();
 
         titleTextField.setText(calamity.getTitle());
         creatorTextField.setText(calamity.getUser().toString());

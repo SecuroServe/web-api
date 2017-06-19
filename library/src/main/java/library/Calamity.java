@@ -81,6 +81,11 @@ public class Calamity implements Serializable {
     private List<String> tags;
 
     /**
+     * A list of keywords found in the title of this calamity.
+     */
+    private List<String> titleTags;
+
+    /**
      * Creates a new instance of library.Calamity with all fields.
      *
      * @param location the library.Location of the library.Calamity
@@ -111,8 +116,22 @@ public class Calamity implements Serializable {
 
     }
 
+    public List<String> getTitleTags() {
+        return titleTags;
+    }
+
+    public void setTitleTags(List<String> titleTags) {
+        this.titleTags = titleTags;
+    }
+
     private void initTags() {
         String[] words = title.split("[\\s]+");
+        for(String word:words){
+            if(word.length() >= 5){
+                titleTags.add(word);
+            }
+        }
+        words = message.split("[\\s]+");
         for(String word:words){
             if(word.length() >= 5){
                 tags.add(word);
