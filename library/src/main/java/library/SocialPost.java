@@ -5,12 +5,12 @@ import java.util.Date;
 /**
  * Created by Jandie on 19-Jun-17.
  */
-public class Tweet {
+public class SocialPost {
     String username;
     String tweetMessage;
     Date createdDate;
 
-    public Tweet(String username, String tweetMessage, Date createdDate) {
+    public SocialPost(String username, String tweetMessage, Date createdDate) {
         this.username = username;
         this.tweetMessage = tweetMessage;
         this.createdDate = createdDate;
