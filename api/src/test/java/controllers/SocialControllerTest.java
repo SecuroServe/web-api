@@ -29,6 +29,11 @@ public class SocialControllerTest {
         noPermissionUser = TestUtil.createTempNoPermissionUser(database);
     }
 
+    /**
+     * Tests whether or not posts are retrieved from SocialController.
+     *
+     * @throws Exception Exception.
+     */
     @Test
     public void getSocialPostsTest() throws Exception {
         String keyWords = "vrachtwagen tilburg";
@@ -45,6 +50,12 @@ public class SocialControllerTest {
         Assert.assertTrue(socialPosts.get(0).getCreatedDate() != null);
     }
 
+    /**
+     * Tests if permission is being checked. A NoPermissionError should be thrown when a user has no permission
+     * to use the getSocialPosts method.
+     *
+     * @throws Exception Exception.
+     */
     @Test
     public void getSocialPostsPermissionTest() throws Exception {
         String keyWords = "vrachtwagen tilburg";
