@@ -76,7 +76,7 @@ public class UserLogic {
                 throw new PasswordsDontMatchException("The 2 passwords don't match.");
             }
 
-            User user = userRepo.register(2, -1, username, password1, email, city);
+            User user = userRepo.register(3, -1, username, password1, email, city);
 
             return new ConfirmationMessage(ConfirmationMessage.StatusType.SUCCES,
                     "User added!", user);
