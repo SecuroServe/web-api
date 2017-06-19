@@ -322,7 +322,7 @@ public class CalamityRepo {
 
         post = addPost(post);
 
-        String query = "INSERT INTO `calamitypost` (`CalamityID`, `PostID`) VALUES (?, ?);";
+        String query = "INSERT INTO `CalamityPost` (`CalamityID`, `PostID`) VALUES (?, ?);";
 
         List<Object> parameters = new ArrayList<>();
         parameters.add(calamityId);
@@ -334,7 +334,7 @@ public class CalamityRepo {
     }
 
     private Post addPost(Post post) throws SQLException {
-        String query = "INSERT INTO `post` (`UserID`, `Text`) VALUES (?, ?);";
+        String query = "INSERT INTO `Post` (`UserID`, `Text`) VALUES (?, ?);";
 
         List<Object> parameters = new ArrayList<>();
         parameters.add(post.getUser().getId());
@@ -352,7 +352,7 @@ public class CalamityRepo {
     private List<Post> getPostsPerCalamity(int calamityId) throws SQLException, ParseException, NoSuchAlgorithmException {
         List<Post> posts = new ArrayList<>();
 
-        String query = "SELECT p.ID, p.UserID, p.Text FROM post p INNER JOIN calamitypost cp ON p.ID = cp.PostID WHERE cp.CalamityID = ?;";
+        String query = "SELECT p.ID, p.UserID, p.Text FROM Post p INNER JOIN CalamityPost cp ON p.ID = cp.PostID WHERE cp.CalamityID = ?;";
 
         List<Object> parameters = new ArrayList<>();
         parameters.add(calamityId);
@@ -387,7 +387,7 @@ public class CalamityRepo {
             throw new NoSuchCalamityException("Calamity does not exsist.");
         }
 
-        String query = "INSERT INTO `plan` (`CalamityID`, `Description`) VALUES (?, ?)";
+        String query = "INSERT INTO `Plan` (`CalamityID`, `Description`) VALUES (?, ?)";
 
         List<Object> parameters = new ArrayList<>();
         parameters.add(calamityId);
@@ -405,7 +405,7 @@ public class CalamityRepo {
     private Plan getPlanOfCalamity(int calamityId) throws SQLException {
         List<Plan> plans = new ArrayList<>();
 
-        String query = "SELECT `ID`, `Description` FROM `plan` WHERE `CalamityID` = ?";
+        String query = "SELECT `ID`, `Description` FROM `Plan` WHERE `CalamityID` = ?";
 
         List<Object> parameters = new ArrayList<>();
         parameters.add(calamityId);
