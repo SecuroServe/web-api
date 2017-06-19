@@ -77,7 +77,7 @@ public class AlertLogic {
             User u = userRepo.getUser(token);
             u.getUserType().containsPermission(UserType.Permission.ALERT_ADD);
 
-            Alert alert = new Alert(-1, location, u, new Date(), name, description, urgency);
+            Alert alert = new Alert(-1, location, u, new Date(), name, description, urgency, -1);
             alertRepo.addAlert(alert);
 
             calculateAlertGroups();
