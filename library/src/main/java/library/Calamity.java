@@ -104,6 +104,7 @@ public class Calamity implements Serializable {
         this.message = message;
         this.state = updateStatus();
 
+        this.titleTags = new ArrayList<>();
         this.tags = new ArrayList<>();
         this.alerts = new ArrayList<>();
         this.assignees = new ArrayList<>();

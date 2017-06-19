@@ -107,6 +107,7 @@ public class CalamityListController implements Initializable {
         dateTextField.setEditable(false);
         informationTextArea.setEditable(false);
 
+        listViewTweets.setCellFactory(param -> new ListViewTweetCell());
         googleMapView.addMapInializedListener(this::mapInitialized);
         refreshButton.setOnAction(this::handleRefreshAction);
         changeButton.setOnAction(this::handleChangeAction);
@@ -122,8 +123,6 @@ public class CalamityListController implements Initializable {
             }
         });
 
-        //todo get list of socialPosts for this calamity
-        listViewTweets.setCellFactory(param -> new ListViewTweetCell());
 
         initiateTableColumns();
         refreshCalamityTable();
@@ -133,12 +132,12 @@ public class CalamityListController implements Initializable {
     }
 
     private void refreshSocialPosts() {
-        StringBuilder keywordBuilder = new StringBuilder();
+/*        StringBuilder keywordBuilder = new StringBuilder();
         for(String string:selectedCalamity.getTitleTags()){
             keywordBuilder.append(string);
-        }
+        }*/
 
-        ConfirmationMessage message = socialRequest.getSocialPosts(user.getToken(), keywordBuilder.toString());
+        ConfirmationMessage message = socialRequest.getSocialPosts(user.getToken(), "donald trump");
         if(message.getStatus() != ConfirmationMessage.StatusType.ERROR){
             listViewTweets.setItems(FXCollections.observableArrayList((List<SocialPost>)message.getReturnObject()));
         }
@@ -259,13 +258,15 @@ public class CalamityListController implements Initializable {
         updateMap(calamity);
         getWeatherData(calamity);
         refreshUserTable();
-        refreshSocialPosts();
+
 
         titleTextField.setText(calamity.getTitle());
         creatorTextField.setText(calamity.getUser().toString());
         dateTextField.setText(calamity.getDate().toString());
         informationTextArea.setText(calamity.getMessage());
         informationTextArea.setWrapText(true);
+
+        refreshSocialPosts();
     }
 
     public void mapInitialized() {
