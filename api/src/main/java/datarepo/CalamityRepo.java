@@ -363,7 +363,7 @@ public class CalamityRepo {
                 int userId = rs.getInt(2);
                 String text = rs.getString(3);
 
-                User user = new UserRepo(database).getUserById(id);
+                User user = new UserRepo(database).getUserById(userId);
 
                 posts.add(new Post(id, user, text));
             }
