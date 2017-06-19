@@ -259,6 +259,7 @@ VALUES ('SET_FIREBASE_TOKEN', 'Permission to login into a device and make it rea
 INSERT INTO Permission (Node, Description) VALUES ('DUMMY', 'DUMMY');
 INSERT INTO Permission (Node, Description) VALUES ('CALAMITY_POST', 'Permission to add post to calamity');
 INSERT INTO Permission (Node, Description) VALUES ('CALAMITY_PLAN', 'Permission to add plan to calamity');
+INSERT INTO Permission (Node, Description) VALUES ('SOCIAL_POST_GET', 'Permission to get list of social posts');
 
 INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (1, 1);
 INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (1, 2);
@@ -277,6 +278,7 @@ INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (1, 14);
 INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (1, 15);
 INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (1, 17);
 INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (1, 18);
+INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (1, 19);
 
 INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (2, 16);
 
