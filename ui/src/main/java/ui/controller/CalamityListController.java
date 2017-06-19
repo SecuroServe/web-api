@@ -22,6 +22,7 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 import jdk.nashorn.internal.parser.JSONParser;
 import library.Calamity;
+import library.SocialPost;
 import library.User;
 import library.Weather;
 import net.aksingh.owmjapis.CurrentWeather;
@@ -76,7 +77,7 @@ public class CalamityListController implements Initializable {
     private Label weatherLabel;
 
     @FXML
-    private ListView listViewTweets;
+    private ListView<SocialPost> listViewTweets;
 
     @FXML
     private GoogleMapView googleMapView;
@@ -87,6 +88,7 @@ public class CalamityListController implements Initializable {
 
     private UserRequest userRequest;
     private CalamityRequest calamityRequest;
+
 
     public CalamityListController(User user) {
         this.user = user;
@@ -117,20 +119,19 @@ public class CalamityListController implements Initializable {
             }
         });
 
-        listViewTweets.setCellFactory(new Callback<ListView, ListCell>() {
-
-            //todo get list of socialPosts for this calamity
-            @Override
-            public ListCell call(ListView param) {
-                return new ListViewTweetCell();
-            }
-        });
+        //todo get list of socialPosts for this calamity
+        listViewTweets.setCellFactory(param -> new ListViewTweetCell());
 
         initiateTableColumns();
         refreshCalamityTable();
+        refreshSocialPosts();
 
         // Refreshing the table every 10 seconds
         timerToRefresh.schedule(new RefreshTask(), 10 * 1000);
+    }
+
+    private void refreshSocialPosts() {
+
     }
 
     private void refreshUserTable() {
