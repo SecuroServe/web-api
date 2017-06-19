@@ -4,7 +4,6 @@ import datarepo.database.Database;
 import interfaces.ConfirmationMessage;
 import interfaces.ILogin;
 import logic.UserLogic;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,5 +37,25 @@ public class LoginController implements ILogin {
     public ConfirmationMessage login(@RequestParam(value = "username", defaultValue = "") String username,
                                      @RequestParam(value = "password", defaultValue = "") String password) {
         return userLogic.login(username, password);
+    }
+
+    /**
+     * Creates and returns a new user. Also checks for valid username and valid passwords.
+     *
+     * @param username  The username of the user to register.
+     * @param password1 The password of the user.
+     * @param password2 The retyped password.
+     * @param email     The email of the User.
+     * @param city      The city of the user
+     * @return A ConfirmationMessage with the new User.
+     */
+    @Override
+    @RequestMapping("/register")
+    public ConfirmationMessage register(@RequestParam(value = "username", defaultValue = "") String username,
+                                        @RequestParam(value = "password1", defaultValue = "") String password1,
+                                        @RequestParam(value = "password2", defaultValue = "") String password2,
+                                        @RequestParam(value = "email", defaultValue = "") String email,
+                                        @RequestParam(value = "city", defaultValue = "") String city) {
+        return userLogic.register(username, password1, password2, email, city);
     }
 }
