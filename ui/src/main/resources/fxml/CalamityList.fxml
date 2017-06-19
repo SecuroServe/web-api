@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Line?>
 
-<StackPane prefHeight="789.0" prefWidth="1400.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane prefHeight="789.0" prefWidth="1400.0" xmlns="http://javafx.com/javafx/8.0.131" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <VBox prefHeight="761.0" prefWidth="1380.0" spacing="10.0">
             <children>
@@ -26,7 +26,7 @@
                         <Region prefHeight="27.0" prefWidth="172.0" HBox.hgrow="ALWAYS" />
                         <ImageView fitHeight="56.0" fitWidth="57.0" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@../images/nuclear.png" />
+                                <Image url="@../images/warning.png" />
                             </image>
                         </ImageView>
                     </children>
