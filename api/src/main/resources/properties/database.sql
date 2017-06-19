@@ -284,6 +284,7 @@ INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (2, 16);
 INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (2, 17);
 
 INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (3, 16);
+INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (2, 17);
 
 INSERT INTO User (UserTypeID, BuildingID, Username, PasswordHash, Salt, Email, City, Token, TokenExpiration) VALUES
   (1, -1, 'Henk', '72730eb1ef6b8619ce0df9a9f8fb2a693e551a86fdacd0779ffe331a75fa6264',
