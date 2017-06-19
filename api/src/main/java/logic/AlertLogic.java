@@ -93,6 +93,26 @@ public class AlertLogic {
         }
     }
 
+    public ConfirmationMessage addAlertToCalamity(String token, String name, String description, Location location, int urgency, int calamityId) {
+        try{
+            User u = userRepo.getUser(token);
+            u.getUserType().containsPermission(UserType.Permission.ALERT_ADD);
+
+            Alert alert = new Alert(-1, location, u, new Date(), name, description, urgency, calamityId);
+            alertRepo.addAlert(alert);
+
+            return new ConfirmationMessage(ConfirmationMessage.StatusType.SUCCES,
+                    "Alert added to calamity", alert);
+
+        } catch (NoPermissionException | ParseException | NoSuchAlgorithmException | SQLException e) {
+            Logger.getLogger(AlertLogic.class.getName()).log(Level.SEVERE,
+                    "Error while adding a alert to calamity", e);
+
+            return new ConfirmationMessage(ConfirmationMessage.StatusType.ERROR,
+                    "Error while adding a alert to calamity", e);
+        }
+    }
+
     /**
      * Updates an alert.
      *
