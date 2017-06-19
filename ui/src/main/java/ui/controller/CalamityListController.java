@@ -19,6 +19,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import jdk.nashorn.internal.parser.JSONParser;
 import library.Calamity;
 import library.User;
@@ -31,6 +32,7 @@ import org.json.JSONObject;
 import requests.CalamityRequest;
 import requests.UserRequest;
 import requests.WeatherRequest;
+import ui.util.ListViewTweetCell;
 
 import java.net.URL;
 import java.util.*;
@@ -74,6 +76,9 @@ public class CalamityListController implements Initializable {
     private Label weatherLabel;
 
     @FXML
+    private ListView listViewTweets;
+
+    @FXML
     private GoogleMapView googleMapView;
 
     private GoogleMap map;
@@ -109,6 +114,15 @@ public class CalamityListController implements Initializable {
                 } catch (NullPointerException ex) {
                     fillDefaultCalamityDetails();
                 }
+            }
+        });
+
+        listViewTweets.setCellFactory(new Callback<ListView, ListCell>() {
+
+            //todo get list of socialPosts for this calamity
+            @Override
+            public ListCell call(ListView param) {
+                return new ListViewTweetCell();
             }
         });
 
