@@ -24,7 +24,7 @@ public class SocialControllerTest {
     @Before
     public void setUp() throws Exception {
         database = TestUtil.cleanAndBuildTestDatabase();
-        sc = new SocialController();
+        sc = new SocialController(database);
         user = TestUtil.createTempUser(database);
         noPermissionUser = TestUtil.createTempNoPermissionUser(database);
     }
