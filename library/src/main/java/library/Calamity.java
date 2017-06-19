@@ -76,6 +76,11 @@ public class Calamity implements Serializable {
     private Plan plan;
 
     /**
+     * A list of keywords that are probably what the calamity is about.
+     */
+    private List<String> tags;
+
+    /**
      * Creates a new instance of library.Calamity with all fields.
      *
      * @param location the library.Location of the library.Calamity
@@ -94,13 +99,65 @@ public class Calamity implements Serializable {
         this.message = message;
         this.state = updateStatus();
 
+        this.tags = new ArrayList<>();
         this.alerts = new ArrayList<>();
         this.assignees = new ArrayList<>();
         this.posts = new ArrayList<>();
+
+        initTags();
     }
 
     public Calamity() {
+
     }
+
+    private void initTags() {
+        String[] words = title.split("[\\s]+");
+        for(String word:words){
+            if(word.length() >= 5){
+                tags.add(word);
+            }
+        }
+    }
+
+    /**
+     * Adds a tag to the list of tags of this calamity.
+     *
+     * @param tag
+     */
+    public void addTag(String tag) {
+        tags.add(tag);
+    }
+
+    /**
+     * Adds a list of tags to the list of tags in this calamity.
+     *
+     * @param tags
+     */
+    public void addTags(List<String> tags) {
+        for (String tag : tags) {
+            this.tags.add(tag);
+        }
+    }
+
+    /**
+     * Sets all tags of this calamity, replacing the list.
+     *
+     * @param tags
+     */
+    public void setTags(List<String> tags) {
+        this.tags = tags;
+    }
+
+    /**
+     * Returns a list of tags of this calamity.
+     *
+     * @return List of String
+     */
+    public List<String> getTags() {
+        return tags;
+    }
+
 
     public boolean isConfirmed() {
         return isConfirmed;
