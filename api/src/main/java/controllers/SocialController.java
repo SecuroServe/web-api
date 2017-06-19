@@ -1,5 +1,6 @@
 package controllers;
 
+import datarepo.database.Database;
 import interfaces.ConfirmationMessage;
 import interfaces.ISocial;
 import logic.SocialLogic;
@@ -12,6 +13,10 @@ public class SocialController implements ISocial {
 
     public SocialController() {
         this.socialLogic = new SocialLogic();
+    }
+
+    public SocialController(Database database) {
+        this.socialLogic = new SocialLogic(database);
     }
 
     /**
