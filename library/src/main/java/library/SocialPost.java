@@ -1,11 +1,12 @@
 package library;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by Jandie on 19-Jun-17.
  */
-public class SocialPost {
+public class SocialPost implements Serializable {
     String username;
     String tweetMessage;
     Date createdDate;
@@ -15,6 +16,8 @@ public class SocialPost {
         this.tweetMessage = tweetMessage;
         this.createdDate = createdDate;
     }
+
+    public SocialPost() { }
 
     public String getUsername() {
         return username;

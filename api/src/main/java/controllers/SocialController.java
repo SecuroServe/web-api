@@ -4,6 +4,8 @@ import datarepo.database.Database;
 import interfaces.ConfirmationMessage;
 import interfaces.ISocial;
 import logic.SocialLogic;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * Created by Jandie on 19-Jun-17.
@@ -27,7 +29,9 @@ public class SocialController implements ISocial {
      * @return List of found tweet objects.
      */
     @Override
-    public ConfirmationMessage getSocialPosts(String token, String keyWords) {
+    @RequestMapping("/getsocialposts")
+    public ConfirmationMessage getSocialPosts(@RequestParam(value = "token") String token,
+                                              @RequestParam(value = "keyWords") String keyWords) {
         return this.socialLogic.getSocialPosts(token, keyWords);
     }
 }

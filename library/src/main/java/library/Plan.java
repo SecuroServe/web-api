@@ -1,9 +1,11 @@
 package library;
 
+import java.io.Serializable;
+
 /**
  * Created by Jandie on 2017-06-12.
  */
-public class Plan {
+public class Plan implements Serializable {
     int id;
     String description;
 
@@ -11,6 +13,8 @@ public class Plan {
         this.id = id;
         this.description = description;
     }
+
+    public Plan() { }
 
     public int getId() {
         return id;

@@ -88,6 +88,34 @@ public class AlertController implements IAlert {
         return alertLogic.addAlert(token, name, description, location, urgency);
     }
 
+
+    /**
+     * Adds alert to calamity
+     *
+     * @param token       The authentication token.
+     * @param name        The name of the alert.
+     * @param description The description of the alert.
+     * @param urgency
+     * @param lat         The latitude of the alert's location.
+     * @param lon         The lontitude of the alert's location.
+     * @param radius      The radius of the alert's location.
+     * @param calamityId  The calamity it is attached to.
+     * @return
+     */
+    @Override
+    @RequestMapping("/addalerttocalamity")
+    public ConfirmationMessage addAlertToCalamity(@RequestParam(value = "token") String token,
+                                                  @RequestParam(value = "name") String name,
+                                                  @RequestParam(value = "description") String description,
+                                                  @RequestParam(value = "urgency") int urgency,
+                                                  @RequestParam(value = "latitude") double lat,
+                                                  @RequestParam(value = "longitude") double lon,
+                                                  @RequestParam(value = "radius") double radius,
+                                                  @RequestParam(value = "calamityid") int calamityId) {
+        Location location = new Location(-1, lat, lon, radius);
+        return alertLogic.addAlertToCalamity(token, name, description, location, urgency, calamityId);
+    }
+
     /**
      * Updates an alert.
      *

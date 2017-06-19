@@ -105,7 +105,6 @@ public class Calamity implements Serializable {
         this.posts = new ArrayList<>();
 
         initTags();
-
     }
 
     public Calamity() {
