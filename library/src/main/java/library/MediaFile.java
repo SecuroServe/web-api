@@ -19,6 +19,10 @@ public class MediaFile extends Media implements Serializable {
         this.fileType = fileType;
     }
 
+    public MediaFile() {
+        super();
+    }
+
     public String getFileName() {
         return fileName;
     }

@@ -17,6 +17,10 @@ public class Text extends Media implements Serializable {
         this.text = text;
     }
 
+    public Text() {
+        super();
+    }
+
     public String getText() {
         return text;
     }
