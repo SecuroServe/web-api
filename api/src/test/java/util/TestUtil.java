@@ -63,7 +63,7 @@ public class TestUtil {
     public static User createTempNoPermissionUser(Database database) throws Exception {
         UserRepo userRepo = new UserRepo(database);
 
-        User user = userRepo.register(3, -1,
+        User user = userRepo.register(4, -1,
                 USERNAME2, PASSWORD, EMAIL, CITY);
 
         return user;
