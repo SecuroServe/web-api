@@ -132,7 +132,7 @@ public class Calamity implements Serializable {
                 titleTags.add(word);
             }
         }
-        words = message.split("[\\s]+");
+
         for(String word:words){
             if(word.length() >= 5){
                 tags.add(word);
