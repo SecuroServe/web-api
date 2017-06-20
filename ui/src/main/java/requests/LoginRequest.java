@@ -34,7 +34,7 @@ public class LoginRequest implements ILogin {
         parameters.add("username", username);
         parameters.add("password", password);
 
-        return restClient.request(REQUEST_PREFIX + "/login", RestClient.RequestType.GET, parameters);
+        return restClient.request(REQUEST_PREFIX + "/login", RestClient.RequestType.POST, parameters);
     }
 
     /**

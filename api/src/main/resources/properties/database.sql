@@ -236,6 +236,7 @@ CREATE TABLE Plan
 INSERT INTO UserType (Naam) VALUES ('Administrator');
 INSERT INTO UserType (Naam) VALUES ('Hulpverlener');
 INSERT INTO UserType (Naam) VALUES ('Burger');
+INSERT INTO UserType (Naam) VALUES ('TEST_DUMMY');
 
 INSERT INTO Permission (Node, Description) VALUES ('CALAMITY_ADD', 'Permissions to add a Calamity');
 INSERT INTO Permission (Node, Description) VALUES ('CALAMITY_UPDATE', 'Permissions to update a Calamity');
@@ -285,6 +286,8 @@ INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (2, 17);
 
 INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (3, 16);
 INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (3, 17);
+
+INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (4, 16);
 
 INSERT INTO User (UserTypeID, BuildingID, Username, PasswordHash, Salt, Email, City, Token, TokenExpiration) VALUES
   (1, -1, 'Henk', '72730eb1ef6b8619ce0df9a9f8fb2a693e551a86fdacd0779ffe331a75fa6264',
