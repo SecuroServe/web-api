@@ -6,7 +6,7 @@ import javafx.scene.Node;
 import javafx.scene.layout.VBox;
 import library.SocialPost;
 
-import java.awt.*;
+import javafx.scene.control.Label;
 import java.io.IOException;
 
 /**

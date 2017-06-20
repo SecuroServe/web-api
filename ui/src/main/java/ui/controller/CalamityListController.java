@@ -139,7 +139,12 @@ public class CalamityListController implements Initializable {
 
         ConfirmationMessage message = socialRequest.getSocialPosts(user.getToken(), "donald trump");
         if(message.getStatus() != ConfirmationMessage.StatusType.ERROR){
-            listViewTweets.setItems(FXCollections.observableArrayList((List<SocialPost>)message.getReturnObject()));
+
+            Object returnObj = message.getReturnObject();
+            ObjectMapper mapper = new ObjectMapper();
+            List<SocialPost> posts = mapper.convertValue(returnObj, new TypeReference<List<SocialPost>>() {});
+
+            listViewTweets.setItems(FXCollections.observableArrayList(posts));
         }
     }
 
