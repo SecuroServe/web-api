@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Line?>
 
-<StackPane prefHeight="789.0" prefWidth="1499.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane prefHeight="789.0" prefWidth="1500.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <VBox prefHeight="761.0" prefWidth="1380.0" spacing="10.0">
             <children>
@@ -35,7 +35,7 @@
                 <Line endX="1389.0" startX="10.0" stroke="WHITE" />
                 <HBox prefHeight="648.0" prefWidth="1380.0">
                     <children>
-                        <VBox prefHeight="626.0" prefWidth="370.0">
+                        <VBox prefHeight="626.0" prefWidth="359.0">
                             <children>
                                 <TableView fx:id="calamityTable" maxHeight="500.0" prefHeight="400.0" prefWidth="400.0" styleClass="calamity-list" />
                                 <Region prefHeight="24.0" prefWidth="400.0" />
@@ -45,7 +45,7 @@
                         <Region prefHeight="100.0" prefWidth="10.0" />
                         <Line endY="625.0" stroke="WHITE" />
                         <Region prefHeight="633.0" prefWidth="9.0" />
-                        <VBox prefHeight="626.0" prefWidth="400.0">
+                        <VBox prefHeight="626.0" prefWidth="388.0">
                             <children>
                                 <Label text="Title:" />
                                 <HBox prefHeight="44.0" prefWidth="497.0">
@@ -77,21 +77,20 @@
                             </children>
                         </VBox>
                         <Region layoutX="421.0" layoutY="10.0" prefHeight="633.0" prefWidth="9.0" />
-                        <Line endY="625.0" layoutX="421.0" layoutY="11.0" stroke="WHITE" />
+                        <Line endY="625.0" layoutX="370.0" layoutY="11.0" stroke="WHITE" />
                         <Region layoutX="927.0" layoutY="10.0" prefHeight="633.0" prefWidth="9.0" />
-                        <VBox prefHeight="626.0" prefWidth="420.0">
+                        <VBox prefHeight="626.0" prefWidth="380.0">
                             <children>
-                                <GoogleMapView fx:id="googleMapView" prefHeight="370.0" prefWidth="420.0" />
+                                <GoogleMapView fx:id="googleMapView" prefHeight="370.0" prefWidth="375.0" />
                                 <Region prefHeight="8.0" prefWidth="450.0" />
-                                <Line endX="459.0" startX="10.0" stroke="WHITE" />
-                        <Region prefHeight="8.0" prefWidth="450.0" />
+                        <Region prefHeight="6.0" prefWidth="394.0" />
                         <Label fx:id="weatherLabel" text="Label" />
                             </children>
                         </VBox>
                   <Region layoutX="937.0" layoutY="10.0" prefHeight="633.0" prefWidth="9.0" />
-                  <VBox prefHeight="626.0" prefWidth="250.0">
+                  <VBox prefHeight="626.0" prefWidth="330.0">
                      <children>
-                        <ListView fx:id="listViewTweets" prefHeight="644.0" prefWidth="246.0" />
+                        <ListView fx:id="listViewTweets" prefHeight="626.0" prefWidth="330.0" />
                      </children>
                   </VBox>
                     </children>
