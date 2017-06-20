@@ -235,7 +235,7 @@ CREATE TABLE Plan
 
 INSERT INTO UserType (Naam) VALUES ('Administrator');
 INSERT INTO UserType (Naam) VALUES ('Hulpverlener');
-INSERT INTO UserType (Naam) VALUES ('Gast');
+INSERT INTO UserType (Naam) VALUES ('Burger');
 
 INSERT INTO Permission (Node, Description) VALUES ('CALAMITY_ADD', 'Permissions to add a Calamity');
 INSERT INTO Permission (Node, Description) VALUES ('CALAMITY_UPDATE', 'Permissions to update a Calamity');
