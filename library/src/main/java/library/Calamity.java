@@ -130,11 +130,6 @@ public class Calamity implements Serializable {
         for(String word:words){
             if(word.length() >= 5){
                 titleTags.add(word);
-            }
-        }
-
-        for(String word:words){
-            if(word.length() >= 5){
                 tags.add(word);
             }
         }
