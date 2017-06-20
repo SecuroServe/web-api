@@ -7,11 +7,13 @@ import library.Media;
 import logic.MediaLogic;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
  * Created by Jandie on 2017-05-08.
  */
+@RestController
 public class MediaController implements IMedia {
     private MediaLogic mediaLogic;
 
@@ -48,8 +50,7 @@ public class MediaController implements IMedia {
      */
     @Override
     @RequestMapping("/addmedia")
-    public ConfirmationMessage addMedia(@RequestParam(value = "token") String token,
-                                        @RequestParam(value = "media") Media media,
+    public ConfirmationMessage addMedia(@RequestParam(value = "token") String token, Media media,
                                         @RequestParam(value = "alertId") int alertId) {
         return mediaLogic.addMedia(token, media, alertId);
     }

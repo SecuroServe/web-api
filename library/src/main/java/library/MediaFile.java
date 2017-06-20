@@ -1,9 +1,14 @@
 package library;
 
+import org.springframework.stereotype.Component;
+
+import java.io.Serializable;
+
 /**
  * Created by Jandie on 2017-05-08.
  */
-public class MediaFile extends Media {
+@Component
+public class MediaFile extends Media implements Serializable {
     private String fileName;
 
     private FileType fileType;

@@ -138,6 +138,13 @@ public class Calamity implements Serializable {
                 tags.add(word);
             }
         }
+
+        String[] wordsDescription = message.split("[\\s]+");
+        for(String word:wordsDescription){
+            if(word.length() >= 5){
+                tags.add(word);
+            }
+        }
     }
 
     /**
@@ -426,6 +433,11 @@ public class Calamity implements Serializable {
 
     public void setPlan(Plan plan) {
         this.plan = plan;
+    }
+
+    @Override
+    public String toString() {
+        return this.getTitle();
     }
 
     /**
