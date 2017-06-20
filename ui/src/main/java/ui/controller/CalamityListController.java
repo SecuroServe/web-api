@@ -108,6 +108,7 @@ public class CalamityListController implements Initializable {
         informationTextArea.setEditable(false);
 
         listViewTweets.setCellFactory(param -> new ListViewTweetCell());
+        listViewTweets.setPlaceholder(new Label("No tweets found"));
         googleMapView.addMapInializedListener(this::mapInitialized);
         refreshButton.setOnAction(this::handleRefreshAction);
         changeButton.setOnAction(this::handleChangeAction);
@@ -132,12 +133,15 @@ public class CalamityListController implements Initializable {
     }
 
     private void refreshSocialPosts() {
-/*        StringBuilder keywordBuilder = new StringBuilder();
+
+        listViewTweets.getItems().clear();
+
+        StringBuilder keywordBuilder = new StringBuilder();
         for(String string:selectedCalamity.getTitleTags()){
             keywordBuilder.append(string);
-        }*/
+        }
 
-        ConfirmationMessage message = socialRequest.getSocialPosts(user.getToken(), "donald trump");
+        ConfirmationMessage message = socialRequest.getSocialPosts(user.getToken(), keywordBuilder.toString());
         if(message.getStatus() != ConfirmationMessage.StatusType.ERROR){
 
             Object returnObj = message.getReturnObject();
