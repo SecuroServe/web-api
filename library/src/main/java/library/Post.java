@@ -1,9 +1,11 @@
 package library;
 
+import java.io.Serializable;
+
 /**
  * Created by Jandie on 2017-06-12.
  */
-public class Post {
+public class Post implements Serializable {
     /**
      * The id of the post used for identification of the post.
      */

@@ -415,6 +415,11 @@ public class Calamity implements Serializable {
         this.plan = plan;
     }
 
+    @Override
+    public String toString() {
+        return this.getTitle();
+    }
+
     /**
      * library.Calamity status enum
      */
