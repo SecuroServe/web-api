@@ -165,14 +165,14 @@ public class CalamityController implements ICalamity {
      *
      * @param token      The authentication token.
      * @param calamityId The calamity to add the plan to.
-     * @param plan       The plan to add.
+     * @param description       The plan to add.
      * @return Confirmation message with feedback about the addition containing the new plan.
      */
     @Override
     @RequestMapping("/addplan")
     public ConfirmationMessage addPlan(@RequestParam(value = "token") String token,
                                        @RequestParam(value = "calamityId") int calamityId,
-                                       @RequestParam(value = "plan") Plan plan) {
-        return calamityLogic.addPlan(token, calamityId, plan);
+                                       @RequestParam(value = "description") String description) {
+        return calamityLogic.addPlan(token, calamityId, new Plan(-1, description));
     }
 }
