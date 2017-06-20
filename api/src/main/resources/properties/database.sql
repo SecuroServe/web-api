@@ -330,7 +330,7 @@ INSERT INTO Calamity (LocationID, CreatedByUserID, isConfirmed, isClosed, Time, 
   (3, 1, 1, 0, '2017-05-22 00:00:00', 'Gasaanval',
    'Er is een gasaanval gaande op Weert station, de geallieerden hebben zich verdaan en denken dat het vol met nazi''s zit!');
 INSERT INTO Calamity (LocationID, CreatedByUserID, isConfirmed, isClosed, Time, Title, Message)
-VALUES (4, 1, 1, 0, '2017-05-15 16:28:19', 'Staatsgreep', 'Greet is een staatsgreep aan het plegen');
+VALUES (4, 1, 1, 0, '2017-05-15 16:28:19', 'Staatsgreep', 'Geert Wilders is een staatsgreep aan het plegen. Sinds de verkiezingen is de PVV altijd uitgesloten om een eventueel kabinet te vormen. Hierna heeft hij besloten het heft in eigen handen te nemen en een poging doen tot een staatsgreep. Tot nu toe lijkt het te lukken, we blijven deze calamiteit bijwerken.');
 INSERT INTO Calamity (LocationID, CreatedByUserID, isConfirmed, isClosed, Time, Title, Message)
 VALUES (5, 1, 1, 0, '2017-05-22 00:00:00', 'Ongeluk met vrachtwagen in Tilburg', 'Korte beschrijving:
 
