@@ -114,4 +114,14 @@ public interface ICalamity {
      * @return Confirmation message with feedback about the addition containing the new plan.
      */
     ConfirmationMessage addPlan(String token, int calamityId, String description);
+
+    /**
+     * Updates a plan
+     *
+     * @param token      The authentication token.
+     * @param id The ID of the plan to update.
+     * @param description       The plan to update.
+     * @return Confirmation message with feedback about the update containing the updated plan.
+     */
+    ConfirmationMessage updatePlan(String token, int id, String description);
 }

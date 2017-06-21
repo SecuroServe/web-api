@@ -12,7 +12,7 @@ import rest.RestClient;
  */
 public class CalamityRequest implements ICalamity {
 
-    private static final String REQUEST_PREFIX = "https://www.securoserve.nl/api";
+    private static final String REQUEST_PREFIX = "https://localhost:8080/api";
 
     private static final String GET_ALL = "/allcalamity";
     private static final String GET_CALAMITY_BY_ID = "/calamitybyid";
@@ -27,6 +27,7 @@ public class CalamityRequest implements ICalamity {
 
     private static final String ADD_POST = "/addpost";
     private static final String ADD_PLAN = "/addplan";
+    private static final String UPDATE_PLAN = "/updateplan";
 
     RestClient restClient;
 
@@ -122,11 +123,20 @@ public class CalamityRequest implements ICalamity {
     }
 
     @Override
-    public ConfirmationMessage addPlan(String token, int calamityId, Plan plan) {
+    public ConfirmationMessage addPlan(String token, int calamityId, String description) {
         MultiValueMap<String, Object> parameters = new LinkedMultiValueMap<>();
         parameters.add("token", token);
         parameters.add("calamityId", calamityId);
-        parameters.add("plan", plan);
+        parameters.add("description", description);
         return restClient.request(REQUEST_PREFIX + ADD_PLAN, RestClient.RequestType.POST, parameters);
+    }
+
+    @Override
+    public ConfirmationMessage updatePlan(String token, int id, String description) {
+        MultiValueMap<String, Object> parameters = new LinkedMultiValueMap<>();
+        parameters.add("token", token);
+        parameters.add("id", id);
+        parameters.add("description", description);
+        return restClient.request(REQUEST_PREFIX + UPDATE_PLAN, RestClient.RequestType.POST, parameters);
     }
 }
