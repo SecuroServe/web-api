@@ -18,26 +18,25 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
 import javafx.stage.Stage;
-import jdk.nashorn.internal.parser.JSONParser;
 import library.Calamity;
 import library.SocialPost;
 import library.User;
 import library.Weather;
-import net.aksingh.owmjapis.CurrentWeather;
-import net.aksingh.owmjapis.OpenWeatherMap;
-import net.aksingh.owmjapis.Tools;
 import netscape.javascript.JSObject;
-import org.json.JSONObject;
 import requests.CalamityRequest;
 import requests.SocialRequest;
 import requests.UserRequest;
 import requests.WeatherRequest;
+import ui.Main;
+import ui.util.ListViewTweetCell;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.*;
+import java.util.List;
+import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by guillaimejanssen on 20/03/2017.
