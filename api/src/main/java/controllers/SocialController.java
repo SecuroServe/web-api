@@ -6,10 +6,12 @@ import interfaces.ISocial;
 import logic.SocialLogic;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Created by Jandie on 19-Jun-17.
  */
+@RestController
 public class SocialController implements ISocial {
     private SocialLogic socialLogic;
 

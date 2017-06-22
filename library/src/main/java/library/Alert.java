@@ -37,6 +37,9 @@ public class Alert implements Serializable {
         media = null;
     }
 
+    public Alert() {
+    }
+
     public int getId() {
         return id;
     }
