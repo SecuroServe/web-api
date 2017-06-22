@@ -17,19 +17,12 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
 import javafx.stage.Stage;
-import javafx.util.Callback;
-import jdk.nashorn.internal.parser.JSONParser;
 import library.Calamity;
 import library.SocialPost;
 import library.User;
 import library.Weather;
-import net.aksingh.owmjapis.CurrentWeather;
-import net.aksingh.owmjapis.OpenWeatherMap;
-import net.aksingh.owmjapis.Tools;
 import netscape.javascript.JSObject;
-import org.json.JSONObject;
 import requests.CalamityRequest;
 import requests.SocialRequest;
 import requests.UserRequest;
@@ -38,7 +31,6 @@ import ui.util.ListViewTweetCell;
 
 import java.net.URL;
 import java.util.*;
-import java.util.logging.ErrorManager;
 
 /**
  * Created by guillaimejanssen on 20/03/2017.
@@ -137,9 +129,16 @@ public class CalamityListController implements Initializable {
             keywordBuilder.append(string);
         }*/
 
+        ObjectMapper mapper = new ObjectMapper();
+
         ConfirmationMessage message = socialRequest.getSocialPosts(user.getToken(), "donald trump");
-        if(message.getStatus() != ConfirmationMessage.StatusType.ERROR){
-            listViewTweets.setItems(FXCollections.observableArrayList((List<SocialPost>)message.getReturnObject()));
+        if (message.getStatus() != ConfirmationMessage.StatusType.ERROR) {
+
+            List<SocialPost> socialPosts = mapper.convertValue(message.getReturnObject(), new TypeReference<List<SocialPost>>() {});
+            ObservableList<SocialPost> observableList = FXCollections.observableArrayList(socialPosts);
+
+            listViewTweets.setItems(FXCollections.observableArrayList(observableList));
+
         }
     }
 
@@ -153,7 +152,7 @@ public class CalamityListController implements Initializable {
         Object value = calamityRequest.allCalamity().getReturnObject();
 
         ObjectMapper mapper = new ObjectMapper();
-        List<Calamity> calamities = mapper.convertValue(value, new TypeReference<List<Calamity>>() { });
+        List<Calamity> calamities = mapper.convertValue(value, new TypeReference<List<Calamity>>() {});
 
         ObservableList<Calamity> obsList = FXCollections.observableArrayList(calamities);
         calamityTable.setItems(obsList);
@@ -207,12 +206,12 @@ public class CalamityListController implements Initializable {
     }
 
     private void handleAskInfoAction(ActionEvent actionEvent) {
-        if(userTable.getSelectionModel().getSelectedIndex() < 0) {
+        if (userTable.getSelectionModel().getSelectedIndex() < 0) {
             showMessage("Nothing selected", "Please select a user to ask information!");
         } else {
             ConfirmationMessage message = userRequest.askInformation(user.getToken(), userTable.getSelectionModel().getSelectedItem().getId());
 
-            if(message.getStatus().equals(ConfirmationMessage.StatusType.SUCCES)) {
+            if (message.getStatus().equals(ConfirmationMessage.StatusType.SUCCES)) {
                 showMessage("SUCCESS", "Assignee has been notified");
             } else {
                 showMessage("ERROR", "Assignee has not been notified");
@@ -348,7 +347,7 @@ public class CalamityListController implements Initializable {
                 calamity.getLocation().getLongitude(),
                 calamity.getLocation().getLatitude()), ConfirmationMessage.class);
 
-        if(message.getStatus().equals(ConfirmationMessage.StatusType.ERROR)) {
+        if (message.getStatus().equals(ConfirmationMessage.StatusType.ERROR)) {
             weatherLabel.setText("There is no weather data available\n\n" +
                     "Message: " + message.getMessage());
         } else {
