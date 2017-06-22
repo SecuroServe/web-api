@@ -292,4 +292,22 @@ public class CalamityLogic {
                     "Error while adding Plan to Calamity.", e);
         }
     }
+
+    public ConfirmationMessage updatePlan(String token, Plan plan) {
+        try {
+            userRepo.getUser(token).getUserType().containsPermission(UserType.Permission.CALAMITY_PLAN);
+
+            calamityRepo.updatePlan(plan);
+
+            return new ConfirmationMessage(ConfirmationMessage.StatusType.SUCCES,
+                    "Plan updated", plan);
+
+        } catch (NoPermissionException | NoSuchAlgorithmException | ParseException | SQLException e) {
+            Logger.getLogger(CalamityLogic.class.getName()).log(Level.SEVERE,
+                    "Error while updating Plan.", e);
+
+            return new ConfirmationMessage(ConfirmationMessage.StatusType.ERROR,
+                    "Error while updating plan.", e);
+        }
+    }
 }

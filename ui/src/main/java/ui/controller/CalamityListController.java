@@ -12,6 +12,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -27,10 +28,15 @@ import requests.CalamityRequest;
 import requests.SocialRequest;
 import requests.UserRequest;
 import requests.WeatherRequest;
+import ui.Main;
 import ui.util.ListViewTweetCell;
 
+import java.io.IOException;
 import java.net.URL;
-import java.util.*;
+import java.util.List;
+import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by guillaimejanssen on 20/03/2017.
@@ -52,6 +58,8 @@ public class CalamityListController implements Initializable {
     private Button backButton;
     @FXML
     private Button changeButton;
+    @FXML
+    private Button planButton;
     @FXML
     private Button askInfoButton;
 
@@ -76,6 +84,7 @@ public class CalamityListController implements Initializable {
     @FXML
     private GoogleMapView googleMapView;
 
+    private Stage stage;
     private GoogleMap map;
     private Calamity selectedCalamity;
     private Timer timerToRefresh = new Timer();
@@ -84,7 +93,8 @@ public class CalamityListController implements Initializable {
     private CalamityRequest calamityRequest;
     private SocialRequest socialRequest;
 
-    public CalamityListController(User user) {
+    public CalamityListController(Stage stage, User user) {
+        this.stage = stage;
         this.user = user;
         this.userRequest = new UserRequest();
         this.calamityRequest = new CalamityRequest();
@@ -103,6 +113,7 @@ public class CalamityListController implements Initializable {
         googleMapView.addMapInializedListener(this::mapInitialized);
         refreshButton.setOnAction(this::handleRefreshAction);
         changeButton.setOnAction(this::handleChangeAction);
+        planButton.setOnAction(this::handlePlanAction);
         backButton.setOnAction(this::handleBackAction);
         askInfoButton.setOnAction(this::handleAskInfoAction);
         calamityTable.setOnMouseClicked((MouseEvent event) -> {
@@ -121,13 +132,14 @@ public class CalamityListController implements Initializable {
 
         // Refreshing the table every 10 seconds
         timerToRefresh.schedule(new RefreshTask(), 10 * 1000);
+
+        // Close handler for timer
+        stage.setOnCloseRequest(e -> {
+            timerToRefresh.cancel();
+        });
     }
 
     private void refreshSocialPosts() {
-/*        StringBuilder keywordBuilder = new StringBuilder();
-        for(String string:selectedCalamity.getTitleTags()){
-            keywordBuilder.append(string);
-        }*/
 
         ObjectMapper mapper = new ObjectMapper();
 
@@ -138,7 +150,6 @@ public class CalamityListController implements Initializable {
             ObservableList<SocialPost> observableList = FXCollections.observableArrayList(socialPosts);
 
             listViewTweets.setItems(FXCollections.observableArrayList(observableList));
-
         }
     }
 
@@ -152,7 +163,8 @@ public class CalamityListController implements Initializable {
         Object value = calamityRequest.allCalamity().getReturnObject();
 
         ObjectMapper mapper = new ObjectMapper();
-        List<Calamity> calamities = mapper.convertValue(value, new TypeReference<List<Calamity>>() {});
+        List<Calamity> calamities = mapper.convertValue(value, new TypeReference<List<Calamity>>() {
+        });
 
         ObservableList<Calamity> obsList = FXCollections.observableArrayList(calamities);
         calamityTable.setItems(obsList);
@@ -181,14 +193,29 @@ public class CalamityListController implements Initializable {
                         selectedCalamity.getConfirmation(),
                         selectedCalamity.getClosed());
 
-            } else {
-
             }
 
         } else {
             titleTextField.setEditable(true);
             informationTextArea.setEditable(true);
             changeButton.setText("Save changes");
+        }
+    }
+
+    private void handlePlanAction(ActionEvent actionEvent) {
+
+        if (selectedCalamity == null) {
+            return;
+        }
+
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/CreatePlan.fxml"));
+        PlanController controller = new PlanController(user, selectedCalamity);
+        fxmlLoader.setController(controller);
+
+        try {
+            Main.setStage(fxmlLoader.load(), new Stage(), "Create Plan");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -257,7 +284,6 @@ public class CalamityListController implements Initializable {
         updateMap(calamity);
         getWeatherData(calamity);
         refreshUserTable();
-
 
         titleTextField.setText(calamity.getTitle());
         creatorTextField.setText(calamity.getUser().toString());

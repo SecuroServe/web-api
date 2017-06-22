@@ -73,7 +73,16 @@
                                     </children>
                                 </HBox>
                                 <Region prefHeight="13.0" prefWidth="497.0" />
-                                <Button fx:id="changeButton" mnemonicParsing="false" text="Change" />
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Button fx:id="changeButton" mnemonicParsing="false" prefWidth="100.0" text="Change" />
+                                      <Button fx:id="planButton" mnemonicParsing="false" prefWidth="100.0" text="Plan">
+                                 <HBox.margin>
+                                    <Insets left="10.0" />
+                                 </HBox.margin>
+                              </Button>
+                           </children>
+                        </HBox>
                             </children>
                         </VBox>
                         <Region layoutX="421.0" layoutY="10.0" prefHeight="633.0" prefWidth="9.0" />

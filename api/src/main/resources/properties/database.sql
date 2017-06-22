@@ -229,8 +229,11 @@ CREATE TABLE Post
 CREATE TABLE Plan
 (
   ID          INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  CalamityID  INT NOT NULL,
-  Description VARCHAR(2000)
+  CalamityID  INT NOT NULL UNIQUE,
+  Description VARCHAR(2000),
+
+  CONSTRAINT CalamityID_UNIQUE
+  UNIQUE (CalamityID)
 );
 
 INSERT INTO UserType (Naam) VALUES ('Administrator');

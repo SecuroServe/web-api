@@ -50,7 +50,7 @@ public class DashboardController implements Initializable {
         Stage stage = new Stage();
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/CalamityList.fxml"));
-        CalamityListController calamityListController = new CalamityListController(user);
+        CalamityListController calamityListController = new CalamityListController(stage, user);
         calamityListController.user = this.user;
         fxmlLoader.setController(calamityListController);
 
