@@ -286,9 +286,11 @@ INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (1, 19);
 
 INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (2, 16);
 INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (2, 17);
+INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (2, 10);
 
 INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (3, 16);
 INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (3, 17);
+INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (3, 10);
 
 INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (4, 16);
 
