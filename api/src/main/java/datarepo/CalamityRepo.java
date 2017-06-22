@@ -384,7 +384,7 @@ public class CalamityRepo {
         Calamity calamity = this.getCalamity(calamityId);
 
         if (calamity == null) {
-            throw new NoSuchCalamityException("Calamity does not exsist.");
+            throw new NoSuchCalamityException("Calamity does not exist.");
         }
 
         String query = "INSERT INTO `Plan` (`CalamityID`, `Description`) VALUES (?, ?)";
@@ -400,6 +400,25 @@ public class CalamityRepo {
         }
 
         return plan;
+    }
+
+    /**
+     * Update an existing Plan into the database
+     *
+     * @param plan the updated Plan with the correct ID
+     * @throws SQLException exception when an SQL Error occurs
+     */
+    public void updatePlan(Plan plan) throws SQLException {
+
+        String query = "UPDATE `Plan` " +
+                "SET `Description` = ?" +
+                "WHERE `ID` = ?";
+
+        List<Object> parameters = new ArrayList<>();
+        parameters.add(plan.getDescription());
+        parameters.add(plan.getId());
+
+        database.executeQuery(query, parameters, Database.QueryType.NON_QUERY);
     }
 
     private Plan getPlanOfCalamity(int calamityId) throws SQLException {
