@@ -140,14 +140,16 @@ public class CalamityListController implements Initializable {
     }
 
     private void refreshSocialPosts() {
-/*        StringBuilder keywordBuilder = new StringBuilder();
-        for(String string:selectedCalamity.getTitleTags()){
-            keywordBuilder.append(string);
-        }*/
+
+        ObjectMapper mapper = new ObjectMapper();
 
         ConfirmationMessage message = socialRequest.getSocialPosts(user.getToken(), "donald trump");
-        if(message.getStatus() != ConfirmationMessage.StatusType.ERROR){
-            listViewTweets.setItems(FXCollections.observableArrayList((List<SocialPost>)message.getReturnObject()));
+        if (message.getStatus() != ConfirmationMessage.StatusType.ERROR) {
+
+            List<SocialPost> socialPosts = mapper.convertValue(message.getReturnObject(), new TypeReference<List<SocialPost>>() {});
+            ObservableList<SocialPost> observableList = FXCollections.observableArrayList(socialPosts);
+
+            listViewTweets.setItems(FXCollections.observableArrayList(observableList));
         }
     }
 
