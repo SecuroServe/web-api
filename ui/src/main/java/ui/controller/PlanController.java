@@ -28,10 +28,7 @@ import requests.UserRequest;
 import requests.WeatherRequest;
 
 import java.net.URL;
-import java.util.List;
-import java.util.ResourceBundle;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 /**
  * Created by guillaimejanssen on 20/03/2017.
@@ -73,14 +70,18 @@ public class PlanController implements Initializable {
         if (!descriptionTextArea.getText().isEmpty()) {
 
             CalamityRequest calamityRequest = new CalamityRequest();
+            ObjectMapper mapper = new ObjectMapper();
 
             if (selectedCalamity.getPlan() == null) {
-                calamityRequest.addPlan(user.getToken(), selectedCalamity.getId(), descriptionTextArea.getText());
+                ConfirmationMessage msg = calamityRequest.addPlan(user.getToken(), selectedCalamity.getId(), descriptionTextArea.getText());
+                Plan plan = mapper.convertValue(msg.getReturnObject(), Plan.class);
+                selectedCalamity.setPlan(plan);
             } else {
                 calamityRequest.updatePlan(user.getToken(), selectedCalamity.getPlan().getId(), descriptionTextArea.getText());
+                selectedCalamity.getPlan().setDescription(descriptionTextArea.getText());
             }
 
-            selectedCalamity.getPlan().setDescription(descriptionTextArea.getText());
+
         }
     }
 }
