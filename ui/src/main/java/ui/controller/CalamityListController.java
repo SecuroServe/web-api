@@ -143,7 +143,13 @@ public class CalamityListController implements Initializable {
 
         ObjectMapper mapper = new ObjectMapper();
 
-        ConfirmationMessage message = socialRequest.getSocialPosts(user.getToken(), "donald trump");
+        StringBuilder keywordBuilder = new StringBuilder();
+
+        for(String string:selectedCalamity.getTitleTags()){
+            keywordBuilder.append(string);
+        }
+
+        ConfirmationMessage message = socialRequest.getSocialPosts(user.getToken(), keywordBuilder.toString());
         if (message.getStatus() != ConfirmationMessage.StatusType.ERROR) {
 
             List<SocialPost> socialPosts = mapper.convertValue(message.getReturnObject(), new TypeReference<List<SocialPost>>() {});
