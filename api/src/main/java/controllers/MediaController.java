@@ -70,10 +70,10 @@ public class MediaController implements IMedia {
     public ConfirmationMessage addMediaFile(@RequestParam(value = "token") String token,
                                             @RequestParam(value = "mediaName") String mediaName,
                                             @RequestParam(value = "fileName") String fileName,
-                                            @RequestParam(value = "fileType") MediaFile.FileType fileType,
+                                            @RequestParam(value = "fileType") String fileType,
                                             @RequestParam(value = "alertId") int alertId) {
 
-        MediaFile media = new MediaFile(-1, mediaName, fileName, fileType);
+        MediaFile media = new MediaFile(-1, mediaName, fileName, MediaFile.FileType.valueOf(fileType));
         return mediaLogic.addMedia(token, media, alertId);
     }
 

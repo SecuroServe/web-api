@@ -36,7 +36,7 @@ public class MediaRepo {
         Media media = null;
         String mediaName = null;
 
-        String query = "SELECT `Name` FROM media WHERE ID = ?";
+        String query = "SELECT `Name` FROM Media WHERE ID = ?";
 
         List<Object> parameters = new ArrayList<>();
         parameters.add(mediaId);
@@ -68,7 +68,7 @@ public class MediaRepo {
         int mediaId = -1;
         String mediaName = null;
 
-        String query = "SELECT `ID`, `Name` FROM media WHERE AlertID = ?";
+        String query = "SELECT `ID`, `Name` FROM Media WHERE AlertID = ?";
 
         List<Object> parameters = new ArrayList<>();
         parameters.add(alertId);
@@ -100,7 +100,7 @@ public class MediaRepo {
     private Text getText(int mediaId, String mediaName) throws SQLException {
         Text text = null;
 
-        String query = "SELECT `Text` FROM text WHERE `MediaID` = ?";
+        String query = "SELECT `Text` FROM Text WHERE `MediaID` = ?";
 
         List<Object> parameters = new ArrayList<>();
         parameters.add(mediaId);
@@ -125,7 +125,7 @@ public class MediaRepo {
     private MediaFile getMediaFile(int mediaId, String mediaName) throws SQLException {
         MediaFile mediaFile = null;
 
-        String query = "SELECT `FileName`, `FileType` FROM `file` WHERE `MediaID` = ?";
+        String query = "SELECT `FileName`, `FileType` FROM `File` WHERE `MediaID` = ?";
 
         List<Object> parameters = new ArrayList<>();
         parameters.add(mediaId);
@@ -150,7 +150,7 @@ public class MediaRepo {
      * @throws SQLException Database error.
      */
     private boolean isText(int mediaId) throws SQLException {
-        String query = "SELECT ID FROM text WHERE MediaID = ?";
+        String query = "SELECT ID FROM Text WHERE MediaID = ?";
 
         List<Object> parameters = new ArrayList<>();
         parameters.add(mediaId);
@@ -172,7 +172,7 @@ public class MediaRepo {
      * @throws SQLException Database error.
      */
     private boolean isMediaFile(int mediaId) throws SQLException {
-        String query = "SELECT ID FROM file WHERE MediaID = ?";
+        String query = "SELECT ID FROM File WHERE MediaID = ?";
 
         List<Object> parameters = new ArrayList<>();
         parameters.add(mediaId);
@@ -197,7 +197,7 @@ public class MediaRepo {
     public Text addText(Text text, int alertId) throws SQLException {
         int mediaId = addMedia(text.getName(), alertId);
 
-        String query = "INSERT INTO `text` (`MediaID`, `Text`) " +
+        String query = "INSERT INTO `Text` (`MediaID`, `Text`) " +
                 "VALUES (?, ?)";
 
         List<Object> parameters = new ArrayList<>();
@@ -222,7 +222,7 @@ public class MediaRepo {
     public MediaFile addMediaFile(MediaFile mediaFile, int alertId) throws SQLException {
         int mediaId = addMedia(mediaFile.getName(), alertId);
 
-        String query = "INSERT INTO `file` (`MediaID`, `FileName`, `FileType`) " +
+        String query = "INSERT INTO `File` (`MediaID`, `FileName`, `FileType`) " +
                 "VALUES (?, ?, ?)";
 
         List<Object> parameters = new ArrayList<>();
@@ -246,7 +246,7 @@ public class MediaRepo {
      * @throws SQLException Database error.
      */
     public int addMedia(String name, int alertId) throws SQLException {
-        String query = "INSERT INTO `media` (`AlertID`, `Name`) VALUES (?, ?)";
+        String query = "INSERT INTO `Media` (`AlertID`, `Name`) VALUES (?, ?)";
 
         List<Object> parameters = new ArrayList<>();
         parameters.add(alertId);
@@ -276,7 +276,7 @@ public class MediaRepo {
             removeMediaFile(mediaId);
         }
 
-        String query = "DELETE FROM `media` WHERE `ID` = ?";
+        String query = "DELETE FROM `Media` WHERE `ID` = ?";
 
         List<Object> parameters = new ArrayList<>();
         parameters.add(mediaId);
@@ -291,7 +291,7 @@ public class MediaRepo {
      * @throws SQLException Database error.
      */
     private void removeText(int mediaId) throws SQLException {
-        String query = "DELETE FROM `text` WHERE `MediaID` = ?";
+        String query = "DELETE FROM `Text` WHERE `MediaID` = ?";
 
         List<Object> parameters = new ArrayList<>();
         parameters.add(mediaId);
@@ -306,7 +306,7 @@ public class MediaRepo {
      * @throws SQLException Database error.
      */
     private void removeMediaFile(int mediaId) throws SQLException {
-        String query = "DELETE FROM `file` WHERE `MediaID` = ?";
+        String query = "DELETE FROM `File` WHERE `MediaID` = ?";
 
         List<Object> parameters = new ArrayList<>();
         parameters.add(mediaId);
@@ -333,7 +333,7 @@ public class MediaRepo {
      * @param text The text object.
      */
     private void updateText(Text text) throws SQLException {
-        String query = "UPDATE `text` SET `Text` = ? WHERE `MediaID` = ?";
+        String query = "UPDATE `Text` SET `Text` = ? WHERE `MediaID` = ?";
 
         List<Object> parameters = new ArrayList<>();
         parameters.add(text.getText());
@@ -348,7 +348,7 @@ public class MediaRepo {
      * @param mediaFile The mediaFile object.
      */
     private void updateMediaFile(MediaFile mediaFile) throws SQLException {
-        String query = "UPDATE `file` SET `FileName` = ?, `FileType` = ? WHERE `MediaID` = ?";
+        String query = "UPDATE `File` SET `FileName` = ?, `FileType` = ? WHERE `MediaID` = ?";
 
         List<Object> parameters = new ArrayList<>();
         parameters.add(mediaFile.getFileName());
