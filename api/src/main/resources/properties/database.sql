@@ -229,8 +229,11 @@ CREATE TABLE Post
 CREATE TABLE Plan
 (
   ID          INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  CalamityID  INT NOT NULL,
-  Description VARCHAR(2000)
+  CalamityID  INT NOT NULL UNIQUE,
+  Description VARCHAR(2000),
+
+  CONSTRAINT CalamityID_UNIQUE
+  UNIQUE (CalamityID)
 );
 
 INSERT INTO UserType (Naam) VALUES ('Administrator');
@@ -283,9 +286,11 @@ INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (1, 19);
 
 INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (2, 16);
 INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (2, 17);
+INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (2, 10);
 
 INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (3, 16);
 INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (3, 17);
+INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (3, 10);
 
 INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (4, 16);
 
@@ -333,7 +338,7 @@ INSERT INTO Calamity (LocationID, CreatedByUserID, isConfirmed, isClosed, Time, 
   (3, 1, 1, 0, '2017-05-22 00:00:00', 'Gasaanval',
    'Er is een gasaanval gaande op Weert station, de geallieerden hebben zich verdaan en denken dat het vol met nazi''s zit!');
 INSERT INTO Calamity (LocationID, CreatedByUserID, isConfirmed, isClosed, Time, Title, Message)
-VALUES (4, 1, 1, 0, '2017-05-15 16:28:19', 'Staatsgreep', 'Greet is een staatsgreep aan het plegen');
+VALUES (4, 1, 1, 0, '2017-05-15 16:28:19', 'Staatsgreep', 'Geert Wilders is een staatsgreep aan het plegen. Sinds de verkiezingen is de PVV altijd uitgesloten om een eventueel kabinet te vormen. Hierna heeft hij besloten het heft in eigen handen te nemen en een poging doen tot een staatsgreep. Tot nu toe lijkt het te lukken, we blijven deze calamiteit bijwerken.');
 INSERT INTO Calamity (LocationID, CreatedByUserID, isConfirmed, isClosed, Time, Title, Message)
 VALUES (5, 1, 1, 0, '2017-05-22 00:00:00', 'Ongeluk met vrachtwagen in Tilburg', 'Korte beschrijving:
 

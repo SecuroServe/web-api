@@ -11,7 +11,6 @@ public class ListViewTweetCell extends ListCell<SocialPost> {
     public ListViewTweetCell() {
 
     }
-
     @Override
     public void updateItem(SocialPost socialPost, boolean empty)
     {

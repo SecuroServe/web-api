@@ -2,6 +2,7 @@ package ui;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -46,14 +47,11 @@ public class Main extends Application {
         setStage(fxmlLoader.load(), primaryStage, "Dashboard");
     }
 
-    public void loadInformRescuer(User user) throws IOException {
-    }
-
     public void setStage(Parent root, Stage stage) throws IOException {
         this.setStage(root, stage, "SecuroServe");
     }
 
-    public void setStage(Parent root, Stage stage, String title) throws IOException {
+    public static void setStage(Parent root, Stage stage, String title) throws IOException {
 
         // Prepare stage
         stage.setResizable(false);
