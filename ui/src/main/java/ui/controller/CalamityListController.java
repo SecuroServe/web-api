@@ -145,8 +145,10 @@ public class CalamityListController implements Initializable {
 
         StringBuilder keywordBuilder = new StringBuilder();
 
-        for(String string:selectedCalamity.getTitleTags()){
-            keywordBuilder.append(string);
+        for(String string : selectedCalamity.getTitleTags()) {
+            if (string.length() >= 5) {
+                keywordBuilder.append("+").append("+" + string);
+            }
         }
 
         ConfirmationMessage message = socialRequest.getSocialPosts(user.getToken(), keywordBuilder.toString());
