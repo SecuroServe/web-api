@@ -94,6 +94,11 @@ public class AlertRequest implements IAlert {
         return restClient.request(REQUEST_PREFIX + ADD_ALERT, RestClient.RequestType.POST, parameters);
     }
 
+    @Override
+    public ConfirmationMessage addAlertToCalamity(String token, String name, String description, int urgency, double lat, double lon, double radius, int calamityId) {
+        return null;
+    }
+
     /**
      * Updates an alert.
      *

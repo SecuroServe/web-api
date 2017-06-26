@@ -26,32 +26,32 @@ public class AlertRepo {
     }
 
     /**
-     * Add a new Alert to the database
+     * Add a new alert to the database
      *
-     * @param Alert the Alert to add into the database
-     * @return the updated Alert with the correct ID
+     * @param alert the alert to add into the database
+     * @return the updated alert with the correct ID
      * @throws SQLException exception when an SQL Error occurs
      */
-    public void addAlert(Alert Alert) throws SQLException {
-        new LocationRepo(database).addLocation(Alert.getLocation());
+    public void addAlert(Alert alert) throws SQLException {
+        new LocationRepo(database).addLocation(alert.getLocation());
 
         String query = "INSERT INTO `Alert` " +
                 "(`LocationID`, `CreatedByUserID`, `CalamityID`, `Time`, `Title`, `Description`, `Urgency`) " +
-                "VALUES (?, ?, -1, ?, ?, ?, ?)";
+                "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         List<Object> parameters = new ArrayList<>();
 
-        parameters.add(Alert.getLocation().getId());
-        parameters.add(Alert.getUser().getId());
-        parameters.add(Alert.getDate());
-        parameters.add(Alert.getName());
-        parameters.add(Alert.getDescription());
-        parameters.add(Alert.getUrgency());
+        parameters.add(alert.getLocation().getId());
+        parameters.add(alert.getUser().getId());
+        parameters.add(alert.getCalamityId());
+        parameters.add(alert.getDate());
+        parameters.add(alert.getName());
+        parameters.add(alert.getDescription());
+        parameters.add(alert.getUrgency());
 
         try (ResultSet rs = database.executeQuery(query, parameters, Database.QueryType.INSERT)) {
-
             if (rs != null && rs.next()) {
-                Alert.setId(rs.getInt(1));
+                alert.setId(rs.getInt(1));
             }
         }
     }

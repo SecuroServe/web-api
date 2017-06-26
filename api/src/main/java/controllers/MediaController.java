@@ -4,14 +4,18 @@ import datarepo.database.Database;
 import interfaces.ConfirmationMessage;
 import interfaces.IMedia;
 import library.Media;
+import library.MediaFile;
+import library.Text;
 import logic.MediaLogic;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
  * Created by Jandie on 2017-05-08.
  */
+@RestController
 public class MediaController implements IMedia {
     private MediaLogic mediaLogic;
 
@@ -50,6 +54,40 @@ public class MediaController implements IMedia {
     @RequestMapping("/addmedia")
     public ConfirmationMessage addMedia(@RequestParam(value = "token") String token,
                                         @RequestParam(value = "media") Media media,
+                                        @RequestParam(value = "alertId") int alertId) {
+        return mediaLogic.addMedia(token, media, alertId);
+    }
+
+    /**
+     * Adds new MediaFile.
+     *
+     * @param token   The authentication token.
+     * @param alertId The id of the alert where media is stored.
+     * @return Confirmation message with feedback about the addition
+     * also containing the new media.
+     */
+    @RequestMapping("/addmediafile")
+    public ConfirmationMessage addMediaFile(@RequestParam(value = "token") String token,
+                                            @RequestParam(value = "mediaName") String mediaName,
+                                            @RequestParam(value = "fileName") String fileName,
+                                            @RequestParam(value = "fileType") String fileType,
+                                            @RequestParam(value = "alertId") int alertId) {
+
+        MediaFile media = new MediaFile(-1, mediaName, fileName, MediaFile.FileType.valueOf(fileType));
+        return mediaLogic.addMedia(token, media, alertId);
+    }
+
+    /**
+     * Adds new Text.
+     *
+     * @param token   The authentication token.
+     * @param media   The media object to add.
+     * @param alertId The id of the alert where media is stored.
+     * @return Confirmation message with feedback about the addition
+     * also containing the new media.
+     */
+    @RequestMapping("/addmediatext")
+    public ConfirmationMessage addMediaText(@RequestParam(value = "token") String token, Text media,
                                         @RequestParam(value = "alertId") int alertId) {
         return mediaLogic.addMedia(token, media, alertId);
     }

@@ -152,7 +152,11 @@ public class CalamityController implements ICalamity {
      * @return Confirmation message with feedback about the addition.
      */
     @Override
-    public ConfirmationMessage addPost(String token, int userId, int calamityId, String text) {
+    @RequestMapping("/addpost")
+    public ConfirmationMessage addPost(@RequestParam(value = "token") String token,
+                                       @RequestParam(value = "userId") int userId,
+                                       @RequestParam(value = "calamityId") int calamityId,
+                                       @RequestParam(value = "text") String text) {
         return calamityLogic.addPost(token, userId, calamityId, text);
     }
 
@@ -161,11 +165,30 @@ public class CalamityController implements ICalamity {
      *
      * @param token      The authentication token.
      * @param calamityId The calamity to add the plan to.
-     * @param plan       The plan to add.
+     * @param description       The plan to add.
      * @return Confirmation message with feedback about the addition containing the new plan.
      */
     @Override
-    public ConfirmationMessage addPlan(String token, int calamityId, Plan plan) {
-        return calamityLogic.addPlan(token, calamityId, plan);
+    @RequestMapping("/addplan")
+    public ConfirmationMessage addPlan(@RequestParam(value = "token") String token,
+                                       @RequestParam(value = "calamityId") int calamityId,
+                                       @RequestParam(value = "description") String description) {
+        return calamityLogic.addPlan(token, calamityId, new Plan(-1, description));
+    }
+
+    /**
+     * Adds a plan to a calamity
+     *
+     * @param token      The authentication token.
+     * @param id The calamity to add the plan to.
+     * @param description       The plan to add.
+     * @return Confirmation message with feedback about the addition containing the new plan.
+     */
+    @Override
+    @RequestMapping("/updateplan")
+    public ConfirmationMessage updatePlan(@RequestParam(value = "token") String token,
+                                       @RequestParam(value = "id") int id,
+                                       @RequestParam(value = "description") String description) {
+        return calamityLogic.updatePlan(token, new Plan(id, description));
     }
 }

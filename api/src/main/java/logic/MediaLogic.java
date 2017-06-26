@@ -9,6 +9,9 @@ import library.MediaFile;
 import library.Text;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  * Created by Jandie on 2017-05-08.
  */
@@ -42,6 +45,9 @@ public class MediaLogic {
                     "Get media succesfull!",
                     mediaRepo.getMedia(id));
         } catch (Exception e) {
+            Logger.getLogger(MediaLogic.class.getName()).log(Level.SEVERE,
+                    "Error while getting media.", e);
+
             return new ConfirmationMessage(ConfirmationMessage.StatusType.ERROR,
                     "Get media failed!",
                     e);

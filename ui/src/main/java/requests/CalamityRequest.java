@@ -25,6 +25,10 @@ public class CalamityRequest implements ICalamity {
     private static final String DELETE_CALAMITY = "/deletecalamity";
     private static final String DELETE_CALAMITY_ASSIGNEE = "/deletecalamityassignee";
 
+    private static final String ADD_POST = "/addpost";
+    private static final String ADD_PLAN = "/addplan";
+    private static final String UPDATE_PLAN = "/updateplan";
+
     RestClient restClient;
 
     public CalamityRequest() {
@@ -110,11 +114,29 @@ public class CalamityRequest implements ICalamity {
 
     @Override
     public ConfirmationMessage addPost(String token, int userId, int calamityId, String text) {
-        return null;
+        MultiValueMap<String, Object> parameters = new LinkedMultiValueMap<>();
+        parameters.add("token", token);
+        parameters.add("userId", userId);
+        parameters.add("calamityId", calamityId);
+        parameters.add("text", text);
+        return restClient.request(REQUEST_PREFIX + ADD_POST, RestClient.RequestType.POST, parameters);
     }
 
     @Override
-    public ConfirmationMessage addPlan(String token, int calamityId, Plan plan) {
-        return null;
+    public ConfirmationMessage addPlan(String token, int calamityId, String description) {
+        MultiValueMap<String, Object> parameters = new LinkedMultiValueMap<>();
+        parameters.add("token", token);
+        parameters.add("calamityId", calamityId);
+        parameters.add("description", description);
+        return restClient.request(REQUEST_PREFIX + ADD_PLAN, RestClient.RequestType.POST, parameters);
+    }
+
+    @Override
+    public ConfirmationMessage updatePlan(String token, int id, String description) {
+        MultiValueMap<String, Object> parameters = new LinkedMultiValueMap<>();
+        parameters.add("token", token);
+        parameters.add("id", id);
+        parameters.add("description", description);
+        return restClient.request(REQUEST_PREFIX + UPDATE_PLAN, RestClient.RequestType.POST, parameters);
     }
 }

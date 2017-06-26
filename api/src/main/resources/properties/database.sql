@@ -18,6 +18,7 @@ DROP TABLE IF EXISTS Alert;
 DROP TABLE IF EXISTS FirebaseToken;
 DROP TABLE IF EXISTS Post;
 DROP TABLE IF EXISTS CalamityPost;
+DROP TABLE IF EXISTS Plan;
 
 CREATE TABLE Alert
 (
@@ -225,9 +226,20 @@ CREATE TABLE Post
   Text   VARCHAR(2000)
 );
 
+CREATE TABLE Plan
+(
+  ID          INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  CalamityID  INT NOT NULL UNIQUE,
+  Description VARCHAR(2000),
+
+  CONSTRAINT CalamityID_UNIQUE
+  UNIQUE (CalamityID)
+);
+
 INSERT INTO UserType (Naam) VALUES ('Administrator');
 INSERT INTO UserType (Naam) VALUES ('Hulpverlener');
-INSERT INTO UserType (Naam) VALUES ('Guest');
+INSERT INTO UserType (Naam) VALUES ('Burger');
+INSERT INTO UserType (Naam) VALUES ('TEST_DUMMY');
 
 INSERT INTO Permission (Node, Description) VALUES ('CALAMITY_ADD', 'Permissions to add a Calamity');
 INSERT INTO Permission (Node, Description) VALUES ('CALAMITY_UPDATE', 'Permissions to update a Calamity');
@@ -251,6 +263,7 @@ VALUES ('SET_FIREBASE_TOKEN', 'Permission to login into a device and make it rea
 INSERT INTO Permission (Node, Description) VALUES ('DUMMY', 'DUMMY');
 INSERT INTO Permission (Node, Description) VALUES ('CALAMITY_POST', 'Permission to add post to calamity');
 INSERT INTO Permission (Node, Description) VALUES ('CALAMITY_PLAN', 'Permission to add plan to calamity');
+INSERT INTO Permission (Node, Description) VALUES ('SOCIAL_POST_GET', 'Permission to get list of social posts');
 
 INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (1, 1);
 INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (1, 2);
@@ -269,10 +282,17 @@ INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (1, 14);
 INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (1, 15);
 INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (1, 17);
 INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (1, 18);
+INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (1, 19);
 
 INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (2, 16);
+INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (2, 17);
+INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (2, 10);
 
 INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (3, 16);
+INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (3, 17);
+INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (3, 10);
+
+INSERT INTO UserTypePermission (UserTypeID, PermissionID) VALUES (4, 16);
 
 INSERT INTO User (UserTypeID, BuildingID, Username, PasswordHash, Salt, Email, City, Token, TokenExpiration) VALUES
   (1, -1, 'Henk', '72730eb1ef6b8619ce0df9a9f8fb2a693e551a86fdacd0779ffe331a75fa6264',
@@ -318,7 +338,7 @@ INSERT INTO Calamity (LocationID, CreatedByUserID, isConfirmed, isClosed, Time, 
   (3, 1, 1, 0, '2017-05-22 00:00:00', 'Gasaanval',
    'Er is een gasaanval gaande op Weert station, de geallieerden hebben zich verdaan en denken dat het vol met nazi''s zit!');
 INSERT INTO Calamity (LocationID, CreatedByUserID, isConfirmed, isClosed, Time, Title, Message)
-VALUES (4, 1, 1, 0, '2017-05-15 16:28:19', 'Staatsgreep', 'Greet is een staatsgreep aan het plegen');
+VALUES (4, 1, 1, 0, '2017-05-15 16:28:19', 'Staatsgreep', 'Geert Wilders is een staatsgreep aan het plegen. Sinds de verkiezingen is de PVV altijd uitgesloten om een eventueel kabinet te vormen. Hierna heeft hij besloten het heft in eigen handen te nemen en een poging doen tot een staatsgreep. Tot nu toe lijkt het te lukken, we blijven deze calamiteit bijwerken.');
 INSERT INTO Calamity (LocationID, CreatedByUserID, isConfirmed, isClosed, Time, Title, Message)
 VALUES (5, 1, 1, 0, '2017-05-22 00:00:00', 'Ongeluk met vrachtwagen in Tilburg', 'Korte beschrijving:
 

@@ -25,11 +25,12 @@ import java.util.ResourceBundle;
 public class DashboardController implements Initializable {
 
     @FXML
-    public Button logoutBtn;
+    private Button logoutBtn;
     @FXML
-    public VBox calamityBtn;
+    private VBox calamityBtn;
     @FXML
-    public VBox sendRescuerBtn;
+    private VBox sendRescuerBtn;
+
     private Main main;
     private User user;
 
@@ -49,12 +50,12 @@ public class DashboardController implements Initializable {
         Stage stage = new Stage();
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/CalamityList.fxml"));
-        CalamityListController calamityListController = new CalamityListController(user);
+        CalamityListController calamityListController = new CalamityListController(stage, user);
         calamityListController.user = this.user;
         fxmlLoader.setController(calamityListController);
 
         try {
-            setStage(fxmlLoader.load(), stage);
+            main.setStage(fxmlLoader.load(), stage);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -68,7 +69,7 @@ public class DashboardController implements Initializable {
         fxmlLoader.setController(controller);
 
         try {
-            setStage(fxmlLoader.load(), stage);
+            main.setStage(fxmlLoader.load(), stage);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -76,21 +77,10 @@ public class DashboardController implements Initializable {
 
     private void handleLogoutAction(ActionEvent actionEvent) {
         try {
+            main.getPrimaryStage().close();
             main.loadLogin();
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    private void setStage(Parent root, Stage stage) throws IOException {
-        stage.setResizable(false);
-        stage.setTitle("Securoserve");
-        stage.setScene(new Scene(root));
-        stage.show();
-
-        // Center it
-        Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
-        stage.setX((primScreenBounds.getWidth() - stage.getWidth()) / 2);
-        stage.setY((primScreenBounds.getHeight() - stage.getHeight()) / 2);
     }
 }

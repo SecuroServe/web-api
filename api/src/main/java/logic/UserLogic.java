@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 import datarepo.UserRepo;
 import datarepo.database.Database;
 import exceptions.NoPermissionException;
+import exceptions.PasswordsDontMatchException;
 import exceptions.WrongUsernameOrPasswordException;
 import interfaces.ConfirmationMessage;
 import library.User;
@@ -36,6 +37,14 @@ public class UserLogic {
         userRepo = new UserRepo(database);
     }
 
+    /**
+     * Creates and returns a new token for a user if username and password
+     * are correct.
+     *
+     * @param username The username of the user.
+     * @param password The password of the user.
+     * @return The token of the user.
+     */
     public ConfirmationMessage login(String username, String password) {
         try {
             String token = userRepo.login(username, password);
@@ -48,6 +57,36 @@ public class UserLogic {
 
             return new ConfirmationMessage(ConfirmationMessage.StatusType.ERROR,
                     "Login failed!", e);
+        }
+    }
+
+    /**
+     * Creates and returns a new user. Also checks for valid username and valid passwords.
+     *
+     * @param username  The username of the user to register.
+     * @param password1 The password of the user.
+     * @param password2 The retyped password.
+     * @param email     The email of the User.
+     * @param city      The city of the user
+     * @return A ConfirmationMessage with the new User.
+     */
+    public ConfirmationMessage register(String username, String password1, String password2, String email, String city) {
+        try {
+            if (!password1.equals(password2)) {
+                throw new PasswordsDontMatchException("The 2 passwords don't match.");
+            }
+
+            User user = userRepo.register(3, -1, username, password1, email, city);
+
+            return new ConfirmationMessage(ConfirmationMessage.StatusType.SUCCES,
+                    "User added!", user);
+
+        } catch (NoSuchAlgorithmException | SQLException | ParseException | PasswordsDontMatchException e) {
+            Logger.getLogger(UserLogic.class.getName()).log(Level.SEVERE,
+                    "User addition failed!", e);
+
+            return new ConfirmationMessage(ConfirmationMessage.StatusType.ERROR,
+                    "Addition of user failed!", e);
         }
     }
 

@@ -123,6 +123,7 @@ public class CalamityRepo {
                 }
 
                 calamity.setPosts(getPostsPerCalamity(id));
+                calamity.setPlan(getPlanOfCalamity(id));
             }
         }
         return calamity;
@@ -219,6 +220,7 @@ public class CalamityRepo {
                 calamity.setAssignees(assignees);
 
                 calamity.setPosts(getPostsPerCalamity(id));
+                calamity.setPlan(getPlanOfCalamity(id));
 
                 calamities.add(calamity);
             }
@@ -320,7 +322,7 @@ public class CalamityRepo {
 
         post = addPost(post);
 
-        String query = "INSERT INTO `calamitypost` (`CalamityID`, `PostID`) VALUES (?, ?);";
+        String query = "INSERT INTO `CalamityPost` (`CalamityID`, `PostID`) VALUES (?, ?);";
 
         List<Object> parameters = new ArrayList<>();
         parameters.add(calamityId);
@@ -332,7 +334,7 @@ public class CalamityRepo {
     }
 
     private Post addPost(Post post) throws SQLException {
-        String query = "INSERT INTO `post` (`UserID`, `Text`) VALUES (?, ?);";
+        String query = "INSERT INTO `Post` (`UserID`, `Text`) VALUES (?, ?);";
 
         List<Object> parameters = new ArrayList<>();
         parameters.add(post.getUser().getId());
@@ -350,7 +352,7 @@ public class CalamityRepo {
     private List<Post> getPostsPerCalamity(int calamityId) throws SQLException, ParseException, NoSuchAlgorithmException {
         List<Post> posts = new ArrayList<>();
 
-        String query = "SELECT p.ID, p.UserID, p.Text FROM post p INNER JOIN calamitypost cp ON p.ID = cp.PostID WHERE cp.CalamityID = ?;";
+        String query = "SELECT p.ID, p.UserID, p.Text FROM Post p INNER JOIN CalamityPost cp ON p.ID = cp.PostID WHERE cp.CalamityID = ?;";
 
         List<Object> parameters = new ArrayList<>();
         parameters.add(calamityId);
@@ -361,7 +363,7 @@ public class CalamityRepo {
                 int userId = rs.getInt(2);
                 String text = rs.getString(3);
 
-                User user = new UserRepo(database).getUserById(id);
+                User user = new UserRepo(database).getUserById(userId);
 
                 posts.add(new Post(id, user, text));
             }
@@ -377,7 +379,67 @@ public class CalamityRepo {
      * @param plan       The plan to add.
      * @return The new plan.
      */
-    public Plan addPlan(int calamityId, Plan plan) {
-        return null;
+    public Plan addPlan(int calamityId, Plan plan) throws SQLException, ParseException, NoSuchAlgorithmException,
+            NoSuchCalamityException {
+        Calamity calamity = this.getCalamity(calamityId);
+
+        if (calamity == null) {
+            throw new NoSuchCalamityException("Calamity does not exist.");
+        }
+
+        String query = "INSERT INTO `Plan` (`CalamityID`, `Description`) VALUES (?, ?)";
+
+        List<Object> parameters = new ArrayList<>();
+        parameters.add(calamityId);
+        parameters.add(plan.getDescription());
+
+        try (ResultSet rs = database.executeQuery(query, parameters, Database.QueryType.INSERT)) {
+            if (rs.next()) {
+                plan.setId(rs.getInt(1));
+            }
+        }
+
+        return plan;
+    }
+
+    /**
+     * Update an existing Plan into the database
+     *
+     * @param plan the updated Plan with the correct ID
+     * @throws SQLException exception when an SQL Error occurs
+     */
+    public void updatePlan(Plan plan) throws SQLException {
+
+        String query = "UPDATE `Plan` " +
+                "SET `Description` = ?" +
+                "WHERE `ID` = ?";
+
+        List<Object> parameters = new ArrayList<>();
+        parameters.add(plan.getDescription());
+        parameters.add(plan.getId());
+
+        database.executeQuery(query, parameters, Database.QueryType.NON_QUERY);
+    }
+
+    private Plan getPlanOfCalamity(int calamityId) throws SQLException {
+        List<Plan> plans = new ArrayList<>();
+
+        String query = "SELECT `ID`, `Description` FROM `Plan` WHERE `CalamityID` = ?";
+
+        List<Object> parameters = new ArrayList<>();
+        parameters.add(calamityId);
+
+        try (ResultSet rs = database.executeQuery(query, parameters, Database.QueryType.QUERY)) {
+            while (rs.next()) {
+                int id = rs.getInt(1);
+                String description = rs.getString(2);
+
+                Plan plan = new Plan(id, description);
+
+                plans.add(plan);
+            }
+        }
+
+        return plans.size() > 0 ? plans.get(plans.size() - 1) : null;
     }
 }

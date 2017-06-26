@@ -12,28 +12,31 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
 import javafx.stage.Stage;
-import jdk.nashorn.internal.parser.JSONParser;
 import library.Calamity;
+import library.SocialPost;
 import library.User;
 import library.Weather;
-import net.aksingh.owmjapis.CurrentWeather;
-import net.aksingh.owmjapis.OpenWeatherMap;
-import net.aksingh.owmjapis.Tools;
 import netscape.javascript.JSObject;
-import org.json.JSONObject;
 import requests.CalamityRequest;
+import requests.SocialRequest;
 import requests.UserRequest;
 import requests.WeatherRequest;
+import ui.Main;
+import ui.util.ListViewTweetCell;
 
+import java.io.IOException;
 import java.net.URL;
-import java.util.*;
+import java.util.List;
+import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by guillaimejanssen on 20/03/2017.
@@ -56,6 +59,8 @@ public class CalamityListController implements Initializable {
     @FXML
     private Button changeButton;
     @FXML
+    private Button planButton;
+    @FXML
     private Button askInfoButton;
 
     @FXML
@@ -74,19 +79,26 @@ public class CalamityListController implements Initializable {
     private Label weatherLabel;
 
     @FXML
+    private ListView<SocialPost> listViewTweets;
+
+    @FXML
     private GoogleMapView googleMapView;
 
+    private Stage stage;
     private GoogleMap map;
     private Calamity selectedCalamity;
     private Timer timerToRefresh = new Timer();
 
     private UserRequest userRequest;
     private CalamityRequest calamityRequest;
+    private SocialRequest socialRequest;
 
-    public CalamityListController(User user) {
+    public CalamityListController(Stage stage, User user) {
+        this.stage = stage;
         this.user = user;
         this.userRequest = new UserRequest();
         this.calamityRequest = new CalamityRequest();
+        this.socialRequest = new SocialRequest();
     }
 
     @Override
@@ -97,9 +109,11 @@ public class CalamityListController implements Initializable {
         dateTextField.setEditable(false);
         informationTextArea.setEditable(false);
 
+        listViewTweets.setCellFactory(param -> new ListViewTweetCell());
         googleMapView.addMapInializedListener(this::mapInitialized);
         refreshButton.setOnAction(this::handleRefreshAction);
         changeButton.setOnAction(this::handleChangeAction);
+        planButton.setOnAction(this::handlePlanAction);
         backButton.setOnAction(this::handleBackAction);
         askInfoButton.setOnAction(this::handleAskInfoAction);
         calamityTable.setOnMouseClicked((MouseEvent event) -> {
@@ -112,11 +126,39 @@ public class CalamityListController implements Initializable {
             }
         });
 
+
         initiateTableColumns();
         refreshCalamityTable();
 
         // Refreshing the table every 10 seconds
         timerToRefresh.schedule(new RefreshTask(), 10 * 1000);
+
+        // Close handler for timer
+        stage.setOnCloseRequest(e -> {
+            timerToRefresh.cancel();
+        });
+    }
+
+    private void refreshSocialPosts() {
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        StringBuilder keywordBuilder = new StringBuilder();
+
+        for(String string : selectedCalamity.getTitleTags()) {
+            if (string.length() >= 5) {
+                keywordBuilder.append("+").append("+" + string);
+            }
+        }
+
+        ConfirmationMessage message = socialRequest.getSocialPosts(user.getToken(), keywordBuilder.toString());
+        if (message.getStatus() != ConfirmationMessage.StatusType.ERROR) {
+
+            List<SocialPost> socialPosts = mapper.convertValue(message.getReturnObject(), new TypeReference<List<SocialPost>>() {});
+            ObservableList<SocialPost> observableList = FXCollections.observableArrayList(socialPosts);
+
+            listViewTweets.setItems(FXCollections.observableArrayList(observableList));
+        }
     }
 
     private void refreshUserTable() {
@@ -129,7 +171,8 @@ public class CalamityListController implements Initializable {
         Object value = calamityRequest.allCalamity().getReturnObject();
 
         ObjectMapper mapper = new ObjectMapper();
-        List<Calamity> calamities = mapper.convertValue(value, new TypeReference<List<Calamity>>() { });
+        List<Calamity> calamities = mapper.convertValue(value, new TypeReference<List<Calamity>>() {
+        });
 
         ObservableList<Calamity> obsList = FXCollections.observableArrayList(calamities);
         calamityTable.setItems(obsList);
@@ -158,14 +201,29 @@ public class CalamityListController implements Initializable {
                         selectedCalamity.getConfirmation(),
                         selectedCalamity.getClosed());
 
-            } else {
-
             }
 
         } else {
             titleTextField.setEditable(true);
             informationTextArea.setEditable(true);
             changeButton.setText("Save changes");
+        }
+    }
+
+    private void handlePlanAction(ActionEvent actionEvent) {
+
+        if (selectedCalamity == null) {
+            return;
+        }
+
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/CreatePlan.fxml"));
+        PlanController controller = new PlanController(user, selectedCalamity);
+        fxmlLoader.setController(controller);
+
+        try {
+            Main.setStage(fxmlLoader.load(), new Stage(), "Create Plan");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -183,12 +241,12 @@ public class CalamityListController implements Initializable {
     }
 
     private void handleAskInfoAction(ActionEvent actionEvent) {
-        if(userTable.getSelectionModel().getSelectedIndex() < 0) {
+        if (userTable.getSelectionModel().getSelectedIndex() < 0) {
             showMessage("Nothing selected", "Please select a user to ask information!");
         } else {
             ConfirmationMessage message = userRequest.askInformation(user.getToken(), userTable.getSelectionModel().getSelectedItem().getId());
 
-            if(message.getStatus().equals(ConfirmationMessage.StatusType.SUCCES)) {
+            if (message.getStatus().equals(ConfirmationMessage.StatusType.SUCCES)) {
                 showMessage("SUCCESS", "Assignee has been notified");
             } else {
                 showMessage("ERROR", "Assignee has not been notified");
@@ -240,6 +298,8 @@ public class CalamityListController implements Initializable {
         dateTextField.setText(calamity.getDate().toString());
         informationTextArea.setText(calamity.getMessage());
         informationTextArea.setWrapText(true);
+
+        refreshSocialPosts();
     }
 
     public void mapInitialized() {
@@ -321,7 +381,7 @@ public class CalamityListController implements Initializable {
                 calamity.getLocation().getLongitude(),
                 calamity.getLocation().getLatitude()), ConfirmationMessage.class);
 
-        if(message.getStatus().equals(ConfirmationMessage.StatusType.ERROR)) {
+        if (message.getStatus().equals(ConfirmationMessage.StatusType.ERROR)) {
             weatherLabel.setText("There is no weather data available\n\n" +
                     "Message: " + message.getMessage());
         } else {
