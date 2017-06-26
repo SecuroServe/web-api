@@ -176,7 +176,7 @@ public class CalamityControllerTest {
 
         Plan plan = new Plan(0, "Do this then that.");
 
-        ConfirmationMessage addPlanFeedback = cc.addPlan(user.getToken(), c1.getId(), plan);
+        ConfirmationMessage addPlanFeedback = cc.addPlan(user.getToken(), c1.getId(), plan.getDescription());
 
         Plan returnedPlan = (Plan) addPlanFeedback.getReturnObject();
 
@@ -197,7 +197,7 @@ public class CalamityControllerTest {
                 "test of 911", location.getLatitude(), location.getLongitude(), location.getRadius(),
                 false, true).getReturnObject();
 
-        ConfirmationMessage addPlanFeedback = cc.addPlan(userNoPermission.getToken(), c1.getId(), plan);
+        ConfirmationMessage addPlanFeedback = cc.addPlan(userNoPermission.getToken(), c1.getId(), plan.getDescription());
 
         Assert.assertEquals(ConfirmationMessage.StatusType.ERROR, addPlanFeedback.getStatus());
         Assert.assertTrue(addPlanFeedback.getReturnObject() instanceof NoPermissionException);
@@ -207,7 +207,7 @@ public class CalamityControllerTest {
     public void addPlanToUnknownCalamityTest() {
         Plan plan = new Plan(0, "Do this then that.");
 
-        ConfirmationMessage addPlanFeedback = cc.addPlan(user.getToken(), -1, plan);
+        ConfirmationMessage addPlanFeedback = cc.addPlan(user.getToken(), -1, plan.getDescription());
 
         Assert.assertEquals(ConfirmationMessage.StatusType.ERROR, addPlanFeedback.getStatus());
         Assert.assertTrue(addPlanFeedback.getReturnObject() instanceof NoSuchCalamityException);
